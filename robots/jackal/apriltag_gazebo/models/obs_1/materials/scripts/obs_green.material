@@ -1,0 +1,13 @@
+material obsgreen
+{ receive _shadows off
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture green_circle.png
+      }
+    }
+  }
+}
