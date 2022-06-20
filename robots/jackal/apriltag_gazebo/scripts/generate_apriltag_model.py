@@ -1,10 +1,9 @@
 import os
 import sys
 
-path = input("Enter the folder's name: ")
-tag_id = input("Enter the apriltag's ID: ")
-pose = input("Enter the pose: ")
-
+tag_id = input("Enter apriltag's ID: ")
+pose = input("Enter pose (x,y,z,r,p,y): ") 
+path = "apriltag_" + tag_id
 # Check if folder already exists
 if os.path.isdir(path):
     print("Folder already exists.")
