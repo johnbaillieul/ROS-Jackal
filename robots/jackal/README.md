@@ -16,6 +16,22 @@ apriltag_ros package from https://github.com/AprilRobotics/apriltag_ros
 Realsense_camera see instruction from https://wiki.bu.edu/robotics/index.php?title=Jackal or https://www.clearpathrobotics.com/assets/guides/kinetic/jackal/additional_sim_worlds.html
 Clearpath package to simulate Jackal UGV that can be installed by running: sudo apt-get install ros-melosic-jackal-simulator ros-melodic-jackal-desktop ros-melodic-jackal-navigation
 
+## Setup
+
+In the apriltag_ros package:
+1) In the config/tags.yaml file add the following:
+    {id: 1, size: 0.8 , name: tag_1},
+    {id: 2, size: 0.8 , name: tag_2},
+    {id: 3, size: 0.8 , name: tag_3}
+  to the standalone array.
+  
+2) Make sure that the taf family is 'tag36h11' and that publish_tf is set to true in config/settings.yaml file.
+
+3) Change remap from="image_rect" to="$(arg camera_name)/$(arg image_topic)" 
+          remap from="camera_info" to="$(arg camera_name)/camera_info" 
+          
+  to   remap from="image_rect" to="/realsense/color/image_rect_color"
+       remap from="camera_info" to="/realsense/color/camera_info"
 
 ## How to Use Repo:
 clone the repo in you ~/catkin_ws/src
