@@ -20,14 +20,6 @@ Clearpath package to simulate Jackal UGV that can be installed by running: sudo 
 ## How to Use Repo:
 clone the repo in you ~/catkin_ws/src
 add the following to your ~/.bashrc file: export GAZEBO_MODEL_PATH=~/catkin_ws/src/apriltag_gazebo/models or if you already have GAZEBO_MODEL_PATH in you file and the path ~/catkin_ws/src/apriltag_gazebo/models.
-
-In apriltag_ros/launch/continuous_detection.launch
-Change:
-    <remap from="image_rect" to="$(arg camera_name)/$(arg image_topic)" />
-    <remap from="camera_info" to="$(arg camera_name)/camera_info" />
-To:
-    <remap from="image_rect" to="/realsense/color/image_raw" />
-    <remap from="camera_info" to="/realsense/color/camera_info" />
  
 Run export JACKAL_URDF_EXTRAS=$HOME/Desktop/realsense.urdf.xacro. Mind that "HOME/Desktop/" is where I have the realsense.urdf.xacro file located. The run 
 roslaunch apriltag_gazebo jack_trial.launch which open gazebo with the apriltags and the jackal. The lauch file also launches the continuous detection file used to detect april tags.
@@ -39,8 +31,14 @@ In another terminal run rqt_image_view and select /tag_detections_image. When ap
 Then run rosrun apriltag_gazebo detec.py to run the node that move the jackal between apritags.
 
 
-## How to Use generates_apriltag_models.py:
+## How to Use generate_apriltag_models.py:
 Place the file in the models folder, run the script then enter the apriltag's id and pose. This will automatically generate the model folder named apriltag_id. You need to add the image of the apriltag in the meshes folder and name it apriltag_id. "Note that you should replace id with the apriltag's id".
+
+## Demo
+
+
+https://user-images.githubusercontent.com/98136555/175075007-c5c22281-5b6c-486d-bbde-5046a4e6a989.mp4
+
 
 
 
