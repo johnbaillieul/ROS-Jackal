@@ -22,16 +22,17 @@
 			<uri>model://apriltag_3</uri>
 		</include>
 
-
 <!-- boxes as obsacles
 		<include>
 			<uri>model://apriltag_2</uri>
-		</include>
+		</include>-->
 
 		
 		<include>
-			<uri>model://obs_1</uri>
-		</include> -->
-	
+			<uri>model://trial</uri>
+			<pose>0 0 0 0 0 0 </pose>
+		</include>
+		
+		
 	</world>
 </sdf>

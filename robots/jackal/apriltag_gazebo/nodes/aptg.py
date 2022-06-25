@@ -1,111 +1,79 @@
 #!/usr/bin/env python
 
 #import the dependencies
-import pid_controller  
+ 
 import rospy
-from geometry_msgs.msg import Twist
-import time
-import cv2
+from geometry_msgs.msg import Twist, PoseWithCovarianceStamped
+from apriltag_ros.msg import AprilTagDetection, AprilTagDetectionArray
 import numpy as np
-from apriltag import apriltag
-from cv_bridge import CvBridge
-from sensor_msgs.msg import Image
+import tf2_ros
+import tf.transformations 
+import tf2_geometry_msgs
 
-class AprilTag:
-    def __init__(self):
-        self.bridge = CvBridge()
-        self.pub=rospy.Publisher('/cmd_vel',Twist,queue_size=10)
-        self.sub =  rospy.Subscriber("/camera/color/raw_image", Image, self.imageColorCallback)
 
-    def imageColorCallback(self, colordata):
-        cv_image = self.bridge.imgmsg_to_cv2(colordata, desired_encoding='mono8')
 
-    def detect_tag(self):
-        #create the publisher object
-        
+class Jackal:
 
-        #define the rate of your publisher
-        rate=rospy.Rate(10)
+	def __init__(self):
+		self.pub=rospy.Publisher('/cmd_vel',Twist,queue_size=1)
+		self.sub_img_detec =  rospy.Subscriber("/tag_detections", AprilTagDetectionArray, self.Callback_detection)
+		self.pose_x = None
+		self.pose_y = None
+		self.pose_z = None
+		self.ang_pose_z= None
+		self.spin = True
+		self.move = False
+		self.vel = Twist()
+		self.prev_error = 0
+		self.ap_id = [None]
+		self.det_id = None
+		self.tfBuffer = tf2_ros.Buffer()
+		self.listener = tf2_ros.TransformListener(self.tfBuffer)
+		self.saved_time = rospy.Time.now()
 
-        #while the node is still on
-        while True:
-            # adjust the velocity message
-            vel=Twist()
-            vel.angular.z=1
-            #publish it
-            pub.publish(vel)
-            #sleep to acheive the defined rate
-            ####rate.sleep()
+	def Callback_detection(self,msg):
+		if msg.detections and msg.detections[1].id not in self.ap_id:
+			source_frame = "tag_" + str(msg.detections[1].id[0])
+			transform = self.tfBuffer.lookup_transform("base_link", source_frame, rospy.Time(0), rospy.Duration(1.0))
+			#print("before_trans",msg.detections[0].pose.pose)
+			pose_transformed = tf2_geometry_msgs.do_transform_pose(msg.detections[1].pose.pose, transform)
+			#print("pose_transf",pose_transformed)
+			self.pose_x= pose_transformed.pose.position.x
+			self.pose_y= pose_transformed.pose.position.y
+			self.pose_z= pose_transformed.pose.position.z
+			self.ang_pose_z= pose_transformed.pose.orientation.z
+			self.move = True
+			self.spin = False
+			self.det_id = msg.detections[1].id
+			print("spin",self.spin)
+			print("id",self.det_id)
 
-            #tag detection
-            #sub to realsense2
-          
 
-            #image = cv2.imread(imagepath, cv2.IMREAD_GRAYSCALE)
+		else:
+			self.pose_x = None
+			self.pose_y = None
+			self.pose_z = None
+			self.ang_pose_z= None
+			self.move = False
+			self.spin = True
+			print("spin",self.spin)
 
-            detector = apriltag("tag36h11")
-            detections = detector.detect(self.cv_image) 
-            if len(detections) != 0: 
-                break
 
-    def move_to_tag(self):
-        #create the publisher object
-        pub=rospy.Publisher('/cmd_vel',Twist,queue_size=10)
+	def dist(self):
+		return np.linalg.norm([self.pose_x, self.pose_y])
 
-        #define the rate of your publisher
-        rate=rospy.Rate(10)
-
-        #while the node is still on
-        while True:
-
-            # adjust the velocity message
-            vel=Twist()
-            ### add PID controller
-            vel.angular.z=
-            vel.linear.x=
-
-            #publish it
-            pub.publish(vel)
-
-            #sleep to acheive the defined rate
-            rate.sleep
-    
-#creat the function that will initialize the node
-def ap_tag():
-
-    #log the info to make sure the node was started
-    rospy.loginfo("ap_tag node started ")
-    #create the publisher object
-    pub=rospy.Publisher('/cmd_vel',Twist,queue_size=10)
-
-    #define the rate of your publisher
-    rate=rospy.Rate(10)
-
-    #define PID parameters
-    kp = 0
-    kd = 0 
-    ki = 0
-
-    #while the node is still on
-    while True:
-
-        # adjust the velocity message
-        vel=Twist()
-
-        vel.angular.z=1
-        vel.linear.x=1
-
-        #publish it
-        pub.publish(vel)
-
-        #sleep to acheive the defined rate
-        rate.sleep
+	def move_towards_tag(self):
+		if self.pose_x is not None and self.pose_y is not None:
+			dist_to_goal = self.dist() 
+			print("dist", dist_to_goal)
 
 if __name__=="__main__":
     
-    #initialise the node
-    rospy.init_node("ap_tag", anonymous=True)
-
-    #initiate object
-
-    rospy.spin()
+	#initialise the node
+	rospy.init_node("ap_tag", anonymous=True)
+	jack = Jackal()
+	#while the node is still on
+	r = rospy.Rate(10)
+	while not rospy.is_shutdown():
+		jack.move_towards_tag()
+		r.sleep()
