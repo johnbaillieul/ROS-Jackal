@@ -6,6 +6,7 @@
     <!-- 1st row -->
     <link name="link_0">
       <collision name="collision_0">
+        <pose>-1 0 1.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -24,6 +25,7 @@
 
     <link name="link_1">
       <collision name="collision_1">
+        <pose>-1 0 0.75 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -42,6 +44,7 @@
 
     <link name="link_2">
       <collision name="collision_2">
+        <pose>-1 0 0.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -62,6 +65,7 @@
 
     <link name="link_3">
       <collision name="collision_3">
+        <pose>-1 0.75 0.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -80,6 +84,7 @@
 
     <link name="link_4">
       <collision name="collision_4">
+        <pose>-1 0.75 1.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -98,6 +103,7 @@
 
     <link name="link_5">
       <collision name="collision_5">
+        <pose>-1 0.75 0.75 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -118,6 +124,7 @@
 
     <link name="link_6">
       <collision name="collision_6">
+        <pose>-1 1.5 0.75 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -136,6 +143,7 @@
 
     <link name="link_7">
       <collision name="collision_7">
+        <pose>-1 1.5 0.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -154,6 +162,7 @@
 
     <link name="link_8">
       <collision name="collision_8">
+        <pose>-1 1.5 1.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -174,6 +183,7 @@
 
     <link name="link_9">
       <collision name="collision_9">
+        <pose>-1 2.25 1.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -192,6 +202,7 @@
 
     <link name="link_10">
       <collision name="collision_10">
+        <pose>-1 2.25 0.75 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -210,6 +221,7 @@
 
     <link name="link_11">
       <collision name="collision_11">
+        <pose>-1 2.25 0.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -230,6 +242,7 @@
 
     <link name="link_12">
       <collision name="collision_12">
+        <pose>-1 3 0.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -248,6 +261,7 @@
 
     <link name="link_13">
       <collision name="collision_13">
+        <pose>-1 3 1.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -266,6 +280,7 @@
 
     <link name="link_14">
       <collision name="collision_14">
+        <pose>-1 3 0.75 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -286,6 +301,7 @@
 
     <link name="link_15">
       <collision name="collision_15">
+        <pose>-1 3.75 0.75 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -304,6 +320,7 @@
 
     <link name="link_16">
       <collision name="collision_16">
+        <pose>-1 3.75 0.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -322,6 +339,7 @@
 
     <link name="link_17">
       <collision name="collision_17">
+        <pose>-1 3.75 1.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -341,6 +359,7 @@
     <!-- 7 row -->
     <link name="link_18">
       <collision name="collision_18">
+        <pose>-1 4.5 1.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -359,6 +378,7 @@
 
     <link name="link_19">
       <collision name="collision_19">
+        <pose>-1 4.5 0.75 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -377,6 +397,7 @@
 
     <link name="link_20">
       <collision name="collision_20">
+        <pose>-1 4.5 0.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -397,6 +418,7 @@
 
     <link name="link_21">
       <collision name="collision_21">
+        <pose>-1 5.25 0.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -415,6 +437,7 @@
 
     <link name="link_22">
       <collision name="collision_22">
+        <pose>-1 5.25 1.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -433,6 +456,7 @@
 
     <link name="link_23">
       <collision name="collision_23">
+        <pose>-1 5.25 0.75 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -453,6 +477,7 @@
 
     <link name="link_24">
       <collision name="collision_24">
+        <pose>-1 6 0.75 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -471,6 +496,7 @@
 
     <link name="link_25">
       <collision name="collision_25">
+        <pose>-1 6 0.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -489,6 +515,7 @@
 
     <link name="link_26">
       <collision name="collision_26">
+        <pose>-1 6 1.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -509,6 +536,7 @@
 
     <link name="link_27">
       <collision name="collision_27">
+        <pose>-1 6.75 1.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -527,6 +555,7 @@
 
     <link name="link_28">
       <collision name="collision_28">
+        <pose>-1 6.75 0.75 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -545,6 +574,7 @@
 
     <link name="link_29">
       <collision name="collision_29">
+        <pose>-1 6.75 0.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -565,6 +595,7 @@
 
     <link name="link_30">
       <collision name="collision_30">
+        <pose>-1 7.5 0.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -583,6 +614,7 @@
 
     <link name="link_31">
       <collision name="collision_31">
+        <pose>-1 7.5 1.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -601,6 +633,7 @@
 
     <link name="link_32">
       <collision name="collision_32">
+        <pose>-1 7.5 0.75 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -621,6 +654,7 @@
 
     <link name="link_33">
       <collision name="collision_33">
+        <pose>-1 8.25 0.75 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -639,6 +673,7 @@
 
     <link name="link_34">
       <collision name="collision_34">
+        <pose>-1 8.25 0.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -657,6 +692,7 @@
 
     <link name="link_35">
       <collision name="collision_35">
+        <pose>-1 8.25 1.25 0 0 1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -678,6 +714,7 @@
         <!-- 1st row -->
     <link name="link_0_0">
       <collision name="collision_0_0">
+        <pose>1 0 1.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -696,6 +733,7 @@
 
     <link name="link_1_0">
       <collision name="collision_1_0">
+        <pose>1 0 0.75 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -714,6 +752,7 @@
 
     <link name="link_2_0">
       <collision name="collision_2_0">
+        <pose>1 0 0.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -734,6 +773,7 @@
 
     <link name="link_3_0">
       <collision name="collision_3_0">
+        <pose>1 0.75 0.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -752,6 +792,7 @@
 
     <link name="link_4_0">
       <collision name="collision_4_0">
+        <pose>1 0.75 1.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -770,6 +811,7 @@
 
     <link name="link_5_0">
       <collision name="collision_5_0">
+        <pose>1 0.75 0.75 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -790,6 +832,7 @@
 
     <link name="link_6_0">
       <collision name="collision_6_0">
+        <pose>1 1.5 0.75 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -808,6 +851,7 @@
 
     <link name="link_7_0">
       <collision name="collision_7_0">
+        <pose>1 1.5 0.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -826,6 +870,7 @@
 
     <link name="link_8_0">
       <collision name="collision_8_0">
+        <pose>1 1.5 1.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -846,6 +891,7 @@
 
     <link name="link_9_0">
       <collision name="collision_9_0">
+        <pose>1 2.25 1.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -864,6 +910,7 @@
 
     <link name="link_10_0">
       <collision name="collision_10_0">
+        <pose>1 2.25 0.75 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -882,6 +929,7 @@
 
     <link name="link_11_0">
       <collision name="collision_11_0">
+        <pose>1 2.25 0.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -902,6 +950,7 @@
 
     <link name="link_12_0">
       <collision name="collision_12_0">
+        <pose>1 3 0.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -920,6 +969,7 @@
 
     <link name="link_13_0">
       <collision name="collision_13_0">
+        <pose>1 3 1.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -938,6 +988,7 @@
 
     <link name="link_14_0">
       <collision name="collision_14_0">
+        <pose>1 3 0.75 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -958,6 +1009,7 @@
 
     <link name="link_15_0">
       <collision name="collision_15_0">
+        <pose>1 3.75 0.75 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -976,6 +1028,7 @@
 
     <link name="link_16_0">
       <collision name="collision_16_0">
+        <pose>1 3.75 0.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -994,6 +1047,7 @@
 
     <link name="link_17_0">
       <collision name="collision_17_0">
+        <pose>1 3.75 1.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -1013,6 +1067,7 @@
     <!-- 7 row -->
     <link name="link_18_0">
       <collision name="collision_18_0">
+        <pose>1 4.5 1.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -1031,6 +1086,7 @@
 
     <link name="link_19_0">
       <collision name="collision_19_0">
+        <pose>1 4.5 0.75 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -1049,6 +1105,7 @@
 
     <link name="link_20_0">
       <collision name="collision_20_0">
+        <pose>1 4.5 0.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -1069,6 +1126,7 @@
 
     <link name="link_21_0">
       <collision name="collision_21_0">
+        <pose>1 5.25 0.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -1087,6 +1145,7 @@
 
     <link name="link_22_0">
       <collision name="collision_22_0">
+        <pose>1 5.25 1.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -1105,6 +1164,7 @@
 
     <link name="link_23_0">
       <collision name="collision_23_0">
+        <pose>1 5.25 0.75 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -1125,6 +1185,7 @@
 
     <link name="link_24_0">
       <collision name="collision_24_0">
+        <pose>1 6 0.75 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -1143,6 +1204,7 @@
 
     <link name="link_25_0">
       <collision name="collision_25_0">
+        <pose>1 6 0.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -1161,6 +1223,7 @@
 
     <link name="link_26_0">
       <collision name="collision_26_0">
+        <pose>1 6 1.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -1181,6 +1244,7 @@
 
     <link name="link_27_0">
       <collision name="collision_27_0">
+        <pose>1 6.75 1.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -1199,6 +1263,7 @@
 
     <link name="link_28_0">
       <collision name="collision_28_0">
+        <pose>1 6.75 0.75 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -1217,6 +1282,7 @@
 
     <link name="link_29_0">
       <collision name="collision_29_0">
+        <pose>1 6.75 0.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -1237,6 +1303,7 @@
 
     <link name="link_30_0">
       <collision name="collision_30_0">
+        <pose>1 7.5 0.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -1255,6 +1322,7 @@
 
     <link name="link_31_0">
       <collision name="collision_31_0">
+        <pose>1 7.5 1.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -1273,6 +1341,7 @@
 
     <link name="link_32_0">
       <collision name="collision_32_0">
+        <pose>1 7.5 0.75 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -1293,6 +1362,7 @@
 
     <link name="link_33_0">
       <collision name="collision_33_0">
+        <pose>1 8.25 0.75 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -1311,6 +1381,7 @@
 
     <link name="link_34_0">
       <collision name="collision_34_0">
+        <pose>1 8.25 0.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
@@ -1329,6 +1400,7 @@
 
     <link name="link_35_0">
       <collision name="collision_35_0">
+        <pose>1 8.25 1.25 0 0 -1.57079633</pose>
         <geometry>
           <box>
             <size>0.75 0.15 0.5</size>
