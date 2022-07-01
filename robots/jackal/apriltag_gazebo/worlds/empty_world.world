@@ -20,7 +20,7 @@
 
 		<include>
 			<uri>model://apriltag_3</uri>
-		</include>
+		</include>-->
 
 <!-- boxes as obsacles
 		<include>
@@ -29,7 +29,7 @@
 
 		
 		<include>
-			<uri>model://trial</uri>
+			<uri>model://boxes_corridor</uri>
 			<pose>0 0 0 0 0 0 </pose>
 		</include>
 		
