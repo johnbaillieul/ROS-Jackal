@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <launch>
-        <arg name="x" default="0" />
-        <arg name="y" default="0" />
+        <arg name="x" default="4" />
+        <arg name="y" default="3" />
         <arg name="z" default="1" />
-        <arg name="yaw" default="0" />
+        <arg name="yaw" default="90" />
         <!-- Configuration of Jackal which you would like to simulate.
             See jackal_description for details. -->
         <arg name="config" default="base" />

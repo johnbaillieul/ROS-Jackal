@@ -14,7 +14,7 @@ import tf2_geometry_msgs
 
 class VelocityController:
 
-    def __init__(self, Kp=0.4, Ki=0.0, Kd=0.0):
+    def __init__(self, Kp=0.2, Ki=0.03, Kd=0.01):
         '''
         '''
         self.Kp = Kp
@@ -81,7 +81,6 @@ class Jackal:
 			self.pose_x= pose_transformed.pose.position.x
 			self.pose_y= pose_transformed.pose.position.y
 			self.pose_z= pose_transformed.pose.position.z
-			# self.pitch= pose_transformed.pose.orientation.x
 			self.detected = True
 			self.on_apriltag_detection()
 			
@@ -89,7 +88,6 @@ class Jackal:
 			self.pose_x = None
 			self.pose_y = None
 			self.pose_z = None
-			self.ang_pose_z= None
 			self.detected = False
 
 	def spinning(self):
@@ -113,7 +111,7 @@ class Jackal:
 		return np.linalg.norm([self.pose_x, self.pose_y, self.pose_z])
 
 	def move_towards_tag(self):
-		current_error = -self.pose_z
+		current_error = self.pose_y
 		print("current_error",current_error)
 	
 		if current_error is not None:
