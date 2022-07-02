@@ -11,9 +11,12 @@ The repository include the code that runs the jackal between two apriltags. Usin
 The repo also includes a template folder that can be used to add new apriltags and a script that generates apriltag models is also included.
 
 ## Prerequisites
-apriltag package from https://github.com/AprilRobotics/apriltag
+apriltag package from https://github.com/AprilRobotics/apriltag 
+
 apriltag_ros package from https://github.com/AprilRobotics/apriltag_ros
+
 Realsense_camera see instruction from https://wiki.bu.edu/robotics/index.php?title=Jackal or https://www.clearpathrobotics.com/assets/guides/kinetic/jackal/additional_sim_worlds.html
+
 Clearpath package to simulate Jackal UGV that can be installed by running: sudo apt-get install ros-melosic-jackal-simulator ros-melodic-jackal-desktop ros-melodic-jackal-navigation
 
 ## Setup
