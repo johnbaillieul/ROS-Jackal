@@ -1,24 +1,20 @@
 <?xml version="1.0" ?>
 
 <sdf version="1.5">
-	<world name="default">
+	<world name="apriltag">
 		<!-- A global light source -->
 		<include>
 			<uri>model://sun</uri>
 		</include>
 		
 		<!--Additional light-->
+
 		<light type="point" name="point_light_1">
 			<pose>0 0 1 0 0 0</pose>
 			<diffuse>127 127 127 255</diffuse>
-			<specular>
-				<red>25</red>
-				<green>25</green>
-				<blue>25</blue>
-				<alpha>255</alpha>
-				<range>20</range>
-			</specular>
+			<specular>25 25 25 255</specular>
 			<attentuation>
+				<range>20</range>
 				<constant>0.5</constant>
 				<linear>0.01</linear>
 				<quadratic>0</quadratic>
@@ -47,3 +43,4 @@
 		
 	</world>
 </sdf>
+

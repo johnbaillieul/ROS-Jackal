@@ -11,10 +11,8 @@ import tf.transformations
 import tf2_geometry_msgs
 
 
-
-class VelocityController:
-
-    def __init__(self, Kp=0.2, Ki=0.03, Kd=0.01):
+class PID:
+    def __init__(self, Kp=0, Ki=0, Kd=0):
         '''
         '''
         self.Kp = Kp
@@ -32,8 +30,6 @@ class VelocityController:
 
 
 
-
-
 class Jackal:
 	def __init__(self):
 		self.pub=rospy.Publisher('/cmd_vel',Twist,queue_size=1)
@@ -45,7 +41,6 @@ class Jackal:
 		self.spin = True
 		self.move = False
 		self.vel = Twist()
-		self.controller = VelocityController()
 		self.prev_error = 0
 		self.tfBuffer = tf2_ros.Buffer()
 		self.listener = tf2_ros.TransformListener(self.tfBuffer)
@@ -53,13 +48,18 @@ class Jackal:
 		self.detected = False
 		self.dist_to_tag = 0
 
-
+		# pid parameters
+		kp = rospy.get_param("/gain/kp")
+		ki = rospy.get_param("/gain/ki")
+		kd = rospy.get_param("/gain/kp")
+		self.controller = PID(kp,kd,ki)
+		
 	def update_status(self):
 		# print("dist_to_tag", self.dist_to_tag)
 		if not self.detected :
 			self.move = False
-			self.spin = True
-		elif self.detected and self.dist_to_tag < 1.55:
+			self.spin = True 
+		elif self.detected and self.dist_to_tag < 1.55: # limit set baseed on trials
 			self.move = False
 			self.spin = True
 		else:

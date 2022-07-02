@@ -5,7 +5,7 @@
         <arg name="debug" default="false" />
         <arg name="gui" default="true" />
         <arg name="pause" default="false" />
-        <arg name="world" default="$(find apriltag_gazebo)/worlds/empty_world.world" />
+        <arg name="world" default="$(find apriltag_gazebo)/worlds/straight_corridor.world" />
         <arg name="extra_gazebo_args" default="--verbose"/>
 
         <!-- include gazebo_ros launcher -->
@@ -18,17 +18,24 @@
                 <arg name="extra_gazebo_args" value="$(arg extra_gazebo_args)"/>
         </include>
 
-                <!-- Configuration of Jackal which you would like to simulate.
-              See jackal_description for details. -->
-                 <!-- Spawn Jackal-->
+        <!-- Configuration of Jackal which you would like to simulate.
+        See jackal_description for details. -->
+        
+         <!-- Spawn Jackal-->
         <include file="$(find apriltag_gazebo)/launch/spawn_jackal.launch">
-                <arg name="x" value="3" />
+                <arg name="x" value="0" />
                 <arg name="y" value="0" />
                 <arg name="z" value="1.0" />
-                <arg name="yaw" value="0" />
+                <arg name="yaw" value="1.5" />
         </include> 
-        <!---->
        
+        <!-- add parameters for pid controller-->
+        <param name="gain/kp" type="double" value="0.2" />
+        <param name="gain/ki" type="double" value="0.03" />
+        <param name="gain/kd" type="double" value="0.01" />
+                        
+        
+
         <!--<node name="ap_tag" pkg="apriltag_gazebo" type="detec.py" output="screen"/> -->
         <node name="image_proc" pkg="image_proc" type="image_proc" ns="realsense/color"/>
         
