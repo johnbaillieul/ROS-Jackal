@@ -4,59 +4,39 @@
 
 ## Startup
 
+## How to Use Repo:
+The repository contains four packages. To have run the repo you need to have a catkin worskspace. clone the repo in src file of your catkin workspace
+add the following to your ~/.bashrc file: export GAZEBO_MODEL_PATH=<path_to_src_folder>/src/<pacakge name>/models or if you already have GAZEBO_MODEL_PATH in your file add the path.
+ 
 
-# Apriltag_gazebo 
-The repository include the code that runs the jackal between two apriltags. Using the realsense camera the apriltag_ros package the robot detects an apriltag and moves towards it. Once the jackal is close enough it starts spinning in its place to detect teh other april tag and moves towards it. The node responsible for the following is detect.py.
+## PID_apriltag package
+It applies PID control to move the jackal from one apriltag to the other apriltags. Using the realsense camera and the apriltag_ros package the robot detects an apriltag and moves towards it. Once the jackal is close enough it starts spinning in its place to detect another apriltag and moves towards it. 
 
-The repo also includes a template folder that can be used to add new apriltags and a script that generates apriltag models is also included.
+The repo also includes a template folder that can be used to add new apriltags.
 
-## Prerequisites
-apriltag package from https://github.com/AprilRobotics/apriltag 
-
-apriltag_ros package from https://github.com/AprilRobotics/apriltag_ros
-
+# Prerequisites
 Realsense_camera see instruction from https://wiki.bu.edu/robotics/index.php?title=Jackal or https://www.clearpathrobotics.com/assets/guides/kinetic/jackal/additional_sim_worlds.html
 
 Clearpath package to simulate Jackal UGV that can be installed by running: sudo apt-get install ros-melosic-jackal-simulator ros-melodic-jackal-desktop ros-melodic-jackal-navigation
 
-## Setup
+# How to Use package
+Run export JACKAL_URDF_EXTRAS=$HOME/Desktop/realsense.urdf.xacro. Mind that "HOME/Desktop/" is where I have the realsense.urdf.xacro file located.
+Then run roslaunch pid_apriltag pariltag_jackal.launch which open gazebo with the apriltags and the jackal. The lauch file also launches the continuous detection file used to detect april tags.
 
-In the apriltag_ros package:
-1) In the config/tags.yaml file add the following:
-    {id: 1, size: 0.8 , name: tag_1},
-    {id: 2, size: 0.8 , name: tag_2},
-    {id: 3, size: 0.8 , name: tag_3}
-  to the standalone array.
-  
-2) Make sure that the taf family is 'tag36h11' and that publish_tf is set to true in config/settings.yaml file.
-
-3) Change remap from="image_rect" to="$(arg camera_name)/$(arg image_topic)" 
-          remap from="camera_info" to="$(arg camera_name)/camera_info" 
-          
-  to   remap from="image_rect" to="/realsense/color/image_rect_color"
-       remap from="camera_info" to="/realsense/color/camera_info"
-
-## How to Use Repo:
-clone the repo in you ~/catkin_ws/src
-add the following to your ~/.bashrc file: export GAZEBO_MODEL_PATH=~/catkin_ws/src/apriltag_gazebo/models or if you already have GAZEBO_MODEL_PATH in you file and the path ~/catkin_ws/src/apriltag_gazebo/models.
- 
-Run export JACKAL_URDF_EXTRAS=$HOME/Desktop/realsense.urdf.xacro. Mind that "HOME/Desktop/" is where I have the realsense.urdf.xacro file located. The run 
-roslaunch apriltag_gazebo jack_trial.launch which open gazebo with the apriltags and the jackal. The lauch file also launches the continuous detection file used to detect april tags.
-
-In another terminal run rqt_image_view and select /tag_detections_image. When apriltag is detected you will view it as follow
+# Apriltag detection
+To check if the apriltag detection is running open another terminal and run rqt_image_view then select /tag_detections_image. You should get a frame on the tag as you can see in the image below.
 
 ![apriltag_detection](https://user-images.githubusercontent.com/98136555/174672373-d72a295f-3395-450c-9431-b8182b44308c.png)
 
-Then run rosrun apriltag_gazebo detec.py to run the node that move the jackal between apritags.
+# Note when using apriltags
+Be aware that having lighting in your world that is too bright or too dark can cause wrong detections
 
-
-## How to Use generate_apriltag_models.py:
-Place the file in the models folder, run the script then enter the apriltag's id and pose. This will automatically generate the model folder named apriltag_id. You need to add the image of the apriltag in the meshes folder and name it apriltag_id. "Note that you should replace id with the apriltag's id".
-
-## Demo
-
-
+# Demo
 https://user-images.githubusercontent.com/98136555/175075007-c5c22281-5b6c-486d-bbde-5046a4e6a989.mp4
+
+
+
+
 
 
 
