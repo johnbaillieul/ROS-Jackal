@@ -48,7 +48,13 @@ To test in Gazebo, custom worlds where created the resemble the environment bein
  
 ## Performance can be affected by lighting 
 
+2 lights
 https://user-images.githubusercontent.com/98136555/185210652-f371b74c-7054-4f63-95b3-365b9713b741.mp4
+ 
+ three lights
+
+https://user-images.githubusercontent.com/98136555/185215284-977937bf-bd99-4416-b706-a4d0d101c430.mp4
+
 
 ## Building up custom gazebo worlds by using wall segments
 
