@@ -14,7 +14,7 @@ The repository contains four packages. To run the repo you need to have a catkin
 add the following to your ~/.bashrc file: export GAZEBO_MODEL_PATH=<path_to_src_folder>/src/<pacakge name>/models or if you already have GAZEBO_MODEL_PATH in your file add the path.
  
 
-# Package_1: PID_apriltag package
+# Package_1: PID_apriltag 
 It applies PID control to move the jackal from one apriltag to the other apriltags. Using the realsense camera and the apriltag_ros package the robot detects an apriltag and moves towards it. Once the jackal is close enough it starts spinning in its place to detect another apriltag and moves towards it. 
 
 The repo also includes a template folder that can be used to add new apriltags.
@@ -34,15 +34,28 @@ Be aware that having lighting in your world that is too bright or too dark can c
 ## Demo
 https://user-images.githubusercontent.com/98136555/175075007-c5c22281-5b6c-486d-bbde-5046a4e6a989.mp4
 
-#Package_2: Output_feedback_controller
+# Package_2: Output_feedback_controller
 This package 
 
-#Package_3: Vision_based_navigation_ttt
+# Package_3: Vision_based_navigation_ttt
 
 ## How to run the package
 For ease of use each environment has its launch file however it is possible to simulate the desired world by specifying your desired world in the launch file at this line: arg name="world_name" value="$(find vision_based_navigation_ttt)/GazeboWorlds/<desired .world file>"/.After chosing the launch file run  roslaunch vision_based_navigation_ttt <your chosen file>.launch. Then run rosrun vision_based_navigation_ttt optical_flow.py, rosrun vision_based_navigation_ttt tau_computation.py and rosrun vision_based_navigation_ttt controller.py in separate terminals.
+
+## Custom worlds 
+To test in Gazebo, custom worlds where created the resemble the environment being tested on in the lab. 
+ To do add pictures of dif worlds
  
-#Package_4: Control_Mix 
+## Performance can be affected by lighting 
+ Todo add  videos
+ 
+## Building up custom gazebo worlds by using wall segments
+ Todo add tutorial videos
+
+## Demo
+ in simulation and real environment
+ 
+# Package_4: Control_Mix 
 In this package e combined the optical flow and fiducial markers algorithms together so that the robot can switch to optical-flow-based navigation as a backup option whenever fiducial landmarks are not visible.
 
 
