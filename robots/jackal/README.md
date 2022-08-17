@@ -47,10 +47,12 @@ To test in Gazebo, custom worlds where created the resemble the environment bein
  To do add pictures of dif worlds
  
 ## Performance can be affected by lighting 
- Todo add  videos
- 
+
+https://user-images.githubusercontent.com/98136555/185210652-f371b74c-7054-4f63-95b3-365b9713b741.mp4
+
 ## Building up custom gazebo worlds by using wall segments
- Todo add tutorial videos
+
+https://user-images.githubusercontent.com/98136555/185213284-8d2cfa97-f4ec-4a5c-a24f-7408b699c902.mp4
 
 ## Demo
  in simulation and real environment
