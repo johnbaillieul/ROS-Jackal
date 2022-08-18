@@ -1,6 +1,6 @@
 <?xml version='1_0'?>
 <sdf version="1.5">
-  <model name="boxes_corridor model">
+  <model name="boxes_1 model">
     <pose>0 0 0 0 0 1.57079633</pose>
     <static>true</static>
     <!-- 1st row -->
@@ -17,7 +17,7 @@
         <pose>0 0 1.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_1/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -36,7 +36,7 @@
         <pose>0 0 0.75 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_1/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>

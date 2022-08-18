@@ -5,7 +5,7 @@
         <arg name="debug" default="false" />
         <arg name="gui" default="true" />
         <arg name="pause" default="false" />
-        <arg name="world" default="$(find vision_based_navigation_ttt)/GazeboWorlds/realsitic_world_succ.world" />
+        <arg name="world" default="$(find vision_based_navigation_ttt)/GazeboWorlds/L_corridor_2m_width.world" />
         <arg name="extra_gazebo_args" default="--verbose"/>
 
         <!-- include gazebo_ros launcher -->

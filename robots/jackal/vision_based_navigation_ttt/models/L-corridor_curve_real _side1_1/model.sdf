@@ -17,7 +17,7 @@
         <pose>0 0 0.18 0 0 3.14</pose>
         <geometry>
             <mesh>
-              <uri>model://L-corridor_curve_real/meshes/exact_blue_circle_border.dae</uri>
+              <uri>model://L-corridor_curve_real_side1_1/meshes/exact_blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -36,7 +36,7 @@
         <pose>0 0 0.54 0 0 3.14</pose>
         <geometry>
             <mesh>
-              <uri>model://L-corridor_curve_real/meshes/exact_red_circle_border.dae</uri>
+              <uri>model://L-corridor_curve_real_side1_1/meshes/exact_red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -55,7 +55,7 @@
         <pose>0 0 0.9 0 0 3.14</pose>
         <geometry>
             <mesh>
-              <uri>model://L-corridor_curve_real/meshes/exact_green_circle_border.dae</uri>
+              <uri>model://L-corridor_curve_real_side1_1/meshes/exact_green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -74,7 +74,7 @@
         <pose>0 0.465 0.54 0 0 3.14</pose>
         <geometry>
             <mesh>
-              <uri>model://L-corridor_curve_real/meshes/exact_blue_circle_border.dae</uri>
+              <uri>model://L-corridor_curve_real_side1_1/meshes/exact_blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -93,7 +93,7 @@
         <pose>0 0.465 0.9 0 0 3.14</pose>
         <geometry>
             <mesh>
-              <uri>model://L-corridor_curve_real/meshes/exact_red_circle_border.dae</uri>
+              <uri>model://L-corridor_curve_real_side1_1/meshes/exact_red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -112,7 +112,7 @@
         <pose>0 0.465 0.18 0 0 3.14</pose>
         <geometry>
             <mesh>
-              <uri>model://L-corridor_curve_real/meshes/exact_green_circle_border.dae</uri>
+              <uri>model://L-corridor_curve_real_side1_1/meshes/exact_green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -131,7 +131,7 @@
         <pose>0 0.93 0.9 0 0 3.14</pose>
         <geometry>
             <mesh>
-              <uri>model://L-corridor_curve_real/meshes/exact_blue_circle_border.dae</uri>
+              <uri>model://L-corridor_curve_real_side1_1/meshes/exact_blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -150,7 +150,7 @@
         <pose>0 0.93 0.18 0 0 3.14</pose>
         <geometry>
             <mesh>
-              <uri>model://L-corridor_curve_real/meshes/exact_red_circle_border.dae</uri>
+              <uri>model://L-corridor_curve_real_side1_1/meshes/exact_red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -169,7 +169,7 @@
         <pose>0 0.93 0.54 0 0 3.14</pose>
         <geometry>
             <mesh>
-              <uri>model://L-corridor_curve_real/meshes/exact_green_circle_border.dae</uri>
+              <uri>model://L-corridor_curve_real_side1_1/meshes/exact_green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -189,7 +189,7 @@
         <pose>0 1.395 0.18 0 0 3.14</pose>
         <geometry>
             <mesh>
-              <uri>model://L-corridor_curve_real/meshes/exact_blue_circle_border.dae</uri>
+              <uri>model://L-corridor_curve_real_side1_1/meshes/exact_blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -208,7 +208,7 @@
         <pose>0 1.395 0.54 0 0 3.14</pose>
         <geometry>
             <mesh>
-              <uri>model://L-corridor_curve_real/meshes/exact_red_circle_border.dae</uri>
+              <uri>model://L-corridor_curve_real_side1_1/meshes/exact_red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -227,7 +227,7 @@
         <pose>0 1.395 0.9 0 0 3.14</pose>
         <geometry>
             <mesh>
-              <uri>model://L-corridor_curve_real/meshes/exact_green_circle_border.dae</uri>
+              <uri>model://L-corridor_curve_real_side1_1/meshes/exact_green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -246,7 +246,7 @@
         <pose>0 1.86 0.54 0 0 3.14</pose>
         <geometry>
             <mesh>
-              <uri>model://L-corridor_curve_real/meshes/exact_blue_circle_border.dae</uri>
+              <uri>model://L-corridor_curve_real_side1_1/meshes/exact_blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -265,7 +265,7 @@
         <pose>0 1.86 0.9 0 0 3.14</pose>
         <geometry>
             <mesh>
-              <uri>model://L-corridor_curve_real/meshes/exact_red_circle_border.dae</uri>
+              <uri>model://L-corridor_curve_real_side1_1/meshes/exact_red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -284,7 +284,7 @@
         <pose>0 1.86 0.18 0 0 3.14</pose>
         <geometry>
             <mesh>
-              <uri>model://L-corridor_curve_real/meshes/exact_green_circle_border.dae</uri>
+              <uri>model://L-corridor_curve_real_side1_1/meshes/exact_green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -303,7 +303,7 @@
         <pose>0 2.325 0.9 0 0 3.14</pose>
         <geometry>
             <mesh>
-              <uri>model://L-corridor_curve_real/meshes/exact_blue_circle_border.dae</uri>
+              <uri>model://L-corridor_curve_real_side1_1/meshes/exact_blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -322,7 +322,7 @@
         <pose>0 2.325 0.18 0 0 3.14</pose>
         <geometry>
             <mesh>
-              <uri>model://L-corridor_curve_real/meshes/exact_red_circle_border.dae</uri>
+              <uri>model://L-corridor_curve_real_side1_1/meshes/exact_red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -341,7 +341,7 @@
         <pose>0 2.325 0.54 0 0 3.14</pose>
         <geometry>
             <mesh>
-              <uri>model://L-corridor_curve_real/meshes/exact_green_circle_border.dae</uri>
+              <uri>model://L-corridor_curve_real_side1_1/meshes/exact_green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>

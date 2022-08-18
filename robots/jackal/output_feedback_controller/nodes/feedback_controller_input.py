@@ -60,8 +60,6 @@ class Feedback_2D_Input:
     #         self.position_landmark_inworld_matrix[id] = result.pose
     #     print(self.position_landmark_inworld_matrix)
 
-   
-
     def odom_callback(self,msg):
         # just to compare
         if msg:

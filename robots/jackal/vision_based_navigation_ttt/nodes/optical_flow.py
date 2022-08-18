@@ -27,7 +27,6 @@ y_end_r = 0
 x_init_r = 0
 y_init_r = 0
 
-
 def set_limit(img_width, img_height):
 
     # Extreme left and extreme right
@@ -75,7 +74,7 @@ def draw_optical_flow_field(gray_image, points_old, points_new, flow, dt):
         x_init = points_old[i, 0]
         y_init = points_old[i, 1]
 
-	x_end = points_new[i, 0]
+        x_end = points_new[i, 0]
         y_end = points_new[i, 1]
 
 
@@ -97,7 +96,7 @@ class OFCalculator:
         ########## IMPORTANT PARAMETERS: ##########
     	self.image_sub_name = "/realsense/color/image_raw"
     	self.num_ext_features = 250 
-    	self.num_cen_features = 100
+    	self.num_cen_features = 100 
     	self.min_feat_threshold = 1.0
     	###########################################
         # Initialize Image acquisition

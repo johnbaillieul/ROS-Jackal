@@ -40,7 +40,7 @@ y_end_c = 0
 
 # Definition of the limits for the ROIs
 def set_limit(img_width, img_height):
-    
+
     ########## IMPORTANT PARAMETERS: ##########
     # Extreme left and extreme right
     global x_init_el
@@ -122,7 +122,7 @@ def tau_final_value(self, vector, cnt):
 def draw_image_segmentation(curr_image, tau_el, tau_er, tau_l, tau_r, tau_c):
 
     color_image = cv2.cvtColor(curr_image, cv2.COLOR_GRAY2BGR)
-    color_blue = [255, 0, 0]  
+    color_blue = [255, 255, 0]  
     color_green = [0, 255, 0]
     color_red = [0, 0, 255]
     linewidth = 3
@@ -132,9 +132,9 @@ def draw_image_segmentation(curr_image, tau_el, tau_er, tau_l, tau_r, tau_c):
     cv2.rectangle(color_image, (x_init_el, y_init_el), (x_end_el, y_end_el), color_blue, linewidth)
     cv2.rectangle(color_image, (x_init_er, y_init_er), (x_end_er, y_end_er), color_blue, linewidth)
     cv2.putText(color_image, str(round(tau_el, 1)), (int((x_end_el+x_init_el)/2.5), int((y_end_el+y_init_el)/2)),
-                font, 1, (255, 0, 0), 2, cv2.LINE_AA)
+                font, 1, (255, 255, 0), 2, cv2.LINE_AA)
     cv2.putText(color_image, str(round(tau_er, 1)), (int((x_end_er+x_init_er) / 2.1), int((y_end_er+y_init_er) / 2)),
-                font, 1, (255, 0, 0), 2, cv2.LINE_AA)
+                font, 1, (255, 255, 0), 2, cv2.LINE_AA)
 
     # Left and right
     cv2.rectangle(color_image, (x_init_l, y_init_l), (x_end_l, y_end_l), color_green, linewidth)
@@ -248,6 +248,8 @@ class TauComputationClass:
                                      (x[i] ** 2 + y[i] ** 2) ** 0.5 / (data.vx[i] ** 2 + data.vy[i] ** 2) ** 0.5)
                 count_centre += 1
 
+        print('count_left', count_left, 'count_right', count_right)
+        
         # Filtering TTT values for each ROI
         # Extreme right and left
         tau_right_e = tau_filtering(tau_right_e)

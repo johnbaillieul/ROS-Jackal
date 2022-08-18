@@ -17,7 +17,7 @@
         <pose>-1 0 1.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -36,7 +36,7 @@
         <pose>-1 0 0.75 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -55,7 +55,7 @@
         <pose>-1 0 0.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -76,7 +76,7 @@
         <pose>-1 0.75 0.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -95,7 +95,7 @@
         <pose>-1 0.75 1.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -114,7 +114,7 @@
         <pose>-1 0.75 0.75 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -135,7 +135,7 @@
         <pose>-1 1.5 0.75 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -154,7 +154,7 @@
         <pose>-1 1.5 0.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -173,7 +173,7 @@
         <pose>-1 1.5 1.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -194,7 +194,7 @@
         <pose>-1 2.25 1.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -213,7 +213,7 @@
         <pose>-1 2.25 0.75 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -232,7 +232,7 @@
         <pose>-1 2.25 0.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -253,7 +253,7 @@
         <pose>-1 3 0.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -272,7 +272,7 @@
         <pose>-1 3 1.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -291,7 +291,7 @@
         <pose>-1 3 0.75 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -312,7 +312,7 @@
         <pose>-1 3.75 0.75 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -331,7 +331,7 @@
         <pose>-1 3.75 0.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -350,7 +350,7 @@
         <pose>-1 3.75 1.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -370,7 +370,7 @@
         <pose>-1 4.5 1.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -389,7 +389,7 @@
         <pose>-1 4.5 0.75 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -408,7 +408,7 @@
         <pose>-1 4.5 0.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -429,7 +429,7 @@
         <pose>-1 5.25 0.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -448,7 +448,7 @@
         <pose>-1 5.25 1.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -467,7 +467,7 @@
         <pose>-1 5.25 0.75 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -488,7 +488,7 @@
         <pose>-1 6 0.75 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -507,7 +507,7 @@
         <pose>-1 6 0.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -526,7 +526,7 @@
         <pose>-1 6 1.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -547,7 +547,7 @@
         <pose>-1 6.75 1.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -566,7 +566,7 @@
         <pose>-1 6.75 0.75 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -585,7 +585,7 @@
         <pose>-1 6.75 0.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -606,7 +606,7 @@
         <pose>-1 7.5 0.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -625,7 +625,7 @@
         <pose>-1 7.5 1.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -644,7 +644,7 @@
         <pose>-1 7.5 0.75 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -665,7 +665,7 @@
         <pose>-1 8.25 0.75 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -684,7 +684,7 @@
         <pose>-1 8.25 0.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -703,7 +703,7 @@
         <pose>-1 8.25 1.25 0 0 1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -903,7 +903,7 @@
         <pose>1 0 1.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -922,7 +922,7 @@
         <pose>1 0 0.75 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -941,7 +941,7 @@
         <pose>1 0 0.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -962,7 +962,7 @@
         <pose>1 0.75 0.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -981,7 +981,7 @@
         <pose>1 0.75 1.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1000,7 +1000,7 @@
         <pose>1 0.75 0.75 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1021,7 +1021,7 @@
         <pose>1 1.5 0.75 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1040,7 +1040,7 @@
         <pose>1 1.5 0.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1059,7 +1059,7 @@
         <pose>1 1.5 1.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1080,7 +1080,7 @@
         <pose>1 2.25 1.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1099,7 +1099,7 @@
         <pose>1 2.25 0.75 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1118,7 +1118,7 @@
         <pose>1 2.25 0.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1139,7 +1139,7 @@
         <pose>1 3 0.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1158,7 +1158,7 @@
         <pose>1 3 1.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1177,7 +1177,7 @@
         <pose>1 3 0.75 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1198,7 +1198,7 @@
         <pose>1 3.75 0.75 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1217,7 +1217,7 @@
         <pose>1 3.75 0.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1236,7 +1236,7 @@
         <pose>1 3.75 1.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1256,7 +1256,7 @@
         <pose>1 4.5 1.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1275,7 +1275,7 @@
         <pose>1 4.5 0.75 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1294,7 +1294,7 @@
         <pose>1 4.5 0.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1315,7 +1315,7 @@
         <pose>1 5.25 0.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1334,7 +1334,7 @@
         <pose>1 5.25 1.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1353,7 +1353,7 @@
         <pose>1 5.25 0.75 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1374,7 +1374,7 @@
         <pose>1 6 0.75 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1393,7 +1393,7 @@
         <pose>1 6 0.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1412,7 +1412,7 @@
         <pose>1 6 1.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1433,7 +1433,7 @@
         <pose>1 6.75 1.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1452,7 +1452,7 @@
         <pose>1 6.75 0.75 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1471,7 +1471,7 @@
         <pose>1 6.75 0.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1492,7 +1492,7 @@
         <pose>1 7.5 0.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1511,7 +1511,7 @@
         <pose>1 7.5 1.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1530,7 +1530,7 @@
         <pose>1 7.5 0.75 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1551,7 +1551,7 @@
         <pose>1 8.25 0.75 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/blue_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/blue_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1570,7 +1570,7 @@
         <pose>1 8.25 0.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/red_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/red_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
@@ -1589,7 +1589,7 @@
         <pose>1 8.25 1.25 0 0 -1.57079633</pose>
         <geometry>
             <mesh>
-              <uri>model://boxes_corridor/meshes/green_circle_border.dae</uri>
+              <uri>model://boxes_Lcorridor/meshes/green_circle_border.dae</uri>
             </mesh>
         </geometry>
       </visual>
