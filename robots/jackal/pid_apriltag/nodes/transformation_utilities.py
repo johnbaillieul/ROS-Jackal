@@ -74,9 +74,10 @@ def twist_to_tse3(msg):
 
     return np.block([[w,p.reshape((-1,1))],[0,0,0,1]])
 
+
 def transform_stamped_to_pq(msg):
-    """
-    Convert a C{geometry_msgs/TransformStamped} into position/quaternion np arrays
+    """Convert a C{geometry_msgs/TransformStamped} into position/quaternion np arrays
+
     @param msg: ROS message to be converted
     @return:
       - p: position as a np.array
@@ -84,9 +85,10 @@ def transform_stamped_to_pq(msg):
     """
     return transform_to_pq(msg.transform)
 
+
 def msg_to_se3(msg):
-    """
-    Conversion from geometric ROS messages into SE(3)
+    """Conversion from geometric ROS messages into SE(3)
+
     @param msg: Message to transform. Acceptable types - C{geometry_msgs/Pose}, C{geometry_msgs/PoseStamped},
     C{geometry_msgs/Transform}, or C{geometry_msgs/TransformStamped}
     @return: a 4x4 SE(3) matrix as a numpy array

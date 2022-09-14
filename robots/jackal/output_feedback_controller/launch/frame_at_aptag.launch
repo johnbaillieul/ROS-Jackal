@@ -30,7 +30,7 @@
        
 
         <!--<node name="ap_tag" pkg="output_feedback_controller" type="detec.py" output="screen"/> -->
-        <node name="image_proc" pkg="image_proc" type="image_proc" ns="realsense/color"/>
+        <!-- <node name="image_proc" pkg="image_proc" type="image_proc" ns="realsense/color"/> -->
         
         <include file="$(find apriltag_ros)/launch/continuous_detection.launch">
                 <arg name="camera_frame" value="front_realsense_gazebo"/>   

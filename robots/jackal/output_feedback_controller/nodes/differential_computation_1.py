@@ -25,33 +25,21 @@ class Input_Differential:
         self.aptag_transf = None
         self.selected_id = None
         self.u_input = None
-        self.used_apriltags = [0,1,2,3,4,5,6,7,8,9,10,11] # add the apriltag ids that you used
-        self.position_landmark_inworld_matrix = {}
-        
-    # def get_rot_matrix_aptags(self):
-    #     rospy.wait_for_service('/gazebo/get_model_state')
-    #     get_model_srv = rospy.ServiceProxy('/gazebo/get_model_state',GetModelState)
-    #     model = GetModelStateRequest()
-    #     for id in self.used_apriltags:
-    #         model.model_name = 'apriltag'+str(id)
-    #         result = get_model_srv(model)
-    #         # print('id',id,result.pose.position)
-    #         self.position_landmark_inworld_matrix[id] = tu.msg_to_se3(result.pose)
-    #     print(self.position_landmark_inworld_matrix)
-
-    def get_rot_matrix_aptags(self):
-        rospy.wait_for_service('/gazebo/get_model_state')
-        get_model_srv = rospy.ServiceProxy('/gazebo/get_model_state',GetModelState)
-        model = GetModelStateRequest()
-        model.model_name = 'apriltag1'
-        model.relative_entity_name = 'unit_box'
-        result = get_model_srv(model)
-        result_trans = tu.msg_to_se3(result.pose)
-        result_trans[3,2] = result_trans[3,2] + 0.5
-        print('id',id,result.pose.position)
-        print('getmodel',result_trans)
-        # print(self.position_landmark_inworld_matrix)
-        
+        self.position_landmark_inworld_matrix = {0:np.array([[0,1,0,1.8907],[-1,0,0,5.27535],[0,0,1,0.5],[0,0,0,1]]),
+                                                 1:np.array([[-1,0,0,7.3294],[0,-1,0,2.79793],[0,0,1,0.5],[0,0,0,1]]),
+                                                 2:np.array([[-1,0,0,6.69073],[0,-1,0,-3.370437],[0,0,1,0.5],[0,0,0,1]]),
+                                                 3:np.array([[0,-1,0,-3.1056],[1,0,0,-8.2912],[0,0,1,0.5],[0,0,0,1]]),
+                                                 4:np.array([[1,0,0,-7.6986],[0,1,0,-2.903],[0,0,1,0.5],[0,0,0,1]]),
+                                                 5:np.array([[0,1,0,-4.86078],[-1,0,0,4.4972443],[0,0,1,0.5],[0,0,0,1]]),
+                                                 6:np.array([[0,-1,0,1.398419],[1,0,0,2.0676999],[0,0,1,0.5],[0,0,0,1]]),
+                                                 7:np.array([[1,0,0,3.3571999],[0,1,0,0.91013699],[0,0,1,0.5],[0,0,0,1]]),
+                                                 8:np.array([[1,0,0,2.6263],[0,1,0,-2.40406966],[0,0,1,0.5],[0,0,0,1]]),
+                                                 9:np.array([[0,1,0,-1.81357],[-1,0,0,-4.57658],[0,0,1,0.5],[0,0,0,1]]),
+                                                 10:np.array([[-1,0,0, -3.99669],[0,-1,0,-2.11309],[0,0,1,0.5],[0,0,0,1]]),
+                                                 11:np.array([[-1,0,0,-2.8471093],[0,-1,0,0.9576727],[0,0,1,0.5],[0,0,0,1]]),
+   
+        }
+        self.prev_vel  = None
     def apriltag_callback(self,msg):
         if msg.detections:
             # '''If there's an AprilTag in the image'''
@@ -100,28 +88,29 @@ class Input_Differential:
             if linear_velocity < 0: 
                 linear_velocity = 0
                 angular_velocity = beta*np.cross(ori,self.u_input/np.linalg.norm(self.u_input))[2]
-
+                
             else:
-                self.pub_linear_vel.publish(linear_velocity)
                 angular_velocity = beta*np.cross(ori,self.u_input/np.linalg.norm(self.u_input))[2]
 
             self.vel.linear.x = linear_velocity/np.linalg.norm(self.u_input)
             self.vel.angular.z = angular_velocity 
+           
             # print('linear',self.vel.linear.x)
             # print('angular',angular_velocity)
             print('reached')
             self.pub_vel.publish(self.vel)
+            self.prev_vel = self.vel
+        elif self.prev_vel is not None:
+            self.pub_vel.publish(self.prev_vel)
+            rospy.logwarn("Publishing old control cause there is no apriltag detected")
+        
             
 
 ## Get the orientation from different apriltags this only gets from the closest one
     def robot_pose(self,aptag_transf,selected_id):                           
-        # orientation from landmark locations
-        # print('1',self.position_landmark_inworld_matrix)
-        # print("2",selected_id)
-        # print('3',self.position_landmark_inworld_matrix[selected_id])
-        # print('4',aptag_transf)
         ori_ldmark = np.dot(self.position_landmark_inworld_matrix[selected_id][:3,:3], \
             (aptag_transf[:3,:3]).T)
+        print('ori',ori_ldmark)
         # print('state', ori_ldmark)
         ori_ldmark = ori_ldmark[:3,0].flatten()
         ori_ldmark[2] = 0
@@ -135,7 +124,7 @@ if __name__ == "__main__":
 
     #  jackal = Jackal(K_gains)
     jackal = Input_Differential()
-    jackal.get_rot_matrix_aptags()
+    # jackal.get_rot_matrix_aptags()
     r = rospy.Rate(10)
     while not rospy.is_shutdown():
         

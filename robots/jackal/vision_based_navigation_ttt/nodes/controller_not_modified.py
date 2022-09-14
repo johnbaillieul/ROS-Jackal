@@ -89,7 +89,7 @@ class Controller:
 		# Time before which the robot must start to turn if there is a corner 
 		self.time_to_turn = 3
 		# Time before which the robot must start to turn if there is an obstacle
-		self.time_to_obstacle = 1
+		self.time_to_obstacle = 2
 		# Initialization input controls
 		self.u = 0
 		self.u_e = 0
@@ -101,20 +101,12 @@ class Controller:
 		self.input_vector = np.array([])
 		self.input_vector_extreme = np.array([])
 		self.tau_center_values = np.array([])
-		# Initialization arrays of coordinates values for each ROI during sense phase
-		self.final_proj_right_e = np.array([])
-		self.final_proj_left_e = np.array([])
-		self.final_proj_right = np.array([])
-		self.final_proj_left = np.array([])
 		# Initialization average TTT values for each ROI during sense phase
 		self.mean_tau_er = 0
 		self.mean_tau_el = 0
 		self.mean_tau_r = 0
 		self.mean_tau_l = 0
 		self.mean_tau_center = 0
-
-		self.mean_proj_x_el = 0
-		self.mean_proj_x_er = 0
 
 		# Single wall strategy
 		self.tau_diff_max = True
@@ -176,24 +168,7 @@ class Controller:
 				final_tau_right = data.tau_r
 				final_tau_left = data.tau_l
 				final_tau_center = data.tau_c
-				if data.mean_proj_x_left_e == 100.0:
-					proj_x_left_e = None
-				else:
-					proj_x_left_e = data.mean_proj_x_left_e  
-				if data.mean_proj_x_right_e == 100.0:
-					proj_x_right_e = None
-				else:
-					proj_x_right_e = data.mean_proj_x_right_e
-				if data.mean_proj_x_left == 100.0:
-					proj_x_left = None
-				else:
-					proj_x_left = data.mean_proj_x_left  
-				if data.mean_proj_x_right == 100.0:
-					proj_x_right = None
-				else:
-					proj_x_right = data.mean_proj_x_right
-				
-				
+
 				# Tau vector for every ROI
 				if final_tau_right_e >= 0:
 					self.final_right_e = np.append(self.final_right_e, final_tau_right_e)
@@ -205,22 +180,12 @@ class Controller:
 					self.final_left = np.append(self.final_left, final_tau_left)
 				if final_tau_center >= 0:
 					self.tau_center_values = np.append(self.tau_center_values, final_tau_center)
-				
-				if proj_x_left_e is not None:
-					self.final_proj_left_e = np.append(self.final_proj_left_e, proj_x_left_e)
-				if proj_x_right_e is not None:
-					self.final_proj_right_e = np.append(self.final_proj_right_e, proj_x_right_e)
-				if proj_x_left is not None:
-					self.final_proj_left = np.append(self.final_proj_left, proj_x_left)
-				if proj_x_right is not None:
-					self.final_proj_right = np.append(self.final_proj_right, proj_x_right)
 
 				self.sense_cnt += 1
 				r_sense.sleep()
 			# Last time in sense phase
 			else:
 				# Computation of the average TTT values of the entire Sense phase for each ROI
-				# print('sself.final_right_e',self.final_right_e)
 				tau_er_considered = self.final_right_e[int(self.percentage * np.size(self.final_right_e)):
 													   np.size(self.final_right_e)]
 				if np.size(tau_er_considered) > 0:
@@ -228,10 +193,8 @@ class Controller:
 				else:
 					self.extreme_right = False # no TTT value in that ROI
 
-				# print('sself.final_lefte',self.final_left_e)
 				tau_el_considered = self.final_left_e[int(self.percentage * np.size(self.final_left_e)):
 													  np.size(self.final_left_e)]
-				# print('tau_el_considered',tau_el_considered)
 				if np.size(tau_el_considered) > 0:
 					self.mean_tau_el = np.sum(tau_el_considered) / np.size(tau_el_considered)
 				else:
@@ -257,46 +220,7 @@ class Controller:
 					self.mean_tau_center = np.sum(tau_center_considered) / np.size(tau_center_considered)
 				else:
 					self.center = False
-##################################################################################################
-	##### To calculate the mean of the projected optical flows
-				# print('self.final_proj_right_e',self.final_proj_right_e)
-				proj_x_er_considered = self.final_proj_right_e[int(self.percentage * np.size(self.final_proj_right_e)):]
-				# print("proj_x_er_considered",proj_x_er_considered)
-				if np.size(proj_x_er_considered) > 0:
-					self.mean_proj_x_er = np.mean(proj_x_er_considered)
-					print("mean_proj_x_er",self.mean_proj_x_er)
-				else:
-					self.proj_extreme_right = False # no TTT value in that ROI
-					self.mean_proj_x_er = 0
 
-				proj_x_el_considered = self.final_proj_left_e[int(self.percentage * np.size(self.final_proj_left_e)):]
-				print("proj_x_el_considered",proj_x_el_considered)
-				if np.size(proj_x_el_considered) > 0:
-					self.mean_proj_x_el = np.mean(proj_x_el_considered)
-					print("mean_proj_x_el",self.mean_proj_x_el)
-				else:
-					self.proj_extreme_left = False
-					self.mean_proj_x_el = 0
-
-				proj_x_r_considered = self.final_proj_right[int(self.percentage * np.size(self.final_proj_right)):]
-				if np.size(proj_x_r_considered) > 0:
-					self.mean_proj_x_r = np.mean(proj_x_r_considered)
-				else:
-					self.proj_right = False
-					self.mean_proj_x_r = 0
-
-				proj_x_l_considered = self.final_proj_left[int(self.percentage * np.size(self.final_proj_left)):]
-				if np.size(proj_x_l_considered) > 0:
-					self.mean_proj_x_l = np.mean(proj_x_l_considered)
-				else:
-					self.proj_left = False
-					self.mean_proj_x_l = 0
-
-				print(" **** mean_proj_x_er : ", self.mean_proj_x_er)
-				print(" **** mean_proj_x_el : ", self.mean_proj_x_el)
-				# print(" **** mean_proj_x_r : ", self.mean_proj_x_r)
-				# print(" **** mean_proj_x_l : ", self.mean_proj_x_l)
-#####################################################################################
 				perceive(self)
 
 				if self.first_sense:
@@ -317,22 +241,15 @@ class Controller:
 				self.dist_from_wall_r = self.mean_tau_r
 				self.dist_from_wall_l = self.mean_tau_l
 
-				# Re-initialization for the sense variables tau values
+				# Re-initialization for the sense variables
 				self.final_right_e = np.array([])
 				self.final_left_e = np.array([])
 				self.final_right = np.array([])
 				self.final_left = np.array([])
 				self.tau_center_values = np.array([])
-
-				# Re-initialization for the sense variables x_proj
-				self.final_proj_right_e = np.array([])
-				self.final_proj_left_e = np.array([])
-				self.final_proj_right = np.array([])
-				self.final_proj_left = np.array([])
-
 				self.sense_cnt = 0
 				# Definition of the duration of acting phase
-				self.act_duration = 0.03
+				self.act_duration = 0.02
 
 				self.double_act_action = True
 				self.act = True
@@ -362,10 +279,6 @@ class Controller:
 				self.tau_diff_max = True
 
 				# If both extreme ROIs has an average TTT values ---> use tau_balancing
-				# print("SIGN MEAN_PROJ_X_EL :", np.sign(self.mean_proj_x_el))
-				# print("SIGN MEAN_PROJ_X_ER :", np.sign(self.mean_proj_x_er))
-
-				# If both extreme ROIs has an average TTT values ---> use tau_balancing
 				if self.extreme_left and self.extreme_right:
 					control_e = self.tau_diff_extreme
 					self.tau_diff_max = False
@@ -373,14 +286,14 @@ class Controller:
 				if self.left and self.right:
 					control_m = self.tau_diff
 					self.tau_diff_max = False
-					
+
+				# If tau balancing must be used
 				if not self.tau_diff_max:
-					print('here')
 					if self.obstacle:
 						find_obstacle(self, self.mean_tau_center, self.time_to_obstacle)	# The obstacle is at 2 second?
 						if self.extreme_left and self.extreme_right:
 							if self.obstacle and (abs(self.tau_diff_extreme) < 0.5):	  # The obstacle is an object
-																						# in the middle of the path
+																						  # in the middle of the path
 								self.kp_e = 1.4
 								if self.double_act_action:
 									self.double_act_action = False
@@ -394,7 +307,7 @@ class Controller:
 									print('\033[1m' + "Obstacle! Go right" + '\033[0m')
 									print("Control: " + str(control))
 							else:														 # The obstacle is a wall
-																						# belonging to a turn
+																						  # belonging to a turn
 								self.kp = 1
 								self.kp_e = 1.3
 								control = self.kp_e * control_e + self.kp * control_m
@@ -442,139 +355,6 @@ class Controller:
 					self.first_tdm_r = True
 					self.first_tdm_l = True
 
-				##########################################################################################
-				### Case 1: no info from extreme right and right
-				if self.mean_proj_x_el is None and self.mean_proj_x_l is None and self.mean_proj_x_er > 5:
-					print("**** SINGLE WALL STRATEGY ON E_RIGHT 1 ****") 
-					# follow single wall st on right
-					self.kp = 1
-					print('\033[1m'+"Single wall strategy on right"+'\033[0m')
-					if self.first_tdm_r:
-						self.first_tdm_r = False
-						self.first_tdm_l = True
-						self.actual_wall_distance = self.dist_from_wall_r + self.safe_dist
-						self.actual_wall_distance_e = self.dist_from_wall_er + self.safe_dist
-						self.actual_wall_distance = 1
-						self.actual_wall_distance_e = 1
-					control = -self.kp * (self.mean_tau_er - self.actual_wall_distance_e)
-					print("actual distance: " + str(self.actual_wall_distance_e))
-					print("control: " + str(control))
-
-				elif self.mean_proj_x_el is None and self.mean_proj_x_l is None and self.mean_proj_x_r > 5:
-					print("**** SINGLE WALL STRATEGY ON RIGHT 2 ****") 
-					# follow single wall st on right
-					self.kp = 1
-					print('\033[1m'+"Single wall strategy on right"+'\033[0m')
-					if self.first_tdm_r:
-						self.first_tdm_r = False
-						self.first_tdm_l = True
-						self.actual_wall_distance = self.dist_from_wall_r + self.safe_dist
-						self.actual_wall_distance_e = self.dist_from_wall_er + self.safe_dist
-						self.actual_wall_distance = 1
-						self.actual_wall_distance_e = 1
-					control = -self.kp * (self.mean_tau_r - self.actual_wall_distance)
-					print("actual distance: " + str(self.actual_wall_distance))
-					print("control: " + str(control))
-					
-				### Case 2: no info from extreme left and left
-				elif self.mean_proj_x_er is None and self.mean_proj_x_r is None and self.mean_proj_x_el > 5:
-					print("**** SINGLE WALL STRATEGY ON E_LEFT 3 ****") 
-					# follow single wall st on left
-					self.kp = 1
-					if self.first_tdm_l:
-						self.first_tdm_l = False
-						self.first_tdm_r = True
-						self.actual_wall_distance = self.dist_from_wall_l + self.safe_dist
-						self.actual_wall_distance_e = self.dist_from_wall_el + self.safe_dist
-						self.actual_wall_distance = 1
-						self.actual_wall_distance_e = 1
-					print('\033[1m'+"Single wall strategy on extreme left"+'\033[0m')
-					control = self.kp * (self.mean_tau_el - self.actual_wall_distance_e)
-					print("actual distance: " + str(self.actual_wall_distance_e))
-					print("control: " + str(control))
-
-				elif self.mean_proj_x_er is None and self.mean_proj_x_r is None and self.mean_proj_x_l> 5:
-					print("**** SINGLE WALL STRATEGY ON LEFT 4 ****") 
-					# follow single wall st on left
-					self.kp = 1
-					if self.first_tdm_l:
-						self.first_tdm_l = False
-						self.first_tdm_r = True
-						self.actual_wall_distance = self.dist_from_wall_l + self.safe_dist
-						self.actual_wall_distance_e = self.dist_from_wall_el + self.safe_dist
-						self.actual_wall_distance = 1
-						self.actual_wall_distance_e = 1
-					print('\033[1m'+"Single wall strategy on left"+'\033[0m')
-					control = self.kp * (self.mean_tau_l - self.actual_wall_distance)
-					print("actual distance: " + str(self.actual_wall_distance))
-					print("control: " + str(control))
-					
-				### Case extreme left and right have same sign and a value greater than 5
-				elif np.sign(self.mean_proj_x_el) == np.sign(self.mean_proj_x_er) and np.sign(self.mean_proj_x_el) > 0:
-					# should go right
-					print("**** SINGLE WALL STRATEGY ON E_LEFT  5 ****")
-					self.kp = 1
-					print('\033[1m'+"Single wall strategy on left"+'\033[0m')
-					if self.first_tdm_l:
-						self.first_tdm_l = False
-						self.first_tdm_r = True
-						self.actual_wall_distance = self.dist_from_wall_l + self.safe_dist
-						self.actual_wall_distance_e = self.dist_from_wall_el + self.safe_dist
-						self.actual_wall_distance = 1
-						self.actual_wall_distance_e = 1
-					control = self.kp * (self.mean_tau_el - self.actual_wall_distance_e)
-					print("actual distance: " + str(self.actual_wall_distance_e))
-					print("control: " + str(control))
-				elif np.sign(self.mean_proj_x_el) == np.sign(self.mean_proj_x_er) and np.sign(self.mean_proj_x_el) < 0:
-					print("**** SINGLE WALL STRATEGY ON E_RIGHT 6 ****") 
-					# follow single wall st on right
-					self.kp = 1
-					print('\033[1m'+"Single wall strategy on right"+'\033[0m')
-					if self.first_tdm_r:
-						self.first_tdm_r = False
-						self.first_tdm_l = True
-						self.actual_wall_distance = self.dist_from_wall_r + self.safe_dist
-						self.actual_wall_distance_e = self.dist_from_wall_er + self.safe_dist
-						self.actual_wall_distance = 1
-						self.actual_wall_distance_e = 1
-					control = -self.kp * (self.mean_tau_er - self.actual_wall_distance_e)
-					print("actual distance: " + str(self.actual_wall_distance_e))
-					print("control: " + str(control))
-
-				### Case left and right have same sign and a value greater than 5
-				elif np.sign(self.mean_proj_x_l) == np.sign(self.mean_proj_x_r) and np.sign(self.mean_proj_x_l) > 0:
-					# should go right
-					print("**** SINGLE WALL STRATEGY ON LEFT  7 ****")
-					self.kp = 1
-					print('\033[1m'+"Single wall strategy on left"+'\033[0m')
-					if self.first_tdm_l:
-						self.first_tdm_l = False
-						self.first_tdm_r = True
-						self.actual_wall_distance = self.dist_from_wall_l + self.safe_dist
-						self.actual_wall_distance_e = self.dist_from_wall_el + self.safe_dist
-						self.actual_wall_distance = 1
-						self.actual_wall_distance_e = 1
-					control = self.kp * (self.mean_tau_l - self.actual_wall_distance)
-					print("actual distance: " + str(self.actual_wall_distance))
-					print("control: " + str(control))
-				elif np.sign(self.mean_proj_x_l) == np.sign(self.mean_proj_x_r) and np.sign(self.mean_proj_x_l) < 0:
-					print("**** SINGLE WALL STRATEGY ON RIGHT 8 ****") 
-					# follow single wall st on right
-					self.kp = 1
-					print('\033[1m'+"Single wall strategy on right"+'\033[0m')
-					if self.first_tdm_r:
-						self.first_tdm_r = False
-						self.first_tdm_l = True
-						self.actual_wall_distance = self.dist_from_wall_r + self.safe_dist
-						self.actual_wall_distance_e = self.dist_from_wall_er + self.safe_dist
-						self.actual_wall_distance = 1
-						self.actual_wall_distance_e = 1
-					control = -self.kp * (self.mean_tau_r - self.actual_wall_distance)
-					print("actual distance: " + str(self.actual_wall_distance))
-					print("control: " + str(control))
-					
-##############################################################################################
-
 				elif self.extreme_right:   # Only extreme right ROI has a TTT value ---> Single Wall strategy
 					self.kp = 1
 					print('\033[1m'+"Single wall strategy on extreme right"+'\033[0m')
@@ -615,18 +395,18 @@ class Controller:
 					print("actual distance: " + str(self.actual_wall_distance_e))
 					print("control: " + str(control))
 				elif self.left:				 # Only left ROI has a TTT value ---> Single Wall strategy
-						self.kp = 1
-						print('\033[1m'+"Single wall strategy on left"+'\033[0m')
-						if self.first_tdm_l:
-							self.first_tdm_l = False
-							self.first_tdm_r = True
-							self.actual_wall_distance = self.dist_from_wall_l + self.safe_dist
-							self.actual_wall_distance_e = self.dist_from_wall_el + self.safe_dist
-							self.actual_wall_distance = 1
-							self.actual_wall_distance_e = 1
-						control = self.kp * (self.mean_tau_l - self.actual_wall_distance)
-						print("actual distance: " + str(self.actual_wall_distance))
-						print("control: " + str(control))
+					self.kp = 1
+					print('\033[1m'+"Single wall strategy on left"+'\033[0m')
+					if self.first_tdm_l:
+						self.first_tdm_l = False
+						self.first_tdm_r = True
+						self.actual_wall_distance = self.dist_from_wall_l + self.safe_dist
+						self.actual_wall_distance_e = self.dist_from_wall_el + self.safe_dist
+						self.actual_wall_distance = 1
+						self.actual_wall_distance_e = 1
+					control = self.kp * (self.mean_tau_l - self.actual_wall_distance)
+					print("actual distance: " + str(self.actual_wall_distance))
+					print("control: " + str(control))
 
 				# Verify the value of the control action and limit it if needed
 				control = threshold(control, self.max_u)

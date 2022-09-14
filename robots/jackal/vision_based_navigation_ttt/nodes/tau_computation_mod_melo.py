@@ -101,7 +101,6 @@ def tau_filtering(vector):
     vector = np.sort(vector)
     vector = np.delete(vector, range(jump))
     vector = np.delete(vector, range(np.size(vector) - jump, np.size(vector)))
-
     return vector
 
 #############################################################################################
@@ -116,16 +115,13 @@ def tau_final_value(self, vector, cnt):
 
     return mean
 
-# Computation of the weighted least squares TTT
-
-
 ###########################################################################################
 
 # Visual representation of the ROIs with the average TTT values
 def draw_image_segmentation(curr_image, tau_el, tau_er, tau_l, tau_r, tau_c, error_c, error_el, error_er, error_l, error_r):
 
     color_image = cv2.cvtColor(curr_image, cv2.COLOR_GRAY2BGR)
-    color_blue = [255, 0, 0]  
+    color_blue = [255, 255, 0]  
     color_green = [0, 255, 0]
     color_red = [0, 0, 255]
     linewidth = 3
@@ -135,13 +131,13 @@ def draw_image_segmentation(curr_image, tau_el, tau_er, tau_l, tau_r, tau_c, err
     cv2.rectangle(color_image, (x_init_el, y_init_el), (x_end_el, y_end_el), color_blue, linewidth)
     cv2.rectangle(color_image, (x_init_er, y_init_er), (x_end_er, y_end_er), color_blue, linewidth)
     cv2.putText(color_image, str(round(tau_el, 1)), (int((x_end_el+x_init_el)/2.5), int((y_end_el+y_init_el)/2)),
-                font, 1, (255, 0, 0), 2, cv2.LINE_AA)
+                font, 1, (255, 255, 0), 2, cv2.LINE_AA)
     cv2.putText(color_image, str(round(error_el, 1)), (int((x_end_el+x_init_el)/2.5), int((y_end_el+y_init_el)/2)-50),
-                font, 1, (255, 0, 0), 2, cv2.LINE_AA)
+                font, 1, (255, 255, 0), 2, cv2.LINE_AA)
     cv2.putText(color_image, str(round(tau_er, 1)), (int((x_end_er+x_init_er) / 2.1), int((y_end_er+y_init_er) / 2)),
-                font, 1, (255, 0, 0), 2, cv2.LINE_AA)
+                font, 1, (255, 255, 0), 2, cv2.LINE_AA)
     cv2.putText(color_image, str(round(error_er, 1)), (int((x_end_er+x_init_er) / 2.1), int((y_end_er+y_init_er) / 2)-50),
-                font, 1, (255, 0, 0), 2, cv2.LINE_AA)
+                font, 1, (255, 255, 0), 2, cv2.LINE_AA)
 
     # Left and right
     cv2.rectangle(color_image, (x_init_l, y_init_l), (x_end_l, y_end_l), color_green, linewidth)
@@ -204,7 +200,7 @@ class TauComputationClass:
 
     # Callback for the Optical flow topic
     def callback_of(self, data):
-
+        print('data', data)
         img_width = data.width
         img_height = data.height
 

@@ -5,7 +5,7 @@
     <static>true</static>
     <link name="link">
       <collision name="collision">
-	<pose>-0.5 0 0 0 0 0</pose>
+	      <pose>-0.5 0 0 0 0 0</pose>
         <geometry>
           <box>
             <size>1 1 1</size>

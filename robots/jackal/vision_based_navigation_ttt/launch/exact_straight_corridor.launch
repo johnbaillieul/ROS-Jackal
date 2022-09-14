@@ -5,7 +5,7 @@
         <arg name="debug" default="false" />
         <arg name="gui" default="true" />
         <arg name="pause" default="false" />
-        <arg name="world" default="$(find pid_apriltag)/worlds/straight_corridor.world" />
+        <arg name="world" default="$(find vision_based_navigation_ttt)/GazeboWorlds/exact_straight_corridor.world" />
         <arg name="extra_gazebo_args" default="--verbose"/>
 
         <!-- include gazebo_ros launcher -->
@@ -20,29 +20,20 @@
 
         <!-- Configuration of Jackal which you would like to simulate.
         See jackal_description for details. -->
-        
-         <!-- Spawn Jackal-->
-        <include file="$(find pid_apriltag)/launch/spawn_jackal.launch">
-                <arg name="x" value="0" />
-                <arg name="y" value="0" />
-                <arg name="z" value="1.0" />
-                <arg name="yaw" value="1.5" />
-        </include> 
-       
-        <!-- add parameters for pid controller-->
-        <param name="gain/kp" type="double" value="0.2" />
-        <param name="gain/ki" type="double" value="0.03" />
-        <param name="gain/kd" type="double" value="0.01" />
-                        
-        
 
-        <!--<node name="ap_tag" pkg="pid_apriltag" type="detec.py" output="screen"/> -->
-        <node name="image_proc" pkg="image_proc" type="image_proc" ns="realsense/color"/>
-        
-        <include file="$(find apriltag_ros)/launch/continuous_detection.launch">
-                <arg name="camera_frame" value="front_realsense_gazebo"/>   
-        </include>
-        
+         <!-- Spawn Jackal-->
+        <include file="$(find vision_based_navigation_ttt)/launch/spawn_jackal.launch">
+                <arg name="x" value="10" />
+                <arg name="y" value="-1.5" />
+                <arg name="z" value="1.0" />
+                <arg name="yaw" value="-3.15" />
+        </include> 
+
+        <param name="filter_mad" type="bool" value="true" /> <!--set value to true to use median absolute deviation for filtering and 
+        false to use mean filtering-->
+        <!--directly run all three nodes
+        <include file="$(find vision_based_navigation_ttt)/launch/optical_flow_nodes.launch">
+        </include>-->
 </launch>       
 
 

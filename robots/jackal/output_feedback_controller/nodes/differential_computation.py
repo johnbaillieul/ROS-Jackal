@@ -25,32 +25,21 @@ class Input_Differential:
         self.aptag_transf = None
         self.selected_id = None
         self.u_input = None
-        self.used_apriltags = [0,1,2,3,4,5,6,7,8,9,10,11] # add the apriltag ids that you used
-        self.position_landmark_inworld_matrix = {}
-        
-    # def get_rot_matrix_aptags(self):
-    #     rospy.wait_for_service('/gazebo/get_model_state')
-    #     get_model_srv = rospy.ServiceProxy('/gazebo/get_model_state',GetModelState)
-    #     model = GetModelStateRequest()
-    #     for id in self.used_apriltags:
-    #         model.model_name = 'apriltag'+str(id)
-    #         result = get_model_srv(model)
-    #         # print('id',id,result.pose.position)
-    #         self.position_landmark_inworld_matrix[id] = tu.msg_to_se3(result.pose)
-    #     print(self.position_landmark_inworld_matrix)
-
-    def get_rot_matrix_aptags(self):
-        rospy.wait_for_service('/gazebo/get_model_state')
-        get_model_srv = rospy.ServiceProxy('/gazebo/get_model_state',GetModelState)
-        model = GetModelStateRequest()
-        model.model_name = 'apriltag1'
-        model.relative_entity_name = 'unit_box'
-        result = get_model_srv(model)
-        result_trans = tu.msg_to_se3(result.pose)
-        result_trans[3,2] = result_trans[3,2] + 0.5
-        print('id',id,result.pose.position)
-        print('getmodel',result_trans)
-        # print(self.position_landmark_inworld_matrix)
+        self.position_landmark_inworld_matrix = {1:np.array([[1,0,0,-8.3137],[0,1,0,-5.89405],[0,0,1,0.5],[0,0,0,1]]),
+                                            2:np.array([[1,0,0,-8.25174],[0,1,0,-1.70236],[0,0,1,0.5],[0,0,0,1]]),
+                                            3:np.array([[1,0,0,-8.20742],[0,1,0,1.44827],[0,0,1,0.5],[0,0,0,1]]),
+                                            4:np.array([[0,1,0,-5.59215],[-1,0,0,3.13622],[0,0,1,0.5],[0,0,0,1]]),
+                                            5:np.array([[0,1,0,-2.523],[-1,0,0,3.28701],[0,0,1,0.5],[0,0,0,1]]),
+                                            6:np.array([[-1,0,0,1.29401],[0,-1,0,1.90886],[0,0,1,0.5],[0,0,0,1]]),
+                                            7:np.array([[-1,0,0,1.28591],[0,-1,0,-2.18859],[0,0,1,0.5],[0,0,0,1]]),
+                                            8:np.array([[-1,0,0,1.24712],[0,-1,0,-6.21105],[0,0,1,0.5],[0,0,0,1]]),
+                                            9:np.array([[0,-1,0,-2.48163],[1,0,0,-8.77517],[0,0,1,0.5],[0,0,0,1]]), 
+                                            10:np.array([[0,-1,0,-5.67756],[1,0,0,-8.7319],[0,0,1,0.5],[0,0,0,1]]),
+                                            11:np.array([[-1,0,0,-4.03817],[0,-1,0,-5.24104],[0,0,1,0.5],[0,0,0,1]]),
+                                            12:np.array([[-1,0,0,-4.16755],[0,-1,0,-2.12336],[0,0,1,0.5],[0,0,0,1]]),    
+                                            13:np.array([[1,0,0,-2.11855],[0,1,0,-2.11572],[0,0,1,0.5],[0,0,0,1]]),
+                                            14:np.array([[1,0,0,-2.06867],[0,1,0,-4.1917],[0,0,1,0.5],[0,0,0,1]]),
+                                        }
         
     def apriltag_callback(self,msg):
         if msg.detections:
@@ -100,13 +89,13 @@ class Input_Differential:
             if linear_velocity < 0: 
                 linear_velocity = 0
                 angular_velocity = beta*np.cross(ori,self.u_input/np.linalg.norm(self.u_input))[2]
-
+                
             else:
-                self.pub_linear_vel.publish(linear_velocity)
                 angular_velocity = beta*np.cross(ori,self.u_input/np.linalg.norm(self.u_input))[2]
 
             self.vel.linear.x = linear_velocity/np.linalg.norm(self.u_input)
             self.vel.angular.z = angular_velocity 
+           
             # print('linear',self.vel.linear.x)
             # print('angular',angular_velocity)
             print('reached')
@@ -135,7 +124,7 @@ if __name__ == "__main__":
 
     #  jackal = Jackal(K_gains)
     jackal = Input_Differential()
-    jackal.get_rot_matrix_aptags()
+    # jackal.get_rot_matrix_aptags()
     r = rospy.Rate(10)
     while not rospy.is_shutdown():
         
