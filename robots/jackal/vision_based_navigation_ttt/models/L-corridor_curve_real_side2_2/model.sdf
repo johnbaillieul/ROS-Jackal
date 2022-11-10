@@ -23,6 +23,9 @@
         </geometry>
       </visual>
     </link>
+    <gazebo reference="link_18_0">
+      <material>Gazebo/Blue</material>
+    </gazebo>
 
     <link name="link_19_0">
       <collision name="collision_19_0">
