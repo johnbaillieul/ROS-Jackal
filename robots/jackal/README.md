@@ -158,7 +158,17 @@ https://user-images.githubusercontent.com/98136555/185215284-977937bf-bd99-4416-
 https://user-images.githubusercontent.com/98136555/185213284-8d2cfa97-f4ec-4a5c-a24f-7408b699c902.mp4
 
 ## Demo
- in simulation and real environment
+ In simulation and real environment
+ 
+## Machine learning models
+  # The folder called trained_model_parameters contain the parameters of different cnn_models trained.
+  model 2 only takes on image as input and outputs an array with the tau values in each Region of Interest
+  model 3 takes two images along with the velocity and outputs an array with tau values in each Region of Interest
+  model 4 is an updated version of model 3 where the difference is that it uses average pooling instead of max pooling
+  model 5 is an updated version of model 4 where the labels are modified. All the previous models were trained with labels corresponding to a infinity tau_value as -1 however in this model that it changed to 15. And results show that it works better than the other models.
+  model 6 takes two images along with the velocity and outputs two arrays on with the tau values in each Region of Interest and the other array with a flag that shows if the predicited value is valid or not.
+  
+  All of the models are not robust enough to work in environments other than the ones with boxes. One thing to be noted is that white walls are of a problem cause the model so the training data sho
  
 # Package_4: Control_Mix 
 In this package e combined the optical flow and fiducial markers algorithms together so that the robot can switch to optical-flow-based navigation as a backup option whenever fiducial landmarks are not visible.
