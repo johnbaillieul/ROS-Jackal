@@ -12,7 +12,7 @@ Clearpath package to simulate Jackal UGV that can be installed by running: sudo 
 ## How to Use Repo:
 The repository contains four packages. To run the repo you need to have a catkin worskspace. clone the repo in src file of your catkin workspace
 add the following to your ~/.bashrc file: export GAZEBO_MODEL_PATH=<path_to_src_folder>/src/<pacakge name>/models or if you already have GAZEBO_MODEL_PATH in your file add the path.
-This is what my bashrc file looks like for your refrence
+This is what my bashrc file looks like for your reference
 
 ![Screenshot from 2022-10-21 11-42-51](https://user-images.githubusercontent.com/98136555/203122995-43e2dc0f-d416-4e50-a8de-1335949a1bbe.png)
 
