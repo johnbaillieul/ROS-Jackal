@@ -14,6 +14,7 @@ The repository contains four packages. To run the repo you need to have a catkin
 add the following to your ~/.bashrc file: export GAZEBO_MODEL_PATH=<path_to_src_folder>/src/<pacakge name>/models or if you already have GAZEBO_MODEL_PATH in your file add the path.
 This is what my bashrc file looks like for your refrence
 
+![Screenshot from 2022-10-21 11-42-51](https://user-images.githubusercontent.com/98136555/203122995-43e2dc0f-d416-4e50-a8de-1335949a1bbe.png)
 
 
 # Package_1: PID_apriltag 
@@ -26,98 +27,104 @@ copy
 ## How to run the package
 Create your customized URDF file, for example $HOME/Desktop/realsense.urdf.xacro. Put the following in it:
 
-********************************************************************************************************************************************************
-<?xml version="1.0"?>
-<robot xmlns:xacro="http://ros.org/wiki/xacro">
+<code>
+    <?xml version="1.0"?>
+    <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <link name="front_realsense" />
+      <link name="front_realsense" />
 
-  <!--
-    The gazebo plugin aligns the depth data with the Z axis, with X=left and Y=up
-    ROS expects the depth data along the X axis, with Y=left and Z=up
-    This link only exists to give the gazebo plugin the correctly-oriented frame
-  -->
-  <link name="front_realsense_gazebo" />
-  <joint name="front_realsense_gazebo_joint" type="fixed">
-    <parent link="front_realsense"/>
-    <child link="front_realsense_gazebo"/>
-    <origin xyz="0.0 0 0" rpy="-1.5707963267948966 0 -1.5707963267948966"/>
-  </joint>
+      <!--
+        The gazebo plugin aligns the depth data with the Z axis, with X=left and Y=up
+        ROS expects the depth data along the X axis, with Y=left and Z=up
+        This link only exists to give the gazebo plugin the correctly-oriented frame
+      -->
+      <link name="front_realsense_gazebo" />
+      <joint name="front_realsense_gazebo_joint" type="fixed">
+        <parent link="front_realsense"/>
+        <child link="front_realsense_gazebo"/>
+        <origin xyz="0.0 0 0" rpy="-1.5707963267948966 0 -1.5707963267948966"/>
+      </joint>
 
-  <gazebo reference="front_realsense">
-    <turnGravityOff>true</turnGravityOff>
-    <sensor type="depth" name="front_realsense_depth">
-      <update_rate>30</update_rate>
-      <camera>
-        <!-- 75x65 degree FOV for the depth sensor -->
-        <horizontal_fov>1.5184351666666667</horizontal_fov>
-        <vertical_fov>1.0122901111111111</vertical_fov>
+      <gazebo reference="front_realsense">
+        <turnGravityOff>true</turnGravityOff>
+        <sensor type="depth" name="front_realsense_depth">
+          <update_rate>30</update_rate>
+          <camera>
+            <!-- 75x65 degree FOV for the depth sensor -->
+            <horizontal_fov>1.5184351666666667</horizontal_fov>
+            <vertical_fov>1.0122901111111111</vertical_fov>
 
-        <image>
-          <width>640</width>
-          <height>480</height>
-          <format>RGB8</format>
-        </image>
-        <clip>
-          <!-- give the color sensor a maximum range of 50m so that the simulation renders nicely -->
-          <near>0.01</near>
-          <far>50.0</far>
-        </clip>
-      </camera>
-      <plugin name="kinect_controller" filename="libgazebo_ros_openni_kinect.so">
-        <baseline>0.2</baseline>
-        <alwaysOn>true</alwaysOn>
-        <updateRate>30</updateRate>
-        <cameraName>realsense</cameraName>
-        <imageTopicName>color/image_raw</imageTopicName>
-        <cameraInfoTopicName>color/camera_info</cameraInfoTopicName>
-        <depthImageTopicName>depth/image_rect_raw</depthImageTopicName>
-        <depthImageInfoTopicName>depth/camera_info</depthImageInfoTopicName>
-        <pointCloudTopicName>depth/color/points</pointCloudTopicName>
-        <frameName>front_realsense_gazebo</frameName>
-        <pointCloudCutoff>0.105</pointCloudCutoff>
-        <pointCloudCutoffMax>8.0</pointCloudCutoffMax>
-        <distortionK1>0.00000001</distortionK1>
-        <distortionK2>0.00000001</distortionK2>
-        <distortionK3>0.00000001</distortionK3>
-        <distortionT1>0.00000001</distortionT1>
-        <distortionT2>0.00000001</distortionT2>
-        <CxPrime>0</CxPrime>
-        <Cx>0</Cx>
-        <Cy>0</Cy>
-        <focalLength>0</focalLength>
-        <hackBaseline>0</hackBaseline>
-      </plugin>
-    </sensor>
-  </gazebo>
+            <image>
+              <width>1280</width>
+              <height>720</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <!-- give the color sensor a maximum range of 50m so that the simulation renders nicely -->
+              <near>0.01</near>
+              <far>50.0</far>
+            </clip>
+          </camera>
+          <plugin name="kinect_controller" filename="libgazebo_ros_openni_kinect.so">
+            <baseline>0.2</baseline>
+            <alwaysOn>true</alwaysOn>
+            <updateRate>30</updateRate>
+            <cameraName>realsense</cameraName>
+            <imageTopicName>color/image_raw</imageTopicName>
+            <cameraInfoTopicName>color/camera_info</cameraInfoTopicName>
+            <depthImageTopicName>depth/image_rect_raw</depthImageTopicName>
+            <depthImageInfoTopicName>depth/camera_info</depthImageInfoTopicName>
+            <pointCloudTopicName>depth/color/points</pointCloudTopicName>
+            <frameName>front_realsense_gazebo</frameName>
+            <pointCloudCutoff>0.105</pointCloudCutoff>
+            <pointCloudCutoffMax>8.0</pointCloudCutoffMax>
+            <distortionK1>0.00000001</distortionK1>
+            <distortionK2>0.00000001</distortionK2>
+            <distortionK3>0.00000001</distortionK3>
+            <distortionT1>0.00000001</distortionT1>
+            <distortionT2>0.00000001</distortionT2>
+            <CxPrime>0</CxPrime>
+            <Cx>0</Cx>
+            <Cy>0</Cy>
+            <focalLength>0</focalLength>
+            <hackBaseline>0</hackBaseline>
+          </plugin>
+        </sensor>
+      </gazebo>
 
-  <link name="front_realsense_lens">
-    <visual>
-      <origin xyz="0.02 0 0" rpy="${pi/2} 0 ${pi/2}" />
-      <geometry>
-        <mesh filename="package://realsense2_description/meshes/d435.dae" />
-      </geometry>
-      <material name="white" />
-    </visual>
-  </link>
+      <link name="front_realsense_lens">
+        <visual>
+          <origin xyz="0.02 0 0" rpy="${pi/2} 0 ${pi/2}" />
+          <geometry>
+            <mesh filename="package://realsense2_description/meshes/d435.dae" />
+          </geometry>
+          <material name="white" />
+        </visual>
+      </link>
 
-  <joint type="fixed" name="front_realsense_lens_joint">
-    <!-- Offset the camera 5cm forwards and 1cm up -->
-    <origin xyz="0.05 0 0.01" rpy="0 0 0" />
-    <parent link="front_mount" />
-    <child link="front_realsense_lens" />
-  </joint>
-  <joint type="fixed" name="front_realsense_joint">
-    <origin xyz="0.025 0 0" rpy="0 0 0" />
-    <parent link="front_realsense_lens" />
-    <child link="front_realsense" />
-  </joint>
-</robot>
+      <joint type="fixed" name="front_realsense_lens_joint">
+        <!-- Offset the camera 18cm backwards and 28cm up -->
+        <origin xyz="-0.18 0 0.23" rpy="0 0 0" />
+        <parent link="front_mount" />
+        <child link="front_realsense_lens" />
+      </joint>
+      <joint type="fixed" name="front_realsense_joint">
+        <origin xyz="0.025 0 0" rpy="0 0 0" />
+        <parent link="front_realsense_lens" />
+        <child link="front_realsense" />
+      </joint>
+    </robot>
 
-********************************************************************************************************************************************************
+</code>
+
+
 refrence: https://www.clearpathrobotics.com/assets/guides/kinetic/jackal/additional_sim_worlds.html
 
-Then run "export JACKAL_URDF_EXTRAS=$HOME/Desktop/realsense.urdf.xacro". You can also add that line to your ~/.bashrc file so you dont have to run it everytime you need to work with the realsense camera. Then run roslaunch pid_apriltag pariltag_jackal.launch which open gazebo with the apriltags and the jackal. The lauch file also launches the continuous detection file used to detect april tags.
+Then run "export JACKAL_URDF_EXTRAS=$HOME/Desktop/realsense.urdf.xacro". You can also add that line to your ~/.bashrc file so you dont have to run it everytime you need to work with the realsense camera. Then run
+
+  roslaunch pid_apriltag apriltag_jackal.launch 
+
+which opens gazebo with the apriltags and the jackal. The lauch file also launches the continuous detection file used to detect april tags.
 
 ## Apriltag detection
 To check if the apriltag detection is running open another terminal and run rqt_image_view then select /tag_detections_image. You should get a frame on the tag as you can see in the image below.
