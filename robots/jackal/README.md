@@ -80,12 +80,33 @@ https://user-images.githubusercontent.com/98136555/185213284-8d2cfa97-f4ec-4a5c-
  In simulation and real environment
  
 ## Machine learning models
-  # The folder called trained_model_parameters contain the parameters of different cnn_models trained.
-  model 2 only takes on image as input and outputs an array with the tau values in each Region of Interest
-  model 3 takes two images along with the velocity and outputs an array with tau values in each Region of Interest
-  model 4 is an updated version of model 3 where the difference is that it uses average pooling instead of max pooling
-  model 5 is an updated version of model 4 where the labels are modified. All the previous models were trained with labels corresponding to a infinity tau_value as -1 however in this model that it changed to 15. And results show that it works better than the other models.
-  model 6 takes two images along with the velocity and outputs two arrays on with the tau values in each Region of Interest and the other array with a flag that shows if the predicited value is valid or not.
+  The folder called trained_model_parameters contain the parameters of different cnn_models trained.
+  
+  #Model 2 
+  
+  This model only takes one image as input and outputs an array with the tau values in each Region of Interest 
+  
+  #Model 3 
+  This model takes two images along with the velocity and outputs an array with tau values in each Region of Interest
+  
+  # Model 4 
+  is an updated version of model 3 where the difference is that it uses average pooling instead of max pooling
+  Total trainable params: 1,777,083
+  metric achieved 
+  training_loss: 0.2101 - training_accuracy: 0.8752 - 
+  validation_loss: 0.3516 - validation_accuracy: 0.8247
+  test loss: 0.36275410652160645, test accuracy: 0.8163265585899353
+  
+  
+  Model 5 is an updated version of model 4 where the labels are modified. All the previous models were trained with labels corresponding to a infinity tau_value as -1 however in this model that it changed to 15. And results show that it works better than the other models.
+  
+  Total trainable params: 1,777,083
+  metrics achieved:
+  training-loss: 0.2706 - training-accuracy: 0.8840 
+  validation_loss: 0.4683 - validation_accuracy: 0.8547
+  test loss: 0.48675239086151123, test accuracy: 0.8511404395103455
+  
+  Model 6 takes two images along with the velocity and outputs two arrays on with the tau values in each Region of Interest and the other array with a flag that shows if the predicited value is valid or not.
   
   All of the models are not robust enough to work in environments other than the ones with boxes. One thing to be noted is that white walls are of a problem cause the model so the training data sho
  
