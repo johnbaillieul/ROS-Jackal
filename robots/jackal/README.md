@@ -82,22 +82,33 @@ https://user-images.githubusercontent.com/98136555/185213284-8d2cfa97-f4ec-4a5c-
 ## Machine learning models
 
   In this approach we aim to calculate the Optical flow, the motion between consecutive frames of sequences caused by relative motion between a camera and an object, by using a machine learning model instead of Lucas Kanade method. The model generated is expected to predict the tau_value in each region of interest given images of the scene. To train such a model, we collected images with the distances of the robot from the obstacles in each region of interest. To get the distances we used a 2D lidar. The code that does that is in the data_collection.py file. 
-   To collect data, first you need to launch gazebo with the environment of choice, the run 
+To collect data, first you need to launch gazebo with this command 
+      roslaunch vision_based_navigation_ttt L_shaped_corridor.launch front_laser:=1
+  then run 
   
-  for this project we collected our data in a simulated gazebo environments. We equipped the Jackal with a 2D lidar in order to get distances 
+    rosrun vision_based_navigation_ttt tau_computattion_lidar.py 
+    rosrun vision_based_navigation_ttt controller_not_modified.py 
+    rosrun vision_based_navigation_ttt data_collection.py 
+
+The images are saved in training_images folder and the distance values are save in the tau_values folder. The distances are then divided by the           velocity to get the true tau_value.
   
-  The folder called trained_model_parameters contains the parameters of different cnn_models trained. 
+For now all the data where in a simulated gazebo environments. To change the colors of the boxes in the enviroment whenever you launch a file you can add 
+<node name="change_env" pkg="vision_based_navigation_ttt" type="change_env.py"/> to your launch file.
+
+The folder called trained_model_parameters contains the parameters of the trained different cnn models. Each model containes two classes one to train the model and the other to inference.
   
-  ### Model 2 
+### Model 2 
   
-  This model only takes one image as input and outputs an array with the tau values in each Region of Interest 
+  This model only takes one image as input and outputs an array with the tau values in each Region of Interest. 
   
-  ### Model 3 
+### Model 3 
+  
   This model takes two images along with the velocity and outputs an array with tau values in each Region of Interest
   
   ### Model 4
   
   Is an updated version of model 3 where the difference is that it uses average pooling instead of max pooling
+  
   Total trainable params: 1,777,083
   metric achieved 
   training_loss: 0.2101 - training_accuracy: 0.8752 - 
