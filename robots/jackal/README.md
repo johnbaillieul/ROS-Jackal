@@ -41,7 +41,7 @@ which opens gazebo with the apriltags and the jackal. The lauch file also launch
 ## Apriltag detection
 To check if the apriltag detection is running open another terminal and run rqt_image_view then select /tag_detections_image. You should get a frame on the tag as you can see in the image below.
 
-<apriltag_detection src="https://user-images.githubusercontent.com/98136555/174672373-d72a295f-3395-450c-9431-b8182b44308c.png" width="50" height="50"/>
+![apriltag_detection]("https://user-images.githubusercontent.com/98136555/174672373-d72a295f-3395-450c-9431-b8182b44308c.png)
   
 ## Note when using apriltags
 Be aware that having lighting in your world that is too bright or too dark can cause wrong detections
@@ -80,7 +80,13 @@ https://user-images.githubusercontent.com/98136555/185213284-8d2cfa97-f4ec-4a5c-
  In simulation and real environment
  
 ## Machine learning models
-  The folder called trained_model_parameters contain the parameters of different cnn_models trained.
+
+  In this approach we aim to calculate the Optical flow, the motion between consecutive frames of sequences caused by relative motion between a camera and an object, by using a machine learning model instead of Lucas Kanade method. The model generated is expected to predict the tau_value in each region of interest given images of the scene. To train such a model, we collected images with the distances of the robot from the obstacles in each region of interest. To get the distances we used a 2D lidar. The code that does that is in the data_collection.py file. 
+   To collect data, first you need to launch gazebo with the environment of choice, the run 
+  
+  for this project we collected our data in a simulated gazebo environments. We equipped the Jackal with a 2D lidar in order to get distances 
+  
+  The folder called trained_model_parameters contains the parameters of different cnn_models trained. 
   
   ### Model 2 
   
@@ -116,6 +122,27 @@ https://user-images.githubusercontent.com/98136555/185213284-8d2cfa97-f4ec-4a5c-
   ### Model 6 
   
   Takes two images along with the velocity and outputs two arrays on with the tau values in each Region of Interest and the other array with a flag that shows if the predicited value is valid or not.
+  
+  ![model_with_shape_info](https://user-images.githubusercontent.com/98136555/203197318-052f6550-b1ab-4583-a185-ace9e60a9ef7.png)
+
+  
+  ### Model 7
+  
+  Model architecture:
+  
+  ![model_with_shape_info](https://user-images.githubusercontent.com/98136555/203196927-e1a5df6a-b659-4cb5-899a-96971d8fb24e.png)
+
+   ### Model 8
+  
+  Model architecture:
+    ![model_with_shape_info_2_out_2_input](https://user-images.githubusercontent.com/98136555/203196848-0cfa2b90-a081-4e77-a9dd-ff1236dcac11.png)
+  
+  
+  ### Model 9
+  
+  Model architecture:
+  ![model_ROI](https://user-images.githubusercontent.com/98136555/203196713-d184d217-4d4c-4703-9a3e-b70578cf4f85.png)
+
   
   ### Takeaway
   
