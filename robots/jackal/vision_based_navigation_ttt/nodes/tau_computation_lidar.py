@@ -127,7 +127,7 @@ class compute_tau():
         # Lidar Subscriber
         self.sub = rospy.Subscriber('/front/scan', LaserScan, self.callback)
         # Tau Publisher
-        self.tau_values = rospy.Publisher("lidar_tau_values", TauComputation, queue_size=10)
+        self.tau_values = rospy.Publisher("tau_values", TauComputation, queue_size=10)
         # Raw Image Subscriber
         self.image_sub_name = "/realsense/color/image_raw"
         self.image_sub = rospy.Subscriber(self.image_sub_name, Image, self.callback_img)
@@ -183,14 +183,6 @@ class compute_tau():
                 # print('be',tau_val)
                 self.tau_val = tau_val/self.linear_x_vel
                 # print('aft',self.tau_val)
-
-                #remap to new index to get avg tau values in region of interest
-                # 0 heye 230
-                # el[434,488]  --> [204,258] = 54
-                # l ranges[384,434] --> [154:204] = 50
-                # c [347,373] --> [117:143] = 26
-                # r [285,332] --> [55:102] = 47
-                # er [230,285] -->[0:55] = 55
                 
                 # inf values causing problems so removing them if number >50%
                 # Extreme left

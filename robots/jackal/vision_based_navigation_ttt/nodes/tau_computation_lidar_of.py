@@ -103,13 +103,13 @@ def set_limit(img_width, img_height):
 
 # Filtering procedure for the TTT values
 def tau_filtering_mad(vector):
-    filter = 1
+    range = 1
     sorted_indices = np.argsort(vector)
     sorted_vector = vector[sorted_indices]
     median_sorted = np.median(sorted_vector)
     # # method using median absolute deviation
     mad = np.median(np.absolute(sorted_vector - median_sorted))
-    sorted_indices_2 = sorted_indices[(sorted_vector < (median_sorted + filter*mad)) & (sorted_vector > (median_sorted - filter*mad))]
+    sorted_indices_2 = sorted_indices[(sorted_vector < (median_sorted + range*mad)) & (sorted_vector > (median_sorted - filter*mad))]
     vector = sorted_vector[sorted_indices_2]
     return vector
 

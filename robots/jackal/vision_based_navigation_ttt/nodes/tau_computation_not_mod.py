@@ -184,8 +184,12 @@ class TauComputationClass:
         self.image_sub = rospy.Subscriber(self.image_sub_name, Image, self.callback_img)
         # Tau Computation message Publisher
         self.tau_values = rospy.Publisher("tau_values", TauComputation, queue_size=10)
-
-
+        # array to save prev tau_values
+        self.prev_taus_el = []
+        self.prev_taus_l = []
+        self.prev_taus_c = []
+        self.prev_taus_r = []
+        self.prev_taus_er = []
     # Callback for the Optical flow topic
     def callback_of(self, data):
 
@@ -271,6 +275,82 @@ class TauComputationClass:
         final_tau_centre = tau_final_value(self, tau_centre, count_centre)
         print("Tau centre: " + str(final_tau_centre))
 
+        if len(self.prev_taus_el) > 4:
+            mean = np.array(self.prev_taus_el).mean()
+            std = 2*np.array(self.prev_taus_el).std()
+            print('el', mean + std, mean - std, final_tau_left_e)
+            if final_tau_left_e < (mean + std) and final_tau_left_e > (mean - std):
+                self.prev_taus_el.append(final_tau_left_e)
+                # remove the element at index 0
+                self.prev_taus_el.pop(0)
+            # if the value isnt within range then use the last value
+            else:
+                final_tau_left_e = self.prev_taus_el[-1]   
+        # to skip tau values in the beginning of the run 
+        elif final_tau_left_e  < 30:
+            self.prev_taus_el.append(final_tau_left_e)
+
+        if len(self.prev_taus_er) > 4:
+            mean = np.array(self.prev_taus_er).mean()
+            std = 2*np.array(self.prev_taus_er).std()
+            print('er', mean + std, mean - std, final_tau_right_e)
+            if final_tau_right_e < (mean + std) and final_tau_right_e > (mean - std):
+                self.prev_taus_er.append(final_tau_right_e)
+                # remove the element at index 0
+                self.prev_taus_er.pop(0)
+            # if the value isnt within range then use the last value
+            else:
+                final_tau_right_e = self.prev_taus_er[-1]   
+        # to skip tau values in the beginning of the run 
+        elif final_tau_right_e  < 30:
+            self.prev_taus_er.append(final_tau_right_e)
+
+        if len(self.prev_taus_l) > 4:
+            mean = np.array(self.prev_taus_l).mean()
+            std = 2*np.array(self.prev_taus_l).std()
+            print('l', mean + std, mean - std, final_tau_left)
+            if final_tau_left < (mean + std) and final_tau_left > (mean - std):
+                self.prev_taus_l.append(final_tau_left)
+                # remove the element at index 0
+                self.prev_taus_l.pop(0)
+            # if the value isnt within range then use the last value
+            else:
+                final_tau_left = self.prev_taus_l[-1]   
+        # to skip tau values in the beginning of the run 
+        elif final_tau_left  < 30:
+            self.prev_taus_l.append(final_tau_left)
+
+        if len(self.prev_taus_r) > 4:
+            mean = np.array(self.prev_taus_r).mean()
+            std = 2*np.array(self.prev_taus_r).std()
+            print('r', mean + std, mean - std, final_tau_right)
+            if final_tau_right < (mean + std) and final_tau_right > (mean - std):
+                self.prev_taus_r.append(final_tau_right)
+                # remove the element at index 0
+                self.prev_taus_r.pop(0)
+            # if the value isnt within range then use the last value
+            else:
+                final_tau_right = self.prev_taus_r[-1]   
+        # to skip tau values in the beginning of the run 
+        elif final_tau_right  < 30:
+            self.prev_taus_r.append(final_tau_right)
+
+        if len(self.prev_taus_c) > 4:
+            mean = np.array(self.prev_taus_c).mean()
+            std = 2*np.array(self.prev_taus_c).std()
+            print('c', mean + std, mean - std, final_tau_centre)
+            # print(self.prev_taus_c)
+            if final_tau_centre < (mean + std) and final_tau_centre > (mean - std):
+                self.prev_taus_c.append(final_tau_centre)
+                # remove the element at index 0
+                self.prev_taus_c.pop(0)
+            # if the value isnt within range then use the last value
+            else:
+                final_tau_centre = self.prev_taus_c[-1]   
+        # to skip tau values in the beginning of the run 
+        elif final_tau_centre>0 and final_tau_centre < 30 :
+            self.prev_taus_c.append(final_tau_centre)
+
         # Publish Tau values data to rostopic
         # Creation of TauValues.msg
         msg = TauComputation()
@@ -286,6 +366,8 @@ class TauComputationClass:
         msg.tau_r = final_tau_right
         msg.tau_c = final_tau_centre
         self.tau_values.publish(msg)
+
+        
 
         # Draw the ROIs with their TTT values
         draw_image_segmentation(self.curr_image, final_tau_left_e, final_tau_right_e, final_tau_left, final_tau_right, final_tau_centre)
