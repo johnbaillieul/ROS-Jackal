@@ -41,7 +41,7 @@ which opens gazebo with the apriltags and the jackal. The lauch file also launch
 ## Apriltag detection
 To check if the apriltag detection is running open another terminal and run rqt_image_view then select /tag_detections_image. You should get a frame on the tag as you can see in the image below.
 
-![apriltag_detection]("https://user-images.githubusercontent.com/98136555/174672373-d72a295f-3395-450c-9431-b8182b44308c.png)
+
   
 ## Note when using apriltags
 Be aware that having lighting in your world that is too bright or too dark can cause wrong detections
