@@ -76,16 +76,9 @@ class Jackal:
 
 	def detection_callback(self,msg):
 		if msg.detections:
-			transform_gazebo_to_cam = self.tfBuffer.lookup_transform("front_realsense", "front_realsense_gazebo", rospy.Time(0), rospy.Duration(1.0))
-			# print('gatofro',tu.msg_to_se3(transform_gazebo_to_cam))
-			# transform_cam_to_bl = self.tfBuffer.lookup_transform("base_link","front_realsense", rospy.Time(0), rospy.Duration(1.0))
-			transform_cam_to_bl = np.array([[1,0,0,-0.035],[0,1,0,0],[0,0,1,0.414],[0,0,0,1]])
-			# print('frtobl',tu.msg_to_se3(transform_cam_to_bl))
-			self.ap_in_baselink = np.dot(transform_cam_to_bl,tu.msg_to_se3(transform_gazebo_to_cam))
-			# np.array([[0, 0, 1, -0.035],[-1,0,0,0],[0, -1,  0,  0.414],[ 0,0,0,1]]) 
-			# print('tra',self.ap_in_baselink)
-			self.ap_in_baselink = np.dot(self.ap_in_baselink, tu.msg_to_se3(msg.detections[0].pose.pose.pose))
-			# print('2',self.ap_in_baselink)
+			transform_gazebo_to_bl = self.tfBuffer.lookup_transform("base_link", "front_realsense_gazebo", rospy.Time(0), rospy.Duration(1.0))
+			print('gatofro',tu.msg_to_se3(transform_gazebo_to_bl))
+			self.ap_in_baselink = np.dot(tu.msg_to_se3(transform_gazebo_to_bl), tu.msg_to_se3(msg.detections[0].pose.pose.pose))
 			self.detected = True
 			self.on_apriltag_detection()
 		else:

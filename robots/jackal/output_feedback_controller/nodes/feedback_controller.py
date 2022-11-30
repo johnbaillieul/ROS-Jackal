@@ -30,20 +30,20 @@ class Feedback_2D_Input:
         self.selected_aptag_id = None
         # self.used_apriltags = [0,1,2,3,4,5,6,7,8,9,10,11] # add the apriltag ids that you used
         self.apriltag_dist = None
-        self.position_landmark_inworld_matrix = {1:np.array([[1,0,0,-8.3137],[0,1,0,-5.89405],[0,0,1,0.5],[0,0,0,1]]),
-                                                 2:np.array([[1,0,0,-8.25174],[0,1,0,-1.70236],[0,0,1,0.5],[0,0,0,1]]),
-                                                 3:np.array([[1,0,0,-8.20742],[0,1,0,1.44827],[0,0,1,0.5],[0,0,0,1]]),
-                                                 4:np.array([[0,1,0,-5.59215],[-1,0,0,3.13622],[0,0,1,0.5],[0,0,0,1]]),
-                                                 5:np.array([[0,1,0,-2.523],[-1,0,0,3.28701],[0,0,1,0.5],[0,0,0,1]]),
-                                                 6:np.array([[-1,0,0,1.29401],[0,-1,0,1.90886],[0,0,1,0.5],[0,0,0,1]]),
-                                                 7:np.array([[-1,0,0,1.28591],[0,-1,0,-2.18859],[0,0,1,0.5],[0,0,0,1]]),
-                                                 8:np.array([[-1,0,0,1.24712],[0,-1,0,-6.21105],[0,0,1,0.5],[0,0,0,1]]),
-                                                 9:np.array([[0,-1,0,-2.48163],[1,0,0,-8.77517],[0,0,1,0.5],[0,0,0,1]]), 
-                                                 10:np.array([[0,-1,0,-5.67756],[1,0,0,-8.7319],[0,0,1,0.5],[0,0,0,1]]),
-                                                 11:np.array([[-1,0,0,-4.03817],[0,-1,0,-5.24104],[0,0,1,0.5],[0,0,0,1]]),
-                                                 12:np.array([[-1,0,0,-4.16755],[0,-1,0,-2.12336],[0,0,1,0.5],[0,0,0,1]]),    
-                                                 13:np.array([[1,0,0,-2.11855],[0,1,0,-2.11572],[0,0,1,0.5],[0,0,0,1]]),
-                                                 14:np.array([[1,0,0,-2.06867],[0,1,0,-4.1917],[0,0,1,0.5],[0,0,0,1]]),
+        self.position_landmark_inworld_matrix = {1:np.array([[0,0,1,-8.3137],[1,0,0,-5.89405],[0,1,0,0.5],[0,0,0,1]]),
+                                                 2:np.array([[0,0,1,-8.25174],[1,0,0,-1.70236],[0,1,0,0.5],[0,0,0,1]]),
+                                                 3:np.array([[0,1,0,-8.20742],[1,0,0,1.44827],[0,1,0,0.5],[0,0,0,1]]),
+                                                 4:np.array([[1,0,0,-5.59215],[0,0,-1,3.13622],[0,1,0,0.5],[0,0,0,1]]),
+                                                 5:np.array([[1,0,0,-2.523],[0,0,-1,3.28701],[0,1,0,0.5],[0,0,0,1]]),
+                                                 6:np.array([[0,0,-1,1.29401],[-1,0,0,1.90886],[0,1,0,0.5],[0,0,0,1]]),
+                                                 7:np.array([[0,0,-1,1.28591],[-1,0,0,-2.18859],[0,1,0,0.5],[0,0,0,1]]),
+                                                 8:np.array([[0,0,-1,1.24712],[-1,0,0,-6.21105],[0,1,0,0.5],[0,0,0,1]]),
+                                                 9:np.array([[-1,0,0,-2.48163],[0,0,1,-8.77517],[0,1,0,0.5],[0,0,0,1]]), 
+                                                 10:np.array([[-1,0,0,-5.67756],[0,0,1,-8.7319],[0,1,0,0.5],[0,0,0,1]]),
+                                                 11:np.array([[0,0,-1,-4.03817],[-1,0,0,-5.24104],[0,1,0,0.5],[0,0,0,1]]),
+                                                 12:np.array([[0,0,-1,-4.16755],[-1,0,0,-2.12336],[0,1,0,0.5],[0,0,0,1]]),    
+                                                 13:np.array([[0,0,1,-2.11855],[1,0,0,-2.11572],[0,1,0,0.5],[0,0,0,1]]),
+                                                 14:np.array([[0,0,1,-2.06867],[1,0,0,-4.1917],[0,1,0,0.5],[0,0,0,1]]),
                                                 }
  
     def apriltag_callback(self,msg):
@@ -60,6 +60,7 @@ class Feedback_2D_Input:
             #change frame from camera to baselink
             source_frame = "front_realsense_gazebo"
             transform = self.tfBuffer.lookup_transform("base_link", source_frame, rospy.Time(0), rospy.Duration(1.0))
+            print('transform',tu.msg_to_se3(transform))
             # pose_transformed = tf2_geometry_msgs.do_transform_pose(selected_apriltag, transform)
             ''' convert the stamped message '''
             
@@ -108,6 +109,7 @@ class Feedback_2D_Input:
     
         u_2 = np.dot(K_gains,lj_li).sum(axis=1)
         u = u_1 + u_2
+        print('u',u)
         return u
         
     def to_tf(self,pos,ori):
@@ -145,9 +147,9 @@ class Feedback_2D_Input:
         self.vel.linear.x = linear_velocity/np.linalg.norm(u_input)
         self.vel.angular.z = angular_velocity 
         self.pub_vel.publish(self.vel) 
-        print('linear',self.vel.linear.x)
-        print('angular',angular_velocity)
-        print('reached')
+        # print('linear',self.vel.linear.x)
+        # print('angular',angular_velocity)
+        # print('reached')
             
 ## Get the orientation from different apriltags this only gets from the closest one
     def robot_pose(self,aptag_transf,selected_id):                           

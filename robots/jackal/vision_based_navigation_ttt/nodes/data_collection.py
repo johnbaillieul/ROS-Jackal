@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from tkinter import W
 import rospy
-import sensor_msgs.msg
 from sensor_msgs.msg import LaserScan
 import numpy as np
 from cv_bridge import CvBridgeError, CvBridge
@@ -33,7 +32,7 @@ class collect_data():
         self.bridge = CvBridge()
         self.get_variables()
         self.count_2 += 1
-        # self.update_variables()
+        self.update_variables()
 
         self.curr_image = None
         self.path_folder = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/training_images/"
@@ -93,7 +92,6 @@ class collect_data():
         wksheet_tau = wb_tau.add_worksheet()
        
         if self.curr_image is not None:
-            curr_image = self.curr_image
             if self.ranges is not None:
                 theta_rd = np.arange(self.angle_min, self.angle_max + self.increments, self.increments, dtype=float) # generated within the half-open interval [start, stop).
                 theta_deg = theta_rd * (180/np.pi)
@@ -200,33 +198,33 @@ class collect_data():
                 tau_val = [tau_el, tau_l, tau_c, tau_r, tau_er]
 
             
-                # self.save_image(self.count, path_images)
-                # inf = -1
-                # try:
-                #     wksheet_tau.write('A1',tau_val[0])
-                # except:
-                #     wksheet_tau.write('A1',inf)
-                # try:
-                #     wksheet_tau.write('B1',tau_val[1])
-                # except:
-                #     wksheet_tau.write('B1',inf)
-                # try:
-                #     wksheet_tau.write('C1',tau_val[2])
-                # except:
-                #     wksheet_tau.write('C1',inf)
-                # try:
-                #     wksheet_tau.write('D1',tau_val[3])
-                # except:
-                #     wksheet_tau.write('D1',inf)
-                # try:
-                #     wksheet_tau.write('E1',tau_val[4])
-                # except:
-                #     wksheet_tau.write('E1',inf)
-                # wb_tau.close()
+                self.save_image(self.count, path_images)
+                inf = -1
+                try:
+                    wksheet_tau.write('A1',tau_val[0])
+                except:
+                    wksheet_tau.write('A1',inf)
+                try:
+                    wksheet_tau.write('B1',tau_val[1])
+                except:
+                    wksheet_tau.write('B1',inf)
+                try:
+                    wksheet_tau.write('C1',tau_val[2])
+                except:
+                    wksheet_tau.write('C1',inf)
+                try:
+                    wksheet_tau.write('D1',tau_val[3])
+                except:
+                    wksheet_tau.write('D1',inf)
+                try:
+                    wksheet_tau.write('E1',tau_val[4])
+                except:
+                    wksheet_tau.write('E1',inf)
+                wb_tau.close()
 
                 self.count += 1
                 print(self.count)
-                # self.update_variables()
+                self.update_variables()
 
 if __name__ == "__main__":
     rospy.init_node("collect_data")

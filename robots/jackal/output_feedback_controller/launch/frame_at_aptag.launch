@@ -28,7 +28,6 @@
                 <arg name="yaw" value="1.5" />
         </include> 
        
-
         <!--<node name="ap_tag" pkg="output_feedback_controller" type="detec.py" output="screen"/> -->
         <!-- <node name="image_proc" pkg="image_proc" type="image_proc" ns="realsense/color"/> -->
         

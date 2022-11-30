@@ -129,7 +129,7 @@ class Feedback_2D_Input:
                 # print("id:",id)
                 x = self.position_landmark_inworld_matrix[id][0,3] - \
                 self.position_landmark_inworld_matrix[last_seen_aptag_id][0,3]
-                # print('x:', x)
+                 # print('x:', x)
                 y = self.position_landmark_inworld_matrix[id][1,3] - \
                 self.position_landmark_inworld_matrix[last_seen_aptag_id][1,3]
                 # print('y:',y)

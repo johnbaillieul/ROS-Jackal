@@ -166,9 +166,9 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
-   nodes/optical_flow.py
-   nodes/tau_computation.py
-   nodes/controller.py
+   nodes/optical_flow_not_mod.py
+   nodes/tau_computation_not_mod.py
+   nodes/controller_not_modified.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 

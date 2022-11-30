@@ -293,8 +293,6 @@ class Create(object):
             apriltag_distance = (at_orientation.dot(apriltag[:3,3])[:2]).reshape((2,1)); 
             
             orientation = at_orientation[:3,0].flatten(); orientation[2] = 0; orientation /= np.linalg.norm(orientation)
-            
-            
             print(self.orientation.flatten(),orientation)
             
             real_apriltag_orientation = self.orientation
@@ -411,7 +409,6 @@ class Create(object):
 
         while not rospy.is_shutdown():
 
-
             if SIMULATION:
                 u = self.compute_simulated_input()
                 orientation = np.concatenate((self.orientation,[0]))
@@ -420,7 +417,6 @@ class Create(object):
                 u,orientation = self.compute_control_input()
                 if self.position is not None and self.odometry is not None:
                     #~ print("Real position: ",self.position[:2,0]," Odom position: ", self.odometry[:2])
-                    
                     # Store current position to our self.trajectory list:
                     self.mocap_trajectory.append([self.position[0,0],self.position[1,0]])
                     # Store odometry to trajectory:
