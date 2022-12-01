@@ -138,12 +138,13 @@ The folder called trained_model_parameters contains the parameters of the traine
 
   
   ### Model 7
-  
+  Same as model 6 but instead of predicting whether the tau value is valid or not after appending the velocity it is predicited before that because the image alone should be suffice to predict the tau value's validity.
   Model architecture:
   
   ![model_with_shape_info](https://user-images.githubusercontent.com/98136555/203196927-e1a5df6a-b659-4cb5-899a-96971d8fb24e.png)
 
    ### Model 8
+  Same as model 7 but instead of predicting whether the tau value is valid or not after appending the velocity it is predicited before that because the image alone should be suffice to predict the tau value's validity.
   
   Model architecture:
     ![model_with_shape_info_2_out_2_input](https://user-images.githubusercontent.com/98136555/203196848-0cfa2b90-a081-4e77-a9dd-ff1236dcac11.png)
