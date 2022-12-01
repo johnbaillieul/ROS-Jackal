@@ -102,7 +102,7 @@ The folder called trained_model_parameters contains the parameters of the traine
   This model only takes one image as input and outputs an array with the tau values in each Region of Interest. 
   
   ### Model 3
-  
+  ********************* NEEDS EDITING *******************************************************************
   Is an updated version of model 3 where the difference is that it uses average pooling instead of max pooling
   
   Total trainable params: 1,777,083
