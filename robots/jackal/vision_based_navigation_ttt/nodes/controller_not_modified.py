@@ -133,6 +133,7 @@ class Controller:
 		self.control = 0
 		self.constant_left = 1
 		self.constant_right = 1
+		self.lin_vel = 1
 
 		# Steering signal Publisher Jackal
 		self.steering_signal = rospy.Publisher(self.robot_publisher, Twist, queue_size=10)
@@ -141,7 +142,7 @@ class Controller:
 		# Boot phase performs only in the first sense phase to allow the stabilization of the OF values
 		if self.init_cnt < self.max_init:
 			msg = Twist()
-			msg.linear.x = float(1)
+			msg.linear.x = float(self.lin_vel)
 			msg.angular.z = float(0)
 			self.steering_signal.publish(msg)
 			self.init_cnt += 1
@@ -158,7 +159,7 @@ class Controller:
 
 				# Go straight
 				msg = Twist()
-				msg.linear.x = float(1)
+				msg.linear.x = float(self.lin_vel)
 				msg.angular.z = float(0)
 				self.steering_signal.publish(msg)
 
@@ -413,7 +414,7 @@ class Controller:
 
 				# Publish Steering signal
 				msg = Twist()
-				msg.linear.x = float(1)
+				msg.linear.x = float(self.lin_vel)
 				msg.angular.z = float(control)
 
 				self.steering_signal.publish(msg)

@@ -155,22 +155,22 @@ class train():
             # print('fol',folder)
             path_images = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/training_images/" + folder + '/'
             images_in_folder = [f for f in listdir(path_images) if f.endswith(".png")]
-
+            img_size = 250
             for idx in range(len(images_in_folder)-1) :
                 # print(images_in_folder[idx])
                 try:
                     # load the image
                     img_1 = cv2.imread(path_images + images_in_folder[idx],0)
-                    img_1 = cv2.resize(img_1,(250,250))
+                    img_1 = cv2.resize(img_1,(img_size,img_size))
                     image_as_array_1 = np.array(img_1)
-                    image_as_array_1 = image_as_array_1.reshape(250,250,1)
+                    image_as_array_1 = image_as_array_1.reshape(img_size,img_size,1)
                     # print('1', image_as_array_1.shape)
 
                     img_2 = cv2.imread(path_images + images_in_folder[idx+1],0)
-                    img_2 = cv2.resize(img_2,(250,250))
+                    img_2 = cv2.resize(img_2,(img_size,img_size))
                     image_as_array_2 = np.array(img_2)
                     
-                    image_as_array_2 = image_as_array_2.reshape(250,250,1)
+                    image_as_array_2 = image_as_array_2.reshape(img_size,img_size,1)
                     # print('2',image_as_array_2.shape)
                     # print(self.total_imgs)
                     
@@ -224,7 +224,7 @@ class train():
         v_test = velocity[ind[train_index+valid_index:]]
 
         # # Convolutional Neural Network
-        input_1 = keras.layers.Input(shape=(250,250,2))
+        input_1 = keras.layers.Input(shape=(img_size,img_size,2))
         conv1 = keras.layers.Conv2D(64, kernel_size=3, activation='relu')(input_1)
         pool1 = keras.layers.AveragePooling2D(pool_size=(2, 2))(conv1)
         conv2 = keras.layers.Conv2D(32, kernel_size=3, activation='relu')(pool1)
@@ -269,7 +269,7 @@ class inference():
         path_images = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/images/"
         name = '1.png'
         img = cv2.imread(path_images + name,0)
-        img = cv2.resize(img,(250,250))
+        img = cv2.resize(img,(img_size,img_size))
         # cv2.imshow('img',img)
         # cv2.waitKey(0) 
         img = np.asarray(img)
@@ -325,18 +325,19 @@ class calc_tau():
         self.height = data.height
 
     def get_tau_values(self):
+        img_size = 250
         if self.curr_image is not None:
             if self.prev_image is not None:
                 print("here")
                 curr_image = self.curr_image
 
-                img_1 = cv2.resize(self.prev_image,(250,250))
+                img_1 = cv2.resize(self.prev_image,(img_size,img_size))
                 image_as_array_1 = np.array(img_1)
-                image_as_array_1 = image_as_array_1.reshape(250,250,1)
+                image_as_array_1 = image_as_array_1.reshape(img_size,img_size,1)
 
-                img_2 = cv2.resize(self.curr_image,(250,250))
+                img_2 = cv2.resize(self.curr_image,(img_size,img_size))
                 image_as_array_2 = np.array(img_2)
-                image_as_array_2 = image_as_array_2.reshape(250,250,1)
+                image_as_array_2 = image_as_array_2.reshape(img_size,img_size,1)
                 # print('2',image_as_array_2.shape)
                 # print(self.total_imgs)
                 img = np.stack([img_1, img_2], 2)
@@ -377,6 +378,62 @@ class calc_tau():
                 # msg.tau_r = self.tau_r
                 # msg.tau_c = self.tau_c
                 # self.tau_values.publish(msg)
+                
+                draw_image_segmentation(curr_image, tau_pred[0][0], tau_pred[0][4], tau_pred[0][1], tau_pred[0][3], tau_pred[0][2], self.tau_el, self.tau_er, self.tau_l, self.tau_r, self.tau_c)
+                
+                self.er_error_array.append(self.tau_er - tau_pred[0][4])
+                self.el_error_array.append(self.tau_el - tau_pred[0][0])
+                self.r_error_array.append(self.tau_r - tau_pred[0][3])
+                self.l_error_array.append(self.tau_l - tau_pred[0][1])
+                self.c_error_array.append(self.tau_c - tau_pred[0][2])
+            
+            else:  
+                self.prev_image = self.curr_image
+
+    def get_tau_values_without_v(self):
+        if self.curr_image is not None:
+            if self.prev_image is not None:
+                print("here")
+                img_size = 250
+                curr_image = self.curr_image
+
+                img_1 = cv2.resize(self.prev_image,(img_size,img_size))
+                image_as_array_1 = np.array(img_1)
+                image_as_array_1 = image_as_array_1.reshape(img_size,img_size,1)
+
+                img_2 = cv2.resize(self.curr_image,(img_size,img_size))
+                image_as_array_2 = np.array(img_2)
+                image_as_array_2 = image_as_array_2.reshape(img_size,img_size,1)
+               
+                img = np.stack([img_1, img_2], 2)
+                img = tf.expand_dims(img, 0)
+               
+                img = np.asarray(img)
+               
+                vel = 1
+                vel = np.asarray([vel])
+              
+                # with open('model_pkl_1' , 'rb') as f: lr = pickle.load(f)
+                # print(lr)
+                tau_pred = self.model.predict({"input_1": img})
+                set_limit(self.width, self.height)
+
+                # Publish Tau values data to rostopic
+                # Creation of TauValues.msg
+                msg = TauComputation()
+                msg.header.stamp.secs =  self.secs
+                msg.header.stamp.nsecs =  self.nsecs
+                msg.height = self.height
+                msg.width = self.width
+
+                msg.tau_el = tau_pred[0][0]/vel
+                msg.tau_er = tau_pred[0][4]/vel
+                msg.tau_l = tau_pred[0][1]/vel
+                msg.tau_r = tau_pred[0][3]/vel
+                msg.tau_c = tau_pred[0][2]/vel
+                self.tau_values.publish(msg)
+                self.prev_image = self.curr_image
+                
                 
                 draw_image_segmentation(curr_image, tau_pred[0][0], tau_pred[0][4], tau_pred[0][1], tau_pred[0][3], tau_pred[0][2], self.tau_el, self.tau_er, self.tau_l, self.tau_r, self.tau_c)
                 

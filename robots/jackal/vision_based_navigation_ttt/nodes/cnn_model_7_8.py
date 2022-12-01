@@ -2,29 +2,24 @@
 import cv2
 import numpy as np
 from os import listdir
-from sklearn.neural_network import MLPClassifier
-from sklearn.model_selection import train_test_split
-# from sklearn.metrics import confusion_matrix
 import rospy
 import tensorflow as tf
 from tensorflow import keras
 import openpyxl
 from PIL import Image
-import pickle
-import matplotlib.pyplot as plt
-import os
+# import pickle
+import pickle5 as pickle
 import seaborn as sns
 from tkinter import W
 from sensor_msgs.msg import LaserScan
-import numpy as np
 from cv_bridge import CvBridgeError, CvBridge
 from vision_based_navigation_ttt.msg import TauComputation
-from cv_bridge import CvBridgeError, CvBridge
 from sensor_msgs.msg import Image
 import pandas as pd
 from xlsxwriter import Workbook
 from sklearn.metrics import accuracy_score, mean_absolute_error, mean_squared_error
-
+#import module
+import tarfile
 
 ############################################################################################
 # Initialization of the variables for setting the limits of the ROIs
@@ -139,7 +134,7 @@ def draw_image_segmentation(curr_image, taup_el, taup_er, taup_l, taup_r, taup_c
 
 class train():
     def __init__(self):
-        pass
+        self.common_path = os.environ["HOME"]+"/catkin_ws/src/"
     def train_(self):
         np.random.seed(0)
         img_size = 150
@@ -148,15 +143,15 @@ class train():
         y_2 = []
         velocity = []
 
-        path_tau = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/tau_values/tau_value"   
-        path_folder = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/training_images/"
+        path_tau = self.common_path + "vision_based_navigation_ttt/tau_values/tau_value"   
+        path_folder = self.common_path + "vision_based_navigation_ttt/training_images/"
 
         folders = [file for file in os.listdir(path_folder) if os.path.isdir(os.path.join(path_folder, file))]
         # print('ggggggggggggg',folders)
         for folder in folders:
 
             # print('fol',folder)
-            path_images = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/training_images/" + folder + '/'
+            path_images = self.common_path + "vision_based_navigation_ttt/training_images/" + folder + '/'
             images_in_folder = [f for f in listdir(path_images) if f.endswith(".png")]
 
             for idx in range(len(images_in_folder)-1) : #len(images_in_folder)-1
@@ -286,33 +281,9 @@ class train():
         mae_2 = mean_squared_error(y_1_test, yhat[0])
         print('mean_absolute_error', mae_1, 'mean_squared_error', mae_2)
       
-class inference():
-    def __init__(self):
-        pass
-
-    def extract_model(self):
-        img_size = 150
-        path_images = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/images/"
-        name = '1.png'
-        img = cv2.imread(path_images + name,0)
-        img = cv2.resize(img,(img_size,img_size))
-        # cv2.imshow('img',img)
-        # cv2.waitKey(0) 
-        img = np.asarray(img)
-        img = tf.expand_dims(img, 0)
-
-        pickled_model = pickle.load(open('model_input_2_output_2_yeni1.pkl', 'rb'))
-
-        tau_pred = pickled_model.predict([img])
-        
-        path_tau = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/tau_values/tau_value"   
-        ps = openpyxl.load_workbook(path_tau + str(name.split('.')[0]) + '.xlsx')
-        sheet = ps['Sheet1']
-        tau_values = [sheet['A1'].value,sheet['B1'].value,sheet['C1'].value,sheet['D1'].value,sheet['E1'].value]
-        print('tau_pred', tau_pred, 'tau_val',tau_values)
-
 class calc_tau():
     def __init__(self):
+
         # Tau Publisher
         self.tau_values = rospy.Publisher("lidar_tau_values", TauComputation, queue_size=10)
         # Raw Image Subscriber
@@ -323,12 +294,14 @@ class calc_tau():
         # self.get_variables()
         self.curr_image = None
         self.prev_image = None
-        self.model = pickle.load(open('model_input_2_output_2_yeni.pkl', 'rb'))
+        # os.environ["HOME"]+'/catkin_ws/src/vision_based_navigation_ttt/trained_model_parameters
+        # self.model = pickle.load(open('model_5_without_v_flag_img_size_150.pkl', 'rb'))
+        self.model = pickle.load(open('model_8.pkl', 'rb'))
         # Lidar Subscriber
         self.sub = rospy.Subscriber('/front/scan', LaserScan, self.callback)
         self.ranges = None
         self.increments = None
-        self.linear_x_vel = 1
+        self.linear_x_vel = 1  # set based on the linear velocity chosen in the controller node
         self.angle_min = None
         self.angle_max = None
 
@@ -418,8 +391,74 @@ class calc_tau():
                 draw_image_segmentation(curr_image, tau_pred_el, tau_pred_er, tau_pred_l, tau_pred_r, tau_pred_c,self.tau_el, self.tau_er, self.tau_l, self.tau_r, self.tau_c)
             else:  
                 self.prev_image = self.curr_image
+    def get_tau_values_no_vel(self):
+        img_size = 150 # set based on the model chosen
     
+        if self.curr_image is not None:
+            if self.prev_image is not None:
+                curr_image = self.curr_image
+
+                img_1 = cv2.resize(self.prev_image,(img_size,img_size))
+                img_2 = cv2.resize(curr_image,(img_size,img_size))
+
+                # print('2',image_as_array_2.shape)
+                # print(self.total_imgs)
+                img = np.stack([img_1, img_2], 2)
+                img = tf.expand_dims(img, 0)
+                
+                img = np.asarray(img)
+                vel = np.asarray([self.linear_x_vel])
     
+                tau_pred = self.model.predict({"input_1": img})
+                # print("1",tau_pred[0],"2",tau_pred[0][0][0], "3",tau_pred[1],tau_pred[1][0],tau_pred[1][0][0])
+                set_limit(self.width, self.height)
+               
+                tau_pred[1] = tau_pred[1].round()
+                # # Publish Tau values data to rostopic
+                # # Creation of TauValues.msg
+                msg = TauComputation()
+                msg.header.stamp.secs =  self.secs
+                msg.header.stamp.nsecs =  self.nsecs
+                msg.height = self.height
+                msg.width = self.width
+
+                if tau_pred[1][0][0] == 1:
+                    tau_pred_el = tau_pred[0][0][0]/vel
+                else: 
+                    tau_pred_el = -1
+            
+                if tau_pred[1][0][4]  == 1:
+                    tau_pred_er = tau_pred[0][0][4]/vel
+                else: 
+                    tau_pred_er = -1
+                    
+                if tau_pred[1][0][1]  == 1:
+                    tau_pred_l = tau_pred[0][0][1]/vel
+                else: 
+                    tau_pred_l = -1
+
+                if tau_pred[1][0][3]  == 1:
+                    tau_pred_r = tau_pred[0][0][3]/vel
+                else: 
+                    tau_pred_r = -1
+
+                if tau_pred[1][0][2]  == 1:
+                    tau_pred_c = tau_pred[0][0][2]/vel
+                else: 
+                    tau_pred_c = -1
+
+                msg.tau_el = tau_pred_el
+                msg.tau_er = tau_pred_er
+                msg.tau_l = tau_pred_l
+                msg.tau_r = tau_pred_r
+                msg.tau_c = tau_pred_c
+
+                self.tau_values.publish(msg)
+                self.prev_image = self.curr_image
+                # Draw the ROIs with their TTT values
+                draw_image_segmentation(curr_image, tau_pred_el, tau_pred_er, tau_pred_l, tau_pred_r, tau_pred_c,self.tau_el, self.tau_er, self.tau_l, self.tau_r, self.tau_c)
+            else:  
+                self.prev_image = self.curr_image
     def callback(self, msg):
         start_ind  = 230 #0
         end_ind = 488 #len(msg.ranges) - 1   #488 #
@@ -551,12 +590,10 @@ if __name__ == '__main__':
     rospy.init_node('cnn_from_lidar', anonymous=True)
     tau = calc_tau()
     r = rospy.Rate(10)
-    # tr = train()
-    # tr.train_()
     while not rospy.is_shutdown():
-        # inf = inference()
-        # inf.extract_model()
+        # tau.get_tau_values_no_vel()
         tau.get_tau_values()
+
         r.sleep()
     
 
