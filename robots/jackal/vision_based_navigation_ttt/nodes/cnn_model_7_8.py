@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 from os import listdir
 import rospy
+import os
 import tensorflow as tf
 from tensorflow import keras
 import openpyxl
@@ -154,7 +155,7 @@ class train():
             path_images = self.common_path + "vision_based_navigation_ttt/training_images/" + folder + '/'
             images_in_folder = [f for f in listdir(path_images) if f.endswith(".png")]
 
-            for idx in range(len(images_in_folder)-1) : #len(images_in_folder)-1
+            for idx in range(1) : #len(images_in_folder)-1
                 # print(images_in_folder[idx])
                 try:
                     # load the image
@@ -264,9 +265,11 @@ class train():
         epochs = 100
         ## train the model
         model.fit({"input_1": X_train, "input_2": v_train}, {"output_1": y_1_train, "output_2": y_2_train}, batch_size=64, epochs = epochs,  validation_data=({"input_1": X_valid, "input_2": v_valid}, {"output_1": y_1_valid, "output_2": y_2_valid}))
-        with open('model_input_2_output_2_yeni.pkl', 'wb') as files: pickle.dump(model, files)
+        model.save("model_keras.h5")
+        # with open('model_input_2_output_2_yeni.pkl', 'wb') as files: pickle.dump(model, files)
         # make predictions on test sets
-        yhat = model.predict({"input_1": X_test, "input_2": v_test})
+        u_model =  tf.keras.models.load_model("model_keras.h5")
+        yhat = u_model.predict({"input_1": X_test, "input_2": v_test})
         # print(yhat)
         # print(yhat[0], yhat[1])
         # round pred
@@ -283,7 +286,6 @@ class train():
       
 class calc_tau():
     def __init__(self):
-
         # Tau Publisher
         self.tau_values = rospy.Publisher("lidar_tau_values", TauComputation, queue_size=10)
         # Raw Image Subscriber
@@ -296,7 +298,8 @@ class calc_tau():
         self.prev_image = None
         # os.environ["HOME"]+'/catkin_ws/src/vision_based_navigation_ttt/trained_model_parameters
         # self.model = pickle.load(open('model_5_without_v_flag_img_size_150.pkl', 'rb'))
-        self.model = pickle.load(open('model_8.pkl', 'rb'))
+        # self.model = pickle.load(open('model_8.pkl', 'rb'))
+        self.model = tf.keras.models.load_model("model_keras")
         # Lidar Subscriber
         self.sub = rospy.Subscriber('/front/scan', LaserScan, self.callback)
         self.ranges = None
@@ -391,6 +394,7 @@ class calc_tau():
                 draw_image_segmentation(curr_image, tau_pred_el, tau_pred_er, tau_pred_l, tau_pred_r, tau_pred_c,self.tau_el, self.tau_er, self.tau_l, self.tau_r, self.tau_c)
             else:  
                 self.prev_image = self.curr_image
+    
     def get_tau_values_no_vel(self):
         img_size = 150 # set based on the model chosen
     
@@ -587,13 +591,15 @@ class calc_tau():
             self.tau_er = tau_er
 
 if __name__ == '__main__':
-    rospy.init_node('cnn_from_lidar', anonymous=True)
-    tau = calc_tau()
-    r = rospy.Rate(10)
-    while not rospy.is_shutdown():
-        # tau.get_tau_values_no_vel()
-        tau.get_tau_values()
+    # rospy.init_node('cnn_from_lidar', anonymous=True)
+    tr = train()
+    tr.train_()
+    # tau = calc_tau()
+    # r = rospy.Rate(10)
+    # while not rospy.is_shutdown():
+    #     # tau.get_tau_values_no_vel()
+    #     tau.get_tau_values_no_vel()
 
-        r.sleep()
+    #     r.sleep()
     
 

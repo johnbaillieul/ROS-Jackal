@@ -9,7 +9,6 @@ from vision_based_navigation_ttt.msg import TauComputation
 from cv_bridge import CvBridgeError, CvBridge
 import cv2
 from sensor_msgs.msg import Image
-
 import os
 import pandas as pd
 import xlsxwriter
@@ -176,13 +175,8 @@ class compute_tau():
                 # print('ran',len(ranges))
                 tau_val = np.array([])
                 for i in range(len(ranges)):
-                    # print('i',i)
-                    # print('ran',ranges[i]*np.cos(theta_deg[i]))
                     tau_val = np.append(tau_val,abs(ranges[i]*np.cos(theta_deg[i])))
-                # print(self.angle_min,self.angle_max)
-                # print('be',tau_val)
                 self.tau_val = tau_val/self.linear_x_vel
-                # print('aft',self.tau_val)
                 
                 # inf values causing problems so removing them if number >50%
                 # Extreme left
@@ -304,7 +298,6 @@ class compute_tau():
 
                 # Draw the ROIs with their TTT values
                 draw_image_segmentation(curr_image, tau_el, tau_er, tau_l, tau_r, tau_c)
-
 
 if __name__ == '__main__':
     rospy.init_node('tau_from_lidar', anonymous=True)

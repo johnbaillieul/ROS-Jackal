@@ -29,7 +29,7 @@ class train_5():
             path_images = os.environ["HOME"]+"/ROS-Jackal/robots/jackal/vision_based_navigation_ttt/training_images/" + folder + '/'
             images_in_folder = [f for f in listdir(path_images) if f.endswith(".png")]
             image_size = 150
-            for idx in range(len(images_in_folder)-1) :#
+            for idx in range(1) :#len(images_in_folder) - 
                 # print(images_in_folder[idx])
                 try:
                     # load the image
@@ -98,7 +98,7 @@ class train_5():
 
         # tf.debugging.set_log_device_placement(True)
 
-
+        batch_size = 128
         # # Convolutional Neural Network
         input_1 = keras.layers.Input(shape=(image_size ,image_size ,2))
         conv1 = keras.layers.Conv2D(64, kernel_size=3, activation='relu')(input_1)
@@ -121,22 +121,26 @@ class train_5():
         output = keras.layers.Dense(5,kernel_initializer='he_uniform')(drop_1)
 
         model = keras.models.Model(inputs=[input_1], outputs=output)
-        model.compile(optimizer = 'adam', loss = 'mae', metrics = 'accuracy')
+        model.compile(optimizer = 'adam', loss = 'mae', metrics = ['MeanSquaredError','mean_absolute_error'])
 
         # summarize layers
         print(model.summary())
         # # plot graph
         model_name = 'model_5_without_v_flag_img_size_' + str(image_size) 
         keras.utils.plot_model(model, model_name + '.png', show_shapes=True)
-      
+        earlystopping = keras.callbacks.EarlyStopping(monitor ="val_loss", 
+                                        mode ="min", patience = 5, 
+                                        restore_best_weights = True)
+
+        epochs = 100
         ## train the model
-        model.fit({"input_1": X_train}, y_train, batch_size=64, epochs = 100,  validation_data=({"input_1": X_valid}, y_valid))
-        with open(path + 'vision_based_navigation_ttt/trained_model_parameters/' + model_name + '.pkl', 'wb') as files: pickle.dump(model, files)
-
+        model.fit({"input_1": X_train}, y_train, batch_size = batch_size, epochs = epochs,  validation_data=({"input_1": X_valid}, y_valid), callbacks =[earlystopping])
+        model.save("model_keras.h5")
+        
         # print(model.predict(X_test)[8])
-        test_loss, test_acc = model.evaluate({"input_1": X_test}, y_test)
-        print('test loss: {}, test accuracy: {}'.format(test_loss, test_acc) )
-
+        print(model.evaluate({"input_1": X_test}, y_test))
+        print(model.metrics_names)
+        
 class train_8():
     def __init__(self):
         pass
@@ -261,7 +265,7 @@ class train_8():
 
         # summarize layers
         print(model.summary())
-        # # plot graph
+        
         model_name = 'model_8_without_v_flag_img_size_' + str(img_size) 
         keras.utils.plot_model(model, model_name + '.png', show_shapes=True)
         
@@ -290,7 +294,7 @@ class train_8():
         print('mean_absolute_error', mae_1, 'mean_squared_error', mae_2)
 
 if __name__ == '__main__':
-    tr = train_8()
+    tr = train_5()
     tr.train_()
    
 

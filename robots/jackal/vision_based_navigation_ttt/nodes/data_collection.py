@@ -38,6 +38,7 @@ class collect_data():
         self.path_folder = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/training_images/"
         vel = '0.5' # velocity 
         self.folder_name = 'training_images_' + str(self.count_2) + '_v_' + vel + '/'
+        # create_folder
         os.mkdir(self.path_folder + self.folder_name)    
        
 
@@ -86,7 +87,6 @@ class collect_data():
         print("ppp")
         # Start by opening the spreadsheet and selecting the main sheet
         path_tau = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/tau_values/"
-        # create_folder
         path_images = self.path_folder + self.folder_name
         wb_tau =  xlsxwriter.Workbook(path_tau + "tau_value" + str(self.count) + ".xlsx")
         wksheet_tau = wb_tau.add_worksheet()

@@ -161,8 +161,8 @@ class train():
             path_images = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/training_images/" + folder + '/'
             images_in_folder = [f for f in listdir(path_images) if f.endswith(".png")]
 
-            for idx in range(len(images_in_folder)-1) : #len(images_in_folder)-1
-                # print(images_in_folder[idx])
+            for idx in range(len(images_in_folder)-1) : 
+                print(images_in_folder[idx])
                 try:
                     # load the image
                     img_1 = cv2.imread(path_images + images_in_folder[idx],0)

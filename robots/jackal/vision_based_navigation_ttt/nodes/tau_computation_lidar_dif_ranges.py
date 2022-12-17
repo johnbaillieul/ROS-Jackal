@@ -116,14 +116,8 @@ def tau_filtering(vector):
     perc_TTT_val_discarded = 0.15
     jump = int(perc_TTT_val_discarded * np.size(vector))
     vector = np.sort(vector)
-    # plt.scatter(vector,np.zeros(len(vector)))
-    # plt.title("before")
-    # plt.show()
     vector = np.delete(vector, range(jump))
     vector = np.delete(vector, range(np.size(vector) - jump, np.size(vector)))
-    # plt.scatter(vector,np.zeros(len(vector)))
-    # plt.title("after")
-    # plt.show()
     return vector
 
 #############################################################################################
