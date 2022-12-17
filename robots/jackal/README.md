@@ -101,12 +101,8 @@ The folder called trained_model_parameters contains the parameters of the traine
   
   This model only takes one image as input and outputs an array with the tau values in each Region of Interest. 
   
-### Model 3 
-  
-  This model takes two images along with the velocity and outputs an array with tau values in each Region of Interest
-  
-  ### Model 4
-  
+  ### Model 3
+  ********************* NEEDS EDITING *******************************************************************
   Is an updated version of model 3 where the difference is that it uses average pooling instead of max pooling
   
   Total trainable params: 1,777,083
@@ -115,12 +111,7 @@ The folder called trained_model_parameters contains the parameters of the traine
   validation_loss: 0.3516 - validation_accuracy: 0.8247
   test loss: 0.36275410652160645, test accuracy: 0.8163265585899353
   
-  
-  ### Model 5 
-  
-  Is an updated version of model 4 where the labels are modified. All the previous models were trained with labels corresponding to a infinity tau_value as -1 however in this model that it changed to 15. And results show that it works better than the other models.
-  
-  #### Total trainable params: 1,777,083
+  When the model was trained with labels that dont have a -1 flag value the metrics achieved were as follow:
   
   #### metrics achieved:
   
@@ -130,27 +121,23 @@ The folder called trained_model_parameters contains the parameters of the traine
   
   test loss: 0.48675239086151123, test accuracy: 0.8511404395103455
   
-  ### Model 6 
+  what we did here is changing the tau_values with -1 value to  15. Note that the -1 fal value corresponding to a infinity tau_value.
+  
+  ### Model 4
   
   Takes two images along with the velocity and outputs two arrays on with the tau values in each Region of Interest and the other array with a flag that shows if the predicited value is valid or not.
   
   ![model_with_shape_info](https://user-images.githubusercontent.com/98136555/203197318-052f6550-b1ab-4583-a185-ace9e60a9ef7.png)
 
   
-  ### Model 7
-  
+  ### Model 5
+  Same as model 6 but instead of predicting whether the tau value is valid or not after appending the velocity it is predicited before that because the image alone should be suffice to predict the tau value's validity.
   Model architecture:
   
   ![model_with_shape_info](https://user-images.githubusercontent.com/98136555/203196927-e1a5df6a-b659-4cb5-899a-96971d8fb24e.png)
 
-   ### Model 8
-  
-  Model architecture:
-    ![model_with_shape_info_2_out_2_input](https://user-images.githubusercontent.com/98136555/203196848-0cfa2b90-a081-4e77-a9dd-ff1236dcac11.png)
-  
-  
-  ### Model 9
-  
+  ### Model 6
+  The input to this model is an image of the region of interest unlike in all the other models where the input was the entire image and the output is only one tau value. It proved to be computationally expensive becasue it has to be run 5 time to get the tau value in exh of the 5 regions of interest.
   Model architecture:
   ![model_ROI](https://user-images.githubusercontent.com/98136555/203196713-d184d217-4d4c-4703-9a3e-b70578cf4f85.png)
 
