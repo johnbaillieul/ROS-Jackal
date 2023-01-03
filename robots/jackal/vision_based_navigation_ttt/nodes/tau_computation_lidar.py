@@ -13,7 +13,7 @@ import os
 import pandas as pd
 import xlsxwriter
 from xlsxwriter import Workbook
-
+import time
 
 # el[434,488]
 # l ranges[384,434]
@@ -139,6 +139,7 @@ class compute_tau():
         self.bridge = CvBridge()
         # self.get_variables()
         self.curr_image = None
+        import time
 
     def callback_img(self, data):
         try:
@@ -163,6 +164,7 @@ class compute_tau():
             # print(self.ranges)
 
     def get_tau_values(self):
+        start = time.time()
         if self.curr_image is not None:
             curr_image = self.curr_image
             if self.ranges is not None:
@@ -298,7 +300,7 @@ class compute_tau():
 
                 # Draw the ROIs with their TTT values
                 draw_image_segmentation(curr_image, tau_el, tau_er, tau_l, tau_r, tau_c)
-
+        print(f"func:\tTime taken: {(time.time()-start)*10**3:.03f}ms")
 if __name__ == '__main__':
     rospy.init_node('tau_from_lidar', anonymous=True)
     val = compute_tau()

@@ -33,10 +33,10 @@
         
          <!-- Spawn Jackal-->
         <include file="$(find vision_based_navigation_ttt)/launch/spawn_jackal.launch">
-                <arg name="x" value="0" />
-                <arg name="y" value="0" />
+                <arg name="x" value="11" />
+                <arg name="y" value="-1.62" />
                 <arg name="z" value="1.0" />
-                <arg name="yaw" value="1.5" />
+                <arg name="yaw" value="3.1" />
                 <arg name="config" value="$(arg config)" />
         </include> 
 

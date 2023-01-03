@@ -288,7 +288,7 @@ class inference():
 class calc_tau():
     def __init__(self):
         # Tau Publisher
-        self.tau_values = rospy.Publisher("lidar_tau_values", TauComputation, queue_size=10)
+        self.tau_values = rospy.Publisher("tau_values", TauComputation, queue_size=10)
         # Raw Image Subscriber
         self.image_sub_name = "/realsense/color/image_raw"
         self.image_sub = rospy.Subscriber(self.image_sub_name, Image, self.callback_img)
@@ -297,8 +297,13 @@ class calc_tau():
         # self.get_variables()
         self.curr_image = None
         self.prev_image = None
-        self.model = pickle.load(open('model_pkl_5.pkl', 'rb'))
-
+        self.model = tf.lite.Interpreter(model_path= "model_5_without_v_without_flag_old_data_img_size_200_model.tflite")
+        self.model.allocate_tensors()
+        self.input_index = self.model.get_input_details()[0]["index"]
+        self.output_index = self.model.get_output_details()[0]["index"]
+        # self.model = tf.keras.models.load_model("model_5_without_v_with_flag_img_size_200_epochs_100.h5", compile=False)
+        # self.model.compile(optimizer = 'adam', loss = 'mae', metrics = ['MeanSquaredError', 'mean_absolute_error']) #Paste it here
+        self.vel = 1
         # Lidar Subscriber
         self.sub = rospy.Subscriber('/front/scan', LaserScan, self.callback)
         self.ranges = None
@@ -394,7 +399,7 @@ class calc_tau():
         if self.curr_image is not None:
             if self.prev_image is not None:
                 print("here")
-                img_size = 250
+                img_size = 200
                 curr_image = self.curr_image
 
                 img_1 = cv2.resize(self.prev_image,(img_size,img_size))
@@ -407,15 +412,18 @@ class calc_tau():
                
                 img = np.stack([img_1, img_2], 2)
                 img = tf.expand_dims(img, 0)
-               
                 img = np.asarray(img)
-               
-                vel = 1
-                vel = np.asarray([vel])
+                print("img_shape", np.shape(img))
+             
+                vel = np.asarray([self.vel])
               
                 # with open('model_pkl_1' , 'rb') as f: lr = pickle.load(f)
-                # print(lr)
-                tau_pred = self.model.predict({"input_1": img})
+                # print(lr)interpreter
+                inf_image = img.astype(np.float32)
+                self.model.set_tensor(self.input_index, inf_image)
+                self.model.invoke()
+                tau_pred = self.model.get_tensor(self.output_index)
+                # tau_pred = self.model.predict({"input_1": img})
                 set_limit(self.width, self.height)
 
                 # Publish Tau values data to rostopic
@@ -437,11 +445,11 @@ class calc_tau():
                 
                 draw_image_segmentation(curr_image, tau_pred[0][0], tau_pred[0][4], tau_pred[0][1], tau_pred[0][3], tau_pred[0][2], self.tau_el, self.tau_er, self.tau_l, self.tau_r, self.tau_c)
                 
-                self.er_error_array.append(self.tau_er - tau_pred[0][4])
-                self.el_error_array.append(self.tau_el - tau_pred[0][0])
-                self.r_error_array.append(self.tau_r - tau_pred[0][3])
-                self.l_error_array.append(self.tau_l - tau_pred[0][1])
-                self.c_error_array.append(self.tau_c - tau_pred[0][2])
+                # self.er_error_array.append(self.tau_er - tau_pred[0][4])
+                # self.el_error_array.append(self.tau_el - tau_pred[0][0])
+                # self.r_error_array.append(self.tau_r - tau_pred[0][3])
+                # self.l_error_array.append(self.tau_l - tau_pred[0][1])
+                # self.c_error_array.append(self.tau_c - tau_pred[0][2])
             
             else:  
                 self.prev_image = self.curr_image
@@ -456,8 +464,6 @@ class calc_tau():
         self.ranges = msg.ranges[230:489]
         # print(self.ranges)
         if self.ranges is not None:
-            print("here1")
-            # print(1)
             theta_rd = np.arange(self.angle_min,self.angle_max + self.increments, self.increments, dtype=float) # generated within the half-open interval [start, stop).
             # print('rd',theta_rd)
             theta_deg = theta_rd * (180/np.pi)
@@ -573,46 +579,46 @@ class calc_tau():
             self.tau_r = tau_r
             self.tau_er = tau_er
 
-    def on_rospy_shutdown(self):
-            rospy.logwarn("Stopping")
-            rospy.Rate(1).sleep()
-            count = 1
+    # def on_rospy_shutdown(self):
+    #         rospy.logwarn("Stopping")
+    #         rospy.Rate(1).sleep()
+    #         count = 1
 
-            path_folder = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/cnn_lidar_error/"
-            folder_name = str(count) + '/'
-            # os.mkdir(path_folder + folder_name) 
+    #         path_folder = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/cnn_lidar_error/"
+    #         folder_name = str(count) + '/'
+    #         # os.mkdir(path_folder + folder_name) 
             
-            # Region_of_interest = [self.er_error_array, self.r_error_array, self.c_error_array,
-            #          self.l_error_array,self.el_error_array]
+    #         # Region_of_interest = [self.er_error_array, self.r_error_array, self.c_error_array,
+    #         #          self.l_error_array,self.el_error_array]
 
-            er_error_array = pd.DataFrame(self.er_error_array)
-            # filepath_er = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/csv/er_error_array.xlsx"
-            er_error_array.to_excel( path_folder + folder_name + 'er_error_array' + '.xlsx')
+    #         er_error_array = pd.DataFrame(self.er_error_array)
+    #         # filepath_er = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/csv/er_error_array.xlsx"
+    #         er_error_array.to_excel( path_folder + folder_name + 'er_error_array' + '.xlsx')
 
-            el_error_array = pd.DataFrame(self.el_error_array)
-            # filepath_el = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/csv/el_error_array.xlsx"
-            el_error_array.to_excel(path_folder + folder_name + 'el_error_array' + '.xlsx')
+    #         el_error_array = pd.DataFrame(self.el_error_array)
+    #         # filepath_el = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/csv/el_error_array.xlsx"
+    #         el_error_array.to_excel(path_folder + folder_name + 'el_error_array' + '.xlsx')
 
-            r_error_array = pd.DataFrame(self.r_error_array)
-            # filepath_r = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/csv/r_error_array.xlsx"
-            r_error_array.to_excel(path_folder + folder_name + 'r_error_array' +  '.xlsx')
+    #         r_error_array = pd.DataFrame(self.r_error_array)
+    #         # filepath_r = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/csv/r_error_array.xlsx"
+    #         r_error_array.to_excel(path_folder + folder_name + 'r_error_array' +  '.xlsx')
 
-            l_error_array = pd.DataFrame(self.l_error_array)
-            # filepath_l = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/csv/l_error_array.xlsx"
-            l_error_array.to_excel(path_folder + folder_name + 'l_error_array' + '.xlsx')
+    #         l_error_array = pd.DataFrame(self.l_error_array)
+    #         # filepath_l = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/csv/l_error_array.xlsx"
+    #         l_error_array.to_excel(path_folder + folder_name + 'l_error_array' + '.xlsx')
 
-            c_error_array = pd.DataFrame(self.c_error_array)
-            # filepath_c = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/csv/c_error_array.xlsx"
-            c_error_array.to_excel(path_folder + folder_name + 'c_error_array' + '.xlsx')
+    #         c_error_array = pd.DataFrame(self.c_error_array)
+    #         # filepath_c = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/csv/c_error_array.xlsx"
+    #         c_error_array.to_excel(path_folder + folder_name + 'c_error_array' + '.xlsx')
 
     
 
-def tau_computation_from_cnn():
-    rospy.init_node('cnn_from_lidar', anonymous=True)
-    tau = calc_tau()
-    tau.get_tau_values()
-    rospy.on_shutdown(tau.on_rospy_shutdown)
-    rospy.spin()
+# def tau_computation_from_cnn():
+#     rospy.init_node('cnn_from_lidar', anonymous=True)
+#     tau = calc_tau()
+#     tau.get_tau_values()
+#     rospy.on_shutdown(tau.on_rospy_shutdown)
+#     rospy.spin()
 
 if __name__ == '__main__':
     # tau_computation_from_cnn()
@@ -626,7 +632,7 @@ if __name__ == '__main__':
         # tr.train_()
         # inf = inference()
         # inf.extract_model()
-        tau.get_tau_values()
+        tau.get_tau_values_without_v()
         r.sleep()
     
 
