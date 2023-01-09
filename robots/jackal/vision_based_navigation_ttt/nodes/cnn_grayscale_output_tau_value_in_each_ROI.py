@@ -245,12 +245,9 @@ class Calc_Tau():
         # self.get_variables()
         self.curr_image = None
         self.prev_image = None
-        self.model = tf.lite.Interpreter(model_path= "model_5_without_v_without_flag_old_data_img_size_200_model.tflite")
-        self.model.allocate_tensors()
-        self.input_index = self.model.get_input_details()[0]["index"]
-        self.output_index = self.model.get_output_details()[0]["index"]
-        # self.model = tf.keras.models.load_model("model_5_without_v_with_flag_img_size_200_epochs_100.h5", compile=False)
-        # self.model.compile(optimizer = 'adam', loss = 'mae', metrics = ['MeanSquaredError', 'mean_absolute_error']) #Paste it here
+        path = os.environ["HOME"]+"/catkin_ws/src/"
+        self.model = tf.keras.models.load_model(path + "vision_based_navigation_ttt/trained_model_parameters/model_with_custom_cnn.h5", compile=False)
+        self.model.compile(optimizer = 'adam', loss = 'mae', metrics = ['MeanSquaredError', 'mean_absolute_error']) #Paste it here
         self.vel = 1
         # Lidar Subscriber
         self.sub = rospy.Subscriber('/front/scan', LaserScan, self.callback)
@@ -272,7 +269,7 @@ class Calc_Tau():
         self.width = data.width
         self.height = data.height
 
-    def get_tau_values_with_v(self):
+    def get_tau_values(self):
         img_size = 250
         if self.curr_image is not None:
             if self.prev_image is not None:
@@ -318,49 +315,6 @@ class Calc_Tau():
                 self.tau_values.publish(msg)
                 self.prev_image = self.curr_image
             
-                draw_image_segmentation(curr_image, tau_pred[0][0], tau_pred[0][4], tau_pred[0][1], tau_pred[0][3], tau_pred[0][2], self.tau_el, self.tau_er, self.tau_l, self.tau_r, self.tau_c)
-            else:  
-                self.prev_image = self.curr_image
-
-    def get_tau_values_without_v(self):
-        if self.curr_image is not None:
-            if self.prev_image is not None:
-                print("here")
-                img_size = 200
-                curr_image = self.curr_image
-
-                img_1 = cv2.resize(self.prev_image,(img_size,img_size))
-                img_2 = cv2.resize(self.curr_image,(img_size,img_size))
-               
-                img = np.stack([img_1, img_2], 2)
-                img = tf.expand_dims(img, 0)
-                img = np.asarray(img)
-             
-                vel = np.asarray([self.vel])
-              
-                inf_image = img.astype(np.float32)
-                self.model.set_tensor(self.input_index, inf_image)
-                self.model.invoke()
-                tau_pred = self.model.get_tensor(self.output_index)
-                # tau_pred = self.model.predict({"input_1": img})
-                set_limit(self.width, self.height)
-
-                # Publish Tau values data to rostopic
-                # Creation of TauValues.msg
-                msg = TauComputation()
-                msg.header.stamp.secs =  self.secs
-                msg.header.stamp.nsecs =  self.nsecs
-                msg.height = self.height
-                msg.width = self.width
-
-                msg.tau_el = tau_pred[0][0]/vel
-                msg.tau_er = tau_pred[0][4]/vel
-                msg.tau_l = tau_pred[0][1]/vel
-                msg.tau_r = tau_pred[0][3]/vel
-                msg.tau_c = tau_pred[0][2]/vel
-                self.tau_values.publish(msg)
-                self.prev_image = self.curr_image
-                
                 draw_image_segmentation(curr_image, tau_pred[0][0], tau_pred[0][4], tau_pred[0][1], tau_pred[0][3], tau_pred[0][2], self.tau_el, self.tau_er, self.tau_l, self.tau_r, self.tau_c)
             else:  
                 self.prev_image = self.curr_image
@@ -491,7 +445,7 @@ if __name__ == '__main__':
     while not rospy.is_shutdown():
         # tr = train()
         # tr.train_()
-        tau.get_tau_values_without_v()
+        tau.get_tau_values()
         r.sleep()
     
 

@@ -3,31 +3,22 @@ import cv2
 import numpy as np
 from os import listdir
 import rospy
-import os
 import tensorflow as tf
 from tensorflow import keras
 import openpyxl
 from PIL import Image
-# import pickle
-import pickle5 as pickle
-import seaborn as sns
+import matplotlib.pyplot as plt
+import os
 from tkinter import W
-from sensor_msgs.msg import LaserScan
+from sensor_msgs.msg import LaserScan, Image
+import numpy as np
 from cv_bridge import CvBridgeError, CvBridge
 from vision_based_navigation_ttt.msg import TauComputation
-from sensor_msgs.msg import Image
 import pandas as pd
 from xlsxwriter import Workbook
-from sklearn.metrics import accuracy_score, mean_absolute_error, mean_squared_error
-#import module
-import tarfile
-
-############################################################################################
-# Initialization of the variables for setting the limits of the ROIs
 
 # Definition of the limits for the ROIs
 def set_limit(img_width, img_height):
-    
     ########## IMPORTANT PARAMETERS: ##########
 	# Extreme left and extreme right
 	global x_init_el
@@ -76,9 +67,6 @@ def set_limit(img_width, img_height):
 	y_init_c = int(2.5 * img_height / 12)
 	x_end_c = int(6.5 * img_width / 12)
 	y_end_c = int(7.5 * img_height / 12)
-	###########################################
-
-##############################################################################################
 
 # Visual representation of the ROIs with the average TTT values
 def draw_image_segmentation(curr_image, taup_el, taup_er, taup_l, taup_r, taup_c,tau_el, tau_er, tau_l, tau_r, tau_c):
@@ -131,79 +119,54 @@ def draw_image_segmentation(curr_image, taup_el, taup_er, taup_l, taup_r, taup_c
     cv2.imshow('ROIs Representation', color_image)
     cv2.waitKey(10)
 
-#######################################################################################################################
-
-class train():
+class Train():
     def __init__(self):
-        self.common_path = os.environ["HOME"]+"/catkin_ws/src/"
-    def train_(self):
+        pass
+    def train_(modelself):
         np.random.seed(0)
-        img_size = 150
-        X = []
-        y_1 = []
-        y_2 = []
-        velocity = []
 
-        path_tau = self.common_path + "vision_based_navigation_ttt/tau_values/tau_value"   
-        path_folder = self.common_path + "vision_based_navigation_ttt/training_images/"
+        X = []
+        y = []
+
+        path = os.environ["HOME"]+"/catkin_ws/src/"
+        path_tau =  path + "vision_based_navigation_ttt/tau_values/tau_value"   
+        path_folder = path + "vision_based_navigation_ttt/training_images/"
 
         folders = [file for file in os.listdir(path_folder) if os.path.isdir(os.path.join(path_folder, file))]
-        # print('ggggggggggggg',folders)
         for folder in folders:
 
-            # print('fol',folder)
-            path_images = self.common_path + "vision_based_navigation_ttt/training_images/" + folder + '/'
+            path_images = path + "vision_based_navigation_ttt/training_images/" + folder + '/'
             images_in_folder = [f for f in listdir(path_images) if f.endswith(".png")]
-
-            for idx in range(1) : #len(images_in_folder)-1
-                # print(images_in_folder[idx])
+            img_size = 200
+            for idx in range(1): #(len(images_in_folder)-1):
                 try:
                     # load the image
-                    img_1 = cv2.imread(path_images + images_in_folder[idx],0)
+                    img_1 = cv2.imread(path_images + images_in_folder[idx])
                     img_1 = cv2.resize(img_1,(img_size,img_size))
-                    # print('1', image_as_array_1.shape)
 
-                    img_2 = cv2.imread(path_images + images_in_folder[idx+1],0)
+                    img_2 = cv2.imread(path_images + images_in_folder[idx+1])
                     img_2 = cv2.resize(img_2,(img_size,img_size))
                     
-                    img = np.stack([img_1, img_2], 2)
+                    img = np.concatenate([img_1, img_2], 2)
+                    print(np.shape(img))
                     
-                    # print(img)
-                    # add our image to the dataset
+                    # add image to the dataset
                     X.append(img)
 
-                    # get velocity
-                    vel = float(folder.split('_')[4])
-                    # print('ve',vel)
-                    velocity.append([vel])
-
-                    # retrive the direction from the filename
+                    # retrive distances
                     ps = openpyxl.load_workbook(path_tau + str(images_in_folder[idx+1].split('.')[0]) + '.xlsx')
                     sheet = ps['Sheet1']
                     tau_values = [sheet['A1'].value,sheet['B1'].value,sheet['C1'].value,sheet['D1'].value,sheet['E1'].value]
-                    y_1.append(np.asarray(tau_values)/vel)
-                    # print(y_1)
-
-                    y_temp = []
-                    for i in tau_values:
-                        if i == -1:
-                            y_temp.append(0)
-                        else:
-                            y_temp.append(1)
-                    y_2.append(y_temp)
+                    y.append(np.asarray(tau_values))
 
                 except Exception as inst:
                     print(idx)
                     print(inst)
          
         X = np.asarray(X)
-        # print('x',X.shape)
-        y_1 = np.asarray(y_1)
-        # print(y_1)
-        # print('y',y.shape)
-        y_2 = np.asarray(y_2)
-        # print(y_2)
-        velocity = np.asarray(velocity)
+        print(np.shape(X))
+        y = np.asarray(y)
+        print(np.shape(y))
         
         ind = np.arange(len(X))
         np.random.shuffle(ind)
@@ -219,20 +182,12 @@ class train():
         X_valid = X[ind[train_index:train_index+valid_index]]
         X_test = X[ind[train_index+valid_index:]]
 
-        y_1_train = y_1[ind[0:train_index]]
-        y_1_valid = y_1[ind[train_index:train_index+valid_index]]
-        y_1_test = y_1[ind[train_index+valid_index:]]
-
-        y_2_train = y_2[ind[0:train_index]]
-        y_2_valid = y_2[ind[train_index:train_index+valid_index]]
-        y_2_test = y_2[ind[train_index+valid_index:]]
-
-        v_train = velocity[ind[0:train_index]]
-        v_valid = velocity[ind[train_index:train_index+valid_index]]
-        v_test = velocity[ind[train_index+valid_index:]]
+        y_train = y[ind[0:train_index]]
+        y_valid = y[ind[train_index:train_index+valid_index]]
+        y_test = y[ind[train_index+valid_index:]]
 
         # # Convolutional Neural Network
-        input_1 = keras.layers.Input(shape=(img_size,img_size,2))
+        input_1 = keras.layers.Input(shape=(img_size,img_size,6))
         conv1 = keras.layers.Conv2D(64, kernel_size=3, activation='relu')(input_1)
         pool1 = keras.layers.AveragePooling2D(pool_size=(2, 2))(conv1)
         conv2 = keras.layers.Conv2D(32, kernel_size=3, activation='relu')(pool1)
@@ -240,54 +195,36 @@ class train():
         conv3 = keras.layers.Conv2D(16, kernel_size=3, activation='relu')(pool2)
         pool3 = keras.layers.AveragePooling2D(pool_size=(2, 2))(conv3)
         flat = keras.layers.Flatten()(pool3)
-        hidden_1 = keras.layers.Dense(128, activation='relu',kernel_initializer='he_uniform')(flat)
-        output_2 = keras.layers.Dense(5, activation= 'sigmoid', name = 'output_2')(hidden_1)
-        input_2 = keras.layers.Input(shape=(1))
 
-        # merge input models
-        merge = keras.layers.concatenate([flat, input_2])  
-
-        hidden1 = keras.layers.Dense(128, activation='relu',kernel_initializer='he_uniform')(merge)
-        
+        hidden1 = keras.layers.Dense(128, activation='relu',kernel_initializer='he_uniform')(flat)
+        drop_1 = keras.layers.Dropout(0.25)
         hidden2 = keras.layers.Dense(225, activation='relu',kernel_initializer='he_uniform')(hidden1)
-        drop_2 = keras.layers.Dropout(0.25)(hidden2)
-        output_1 = keras.layers.Dense(5, name = 'output_1')(drop_2)
+        drop_1 = keras.layers.Dropout(0.25)(hidden2)
+        output = keras.layers.Dense(5,kernel_initializer='he_uniform')(drop_1)
 
-        model = keras.models.Model(inputs=[input_1, input_2], outputs=[output_1, output_2])
+        model = keras.models.Model(inputs=[input_1], outputs=output)
 
         # # summarize layers
         print(model.summary())
         # # plot graph
-        keras.utils.plot_model(model, "model_with_shape_info_2_out_2_input.png", show_shapes=True)
-        
-        model.compile(optimizer = 'adam', loss = {"output_1" :'mae', "output_2" :'binary_crossentropy'})
-        # , metrics = [['mean_absolute_error']]
-        epochs = 100
-        ## train the model
-        model.fit({"input_1": X_train, "input_2": v_train}, {"output_1": y_1_train, "output_2": y_2_train}, batch_size=64, epochs = epochs,  validation_data=({"input_1": X_valid, "input_2": v_valid}, {"output_1": y_1_valid, "output_2": y_2_valid}))
-        model.save("model_keras.h5")
-        # with open('model_input_2_output_2_yeni.pkl', 'wb') as files: pickle.dump(model, files)
-        # make predictions on test sets
-        u_model =  tf.keras.models.load_model("model_keras.h5")
-        yhat = u_model.predict({"input_1": X_test, "input_2": v_test})
-        # print(yhat)
-        # print(yhat[0], yhat[1])
-        # round pred
-        yhat_class = yhat[1].round()
-        # calculate accuracy
-        acc = accuracy_score(y_2_test, yhat_class)
-        # store result 
-        print('accuracy_score ','> %.3f' % acc)
+        model_name = "model_with_shape_info"
+        keras.utils.plot_model(model, model_name + ".png", show_shapes=True)
 
-        # evaluate model on test set
-        mae_1 = mean_absolute_error(y_1_test, yhat[0])
-        mae_2 = mean_squared_error(y_1_test, yhat[0])
-        print('mean_absolute_error', mae_1, 'mean_squared_error', mae_2)
+        model.compile(optimizer = 'adam', loss = 'mae', metrics = 'accuracy')
       
-class calc_tau():
+        ## train the model
+        model.fit({"input_1": X_train}, y_train, batch_size=64, epochs = 100,  validation_data=({"input_1": X_valid}, y_valid))
+        # Save the best performing model to file
+        model.save(model_name + ".h5")
+
+        # print(model.predict(X_test)[8])
+        test_loss, test_acc = model.evaluate({"input_1": X_test}, y_test)
+        print('test loss: {}, test accuracy: {}'.format(test_loss, test_acc) )
+
+class Calc_Tau():
     def __init__(self):
         # Tau Publisher
-        self.tau_values = rospy.Publisher("lidar_tau_values", TauComputation, queue_size=10)
+        self.tau_values = rospy.Publisher("tau_values", TauComputation, queue_size=10)
         # Raw Image Subscriber
         self.image_sub_name = "/realsense/color/image_raw"
         self.image_sub = rospy.Subscriber(self.image_sub_name, Image, self.callback_img)
@@ -296,21 +233,21 @@ class calc_tau():
         # self.get_variables()
         self.curr_image = None
         self.prev_image = None
-        # os.environ["HOME"]+'/catkin_ws/src/vision_based_navigation_ttt/trained_model_parameters
-        # self.model = pickle.load(open('model_5_without_v_flag_img_size_150.pkl', 'rb'))
-        # self.model = pickle.load(open('model_8.pkl', 'rb'))
-        self.model = tf.keras.models.load_model("model_keras")
+
+        self.model = tf.keras.models.load_model("model_5_without_v_with_flag_img_size_200_epochs_100.h5", compile=False)
+        self.model.compile(optimizer = 'adam', loss = 'mae', metrics = ['MeanSquaredError', 'mean_absolute_error']) #Paste it here
+        self.vel = 1
         # Lidar Subscriber
         self.sub = rospy.Subscriber('/front/scan', LaserScan, self.callback)
         self.ranges = None
         self.increments = None
-        self.linear_x_vel = 1  # set based on the linear velocity chosen in the controller node
+        self.linear_x_vel = 1
         self.angle_min = None
         self.angle_max = None
 
     def callback_img(self, data):
         try:
-            self.curr_image = self.bridge.imgmsg_to_cv2(data, "mono8")
+            self.curr_image = self.bridge.imgmsg_to_cv2(data, "passthrough")
         except CvBridgeError as e:
             print(e)
             return
@@ -321,173 +258,59 @@ class calc_tau():
         self.height = data.height
 
     def get_tau_values(self):
-        img_size = 150
         if self.curr_image is not None:
             if self.prev_image is not None:
+                print("here")
+                img_size = 250
                 curr_image = self.curr_image
 
                 img_1 = cv2.resize(self.prev_image,(img_size,img_size))
-        
-
-                img_2 = cv2.resize(curr_image,(img_size,img_size))
-
-                # print('2',image_as_array_2.shape)
-                # print(self.total_imgs)
-                img = np.stack([img_1, img_2], 2)
-                img = tf.expand_dims(img, 0)
-                
-                img = np.asarray(img)
-                # print('img',img.shape)
-                # print(img.shape)
-                vel = 1.5
-                vel = np.asarray([vel])
-                # print('v',vel.shape)
-                # with open('model_pkl_1' , 'rb') as f: lr = pickle.load(f)
-                # print(lr)
-                tau_pred = self.model.predict({"input_1": img, "input_2": vel})
-                # print("1",tau_pred[0],"2",tau_pred[0][0][0], "3",tau_pred[1],tau_pred[1][0],tau_pred[1][0][0])
-                set_limit(self.width, self.height)
+                img_2 = cv2.resize(self.curr_image,(img_size,img_size))
                
-                tau_pred[1] = tau_pred[1].round()
-                # # Publish Tau values data to rostopic
-                # # Creation of TauValues.msg
-                msg = TauComputation()
-                msg.header.stamp.secs =  self.secs
-                msg.header.stamp.nsecs =  self.nsecs
-                msg.height = self.height
-                msg.width = self.width
-
-                if tau_pred[1][0][0] == 1:
-                    tau_pred_el = tau_pred[0][0][0]
-                else: 
-                    tau_pred_el = -1
-            
-                if tau_pred[1][0][4]  == 1:
-                    tau_pred_er = tau_pred[0][0][4]
-                else: 
-                    tau_pred_er = -1
-                    
-                if tau_pred[1][0][1]  == 1:
-                    tau_pred_l = tau_pred[0][0][1]
-                else: 
-                    tau_pred_l = -1
-
-                if tau_pred[1][0][3]  == 1:
-                    tau_pred_r = tau_pred[0][0][3]
-                else: 
-                    tau_pred_r = -1
-
-                if tau_pred[1][0][2]  == 1:
-                    tau_pred_c = tau_pred[0][0][2]
-                else: 
-                    tau_pred_c = -1
-
-                msg.tau_el = tau_pred_el
-                msg.tau_er = tau_pred_er
-                msg.tau_l = tau_pred_l
-                msg.tau_r = tau_pred_r
-                msg.tau_c = tau_pred_c
-
-                self.tau_values.publish(msg)
-                self.prev_image = self.curr_image
-                # Draw the ROIs with their TTT values
-                draw_image_segmentation(curr_image, tau_pred_el, tau_pred_er, tau_pred_l, tau_pred_r, tau_pred_c,self.tau_el, self.tau_er, self.tau_l, self.tau_r, self.tau_c)
-            else:  
-                self.prev_image = self.curr_image
-    
-    def get_tau_values_no_vel(self):
-        img_size = 150 # set based on the model chosen
-    
-        if self.curr_image is not None:
-            if self.prev_image is not None:
-                curr_image = self.curr_image
-
-                img_1 = cv2.resize(self.prev_image,(img_size,img_size))
-                img_2 = cv2.resize(curr_image,(img_size,img_size))
-
-                # print('2',image_as_array_2.shape)
-                # print(self.total_imgs)
-                img = np.stack([img_1, img_2], 2)
+                img = np.concatenate([img_1, img_2], 2)
                 img = tf.expand_dims(img, 0)
-                
                 img = np.asarray(img)
-                vel = np.asarray([self.linear_x_vel])
-    
+             
+                vel = np.asarray([self.vel])
+              
+                inf_image = img.astype(np.float32)
                 tau_pred = self.model.predict({"input_1": img})
-                # print("1",tau_pred[0],"2",tau_pred[0][0][0], "3",tau_pred[1],tau_pred[1][0],tau_pred[1][0][0])
                 set_limit(self.width, self.height)
-               
-                tau_pred[1] = tau_pred[1].round()
-                # # Publish Tau values data to rostopic
-                # # Creation of TauValues.msg
+
+                # Publish Tau values data to rostopic
+                # Creation of TauValues.msg
                 msg = TauComputation()
                 msg.header.stamp.secs =  self.secs
                 msg.header.stamp.nsecs =  self.nsecs
                 msg.height = self.height
                 msg.width = self.width
 
-                if tau_pred[1][0][0] == 1:
-                    tau_pred_el = tau_pred[0][0][0]/vel
-                else: 
-                    tau_pred_el = -1
-            
-                if tau_pred[1][0][4]  == 1:
-                    tau_pred_er = tau_pred[0][0][4]/vel
-                else: 
-                    tau_pred_er = -1
-                    
-                if tau_pred[1][0][1]  == 1:
-                    tau_pred_l = tau_pred[0][0][1]/vel
-                else: 
-                    tau_pred_l = -1
-
-                if tau_pred[1][0][3]  == 1:
-                    tau_pred_r = tau_pred[0][0][3]/vel
-                else: 
-                    tau_pred_r = -1
-
-                if tau_pred[1][0][2]  == 1:
-                    tau_pred_c = tau_pred[0][0][2]/vel
-                else: 
-                    tau_pred_c = -1
-
-                msg.tau_el = tau_pred_el
-                msg.tau_er = tau_pred_er
-                msg.tau_l = tau_pred_l
-                msg.tau_r = tau_pred_r
-                msg.tau_c = tau_pred_c
-
+                msg.tau_el = tau_pred[0][0]/vel
+                msg.tau_er = tau_pred[0][4]/vel
+                msg.tau_l = tau_pred[0][1]/vel
+                msg.tau_r = tau_pred[0][3]/vel
+                msg.tau_c = tau_pred[0][2]/vel
                 self.tau_values.publish(msg)
                 self.prev_image = self.curr_image
-                # Draw the ROIs with their TTT values
-                draw_image_segmentation(curr_image, tau_pred_el, tau_pred_er, tau_pred_l, tau_pred_r, tau_pred_c,self.tau_el, self.tau_er, self.tau_l, self.tau_r, self.tau_c)
+                
+                draw_image_segmentation(curr_image, tau_pred[0][0], tau_pred[0][4], tau_pred[0][1], tau_pred[0][3], tau_pred[0][2], self.tau_el, self.tau_er, self.tau_l, self.tau_r, self.tau_c)
             else:  
                 self.prev_image = self.curr_image
-    def callback(self, msg):
+
+    def callback_lidar(self, msg):
         start_ind  = 230 #0
-        end_ind = 488 #len(msg.ranges) - 1   #488 #
-        # print('ol',msg.angle_max)
+        end_ind = 488 #len(msg.ranges) - 1   #488 
         self.angle_min = msg.angle_min + start_ind * msg.angle_increment
         self.angle_max = msg.angle_min + end_ind * msg.angle_increment
         self.increments = msg.angle_increment
         self.ranges = msg.ranges[230:489]
-        # print(self.ranges)
         if self.ranges is not None:
-            # print("here1")
-            # print(1)
             theta_rd = np.arange(self.angle_min,self.angle_max + self.increments, self.increments, dtype=float) # generated within the half-open interval [start, stop).
-            # print('rd',theta_rd)
             theta_deg = theta_rd * (180/np.pi)
             ranges = self.ranges
-            # print('deg',len(theta_deg))
-            # print('ran',len(ranges))
             tau_val = np.array([])
             for i in range(len(ranges)):
-                # print('i',i)
-                # print('ran',ranges[i]*np.cos(theta_deg[i]))
                 tau_val = np.append(tau_val,abs(ranges[i]*np.cos(theta_deg[i])))
-            # print(self.angle_min,self.angle_max)
-            # print('be',tau_val)
             self.tau_val = tau_val/self.linear_x_vel
         
             # Extreme left
@@ -591,15 +414,16 @@ class calc_tau():
             self.tau_er = tau_er
 
 if __name__ == '__main__':
+    # tau_computation_from_cnn()
     # rospy.init_node('cnn_from_lidar', anonymous=True)
-    tr = train()
-    tr.train_()
-    # tau = calc_tau()
+    # tau = Calc_Tau()
     # r = rospy.Rate(10)
+    tr = Train()
+    tr.train_()
     # while not rospy.is_shutdown():
-    #     # tau.get_tau_values_no_vel()
-    #     tau.get_tau_values_no_vel()
-
-    #     r.sleep()
+        # # tr = train()
+        # # tr.train_()
+        # tau.get_tau_values()
+        # r.sleep()
     
 
