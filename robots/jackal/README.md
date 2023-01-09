@@ -103,31 +103,23 @@ In this approach we aim to calculate the Optical Flow (i.e the motion between co
 
   By default, the images will be saved in the ```training_images``` folder and the distances are saved in the ```tau_values``` folder.
   
-  #### Model 2 
+  #### Available Model Architectures:
   
-  This model only takes one image as input and outputs an array with the tau values in each Region of Interest. 
+  #### 1. cnn_auto_ml
+  This model uses "AutoKeras" which is an AutoML System. It takes two successive colored images as input, and outputs the distance in each region of interest. The distance is then converted to ```tau_value``` by dividing it by the robot's velocity.
   
-  #### Model 3
-  ********************* NEEDS EDITING *******************************************************************
-  Is an updated version of model 3 where the difference is that it uses average pooling instead of max pooling
+  <img src="https://user-images.githubusercontent.com/98136555/211239897-3d31f95e-03bc-45ba-96e7-9a65a0e81cef.png" width=25% height=25%/>
   
-  Total trainable params: 1,777,083
-  metric achieved 
-  training_loss: 0.2101 - training_accuracy: 0.8752 - 
-  validation_loss: 0.3516 - validation_accuracy: 0.8247
-  test loss: 0.36275410652160645, test accuracy: 0.8163265585899353
+  #### 2. cnn_colored_output_distance_in_each_roi
   
-  When the model was trained with labels that dont have a -1 flag value the metrics achieved were as follow:
+  This model takes two colored images as input, and outputs an array that contains the distance in each roi.
   
-  #### metrics achieved:
+  <img src="https://user-images.githubusercontent.com/98136555/211240570-c563bc1f-578b-4d64-b384-55cd6c37ba5a.png" width=25% height=25%/>
+
+  #### 3. cnn_grayscale_output_tau_value_in_each_roi
   
-  training-loss: 0.2706 - training-accuracy: 0.8840 
+  This model takes two grayscale images and the velocity as input, and outputs an array that contains the ```tau_values``` in each roi.
   
-  validation_loss: 0.4683 - validation_accuracy: 0.8547
-  
-  test loss: 0.48675239086151123, test accuracy: 0.8511404395103455
-  
-  what we did here is changing the tau_values with -1 value to  15. Note that the -1 fal value corresponding to a infinity tau_value.
   
   #### Model 4
   
