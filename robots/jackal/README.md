@@ -121,31 +121,24 @@ In this approach we aim to calculate the Optical Flow (i.e the motion between co
   This model takes two grayscale images and the velocity as input, and outputs an array that contains the ```tau_values``` in each roi.
   
   
-  #### Model 4
+  #### 4. cnn_output_tau_value_in_each_roi_and_validity
   
-  Takes two images along with the velocity and outputs two arrays on with the tau values in each Region of Interest and the other array with a flag that shows if the predicited value is valid or not.
-  
-  ![model_with_shape_info](https://user-images.githubusercontent.com/98136555/203197318-052f6550-b1ab-4583-a185-ace9e60a9ef7.png)
-
-  
-  #### Model 5
-  Same as model 6 but instead of predicting whether the tau value is valid or not after appending the velocity it is predicited before that because the image alone should be suffice to predict the tau value's validity.
-  Model architecture:
-  
-  ![model_with_shape_info](https://user-images.githubusercontent.com/98136555/203196927-e1a5df6a-b659-4cb5-899a-96971d8fb24e.png)
-
-  #### Model 6
-  The input to this model is an image of the region of interest unlike in all the other models where the input was the entire image and the output is only one tau value. It proved to be computationally expensive becasue it has to be run 5 time to get the tau value in exh of the 5 regions of interest.
-  Model architecture:
-  ![model_ROI](https://user-images.githubusercontent.com/98136555/203196713-d184d217-4d4c-4703-9a3e-b70578cf4f85.png)
-
-  
-  ### Takeaway
-  
-  All of the models are not robust enough to work in environments other than the ones with boxes. One thing to be noted is that white walls are of a problem cause the model so the training data sho
+  The model takes two successive images along with the velocity as input, and outputs two arrays one contains the tau values in each region of interest , and the other contains a flag that shows if the predicited value is valid or not.
  
+  <img src="https://user-images.githubusercontent.com/98136555/203196927-e1a5df6a-b659-4cb5-899a-96971d8fb24e.png" width=25% height=25%/>
+
+  #### 5. cnn_input_roi_image
+  
+  Unlike the previous models, this model takes two successive images of the region of interest as input, and outputs the tau value in that region. This model is computationally expensive since it has to run 5 times to get the tau value for the 5 regions of interest.
+  
+  <img src="https://user-images.githubusercontent.com/98136555/203196713-d184d217-4d4c-4703-9a3e-b70578cf4f85.png" width=25% height=25%/>
+    
+  
 ## Package_4: Control_Mix 
+  
 In this package e combined the optical flow and fiducial markers algorithms together so that the robot can switch to optical-flow-based navigation as a backup option whenever fiducial landmarks are not visible.
+  
+TODO
 
 
 
