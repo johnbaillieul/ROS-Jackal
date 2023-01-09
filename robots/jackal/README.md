@@ -3,8 +3,21 @@
 ## Startup
 
 ## Prerequisites
-1. Setup Realsense_camera: see instruction from https://wiki.bu.edu/robotics/index.php?title=Jackal or https://www.clearpathrobotics.com/assets/guides/kinetic/jackal/additional_sim_worlds.html
+1. Setup Realsense_camera: Follow instructions in https://wiki.bu.edu/robotics/index.php?title=Jackal and https://www.clearpathrobotics.com/assets/guides/kinetic/jackal/additional_sim_worlds.html
 
+    or 
+
+    Equip Jackal with an Intel RealSense D435 camera
+    Step 1:  install the required packages using the following command
+    ``` 
+    sudo apt-get install ros-$ROS_DISTRO-realsense2-camera ros-$ROS_DISTRO-realsense2-description ros-$ROS_DISTRO-gazebo-plugins 
+    ```
+
+    Step 2: Add to your ~/.bashrc the following
+    ```
+    export JACKAL_URDF_EXTRAS=$HOME/PATH_TO_VISION_BASED_NAVIGATION_TTT_FOLDER/vision_based_navigation_ttt/urdf/BU_Jackal.urdf.xacro/realsense.urdf.xacro
+    ```
+  
 2. Download Clearpath package: To simulate Jackal UGV that can be installed by running: sudo apt-get install ros-melosic-jackal-simulator ros-melodic-jackal-desktop ros-melodic-jackal-navigation
 
 ## Setup:
