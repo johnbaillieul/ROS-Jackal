@@ -108,6 +108,31 @@ In this approach we aim to calculate the Optical Flow (i.e the motion between co
   #### 1. cnn_auto_ml
   This model uses "AutoKeras" which is an AutoML System. It takes two successive colored images as input, and outputs the distance in each region of interest. The distance is then converted to ```tau_value``` by dividing it by the robot's velocity.
   
+    <table border="0">
+ <tr>
+    <td><b style="font-size:30px">Model ran in an environment it wasn't trained on</b></td>
+    <td><b style="font-size:30px">Model ran in a T-shaped corridor</b></td>
+ </tr>
+ <tr>
+    <td>
+
+
+https://user-images.githubusercontent.com/98136555/211264448-130d28b4-0fb9-4551-9ef9-4cc48a1fa0b1.mp4
+
+
+ </td>
+    <td>
+
+
+
+https://user-images.githubusercontent.com/98136555/211263011-e2469251-4f1f-49e2-b989-e46dfc45e910.mp4
+
+
+
+
+  </td>
+ </tr>
+</table> 
   <img src="https://user-images.githubusercontent.com/98136555/211239897-3d31f95e-03bc-45ba-96e7-9a65a0e81cef.png" width=25% height=25%/>
   
   
