@@ -110,21 +110,6 @@ In this approach we aim to calculate the Optical Flow (i.e the motion between co
   
   <img src="https://user-images.githubusercontent.com/98136555/211239897-3d31f95e-03bc-45ba-96e7-9a65a0e81cef.png" width=25% height=25%/>
   
-    <table border="0">
- <tr>
-    <td><b style="font-size:30px">Model ran in an environment it wasn't trained on</b></td>
-    <td><b style="font-size:30px">Model ran in a T-shaped corridor</b></td>
- </tr>
- <tr>
-    <td>
-https://user-images.githubusercontent.com/98136555/211257023-d75eb82a-c985-4e71-8929-4ef0bc5dc05b.mp4 
-    </td>
-    <td>
-
-https://user-images.githubusercontent.com/98136555/211257925-e8ce60a8-f142-45c7-bc70-2dbc8186d2c4.mp4
-  </td>
- </tr>
-</table>
   
   #### 2. cnn_colored_output_distance_in_each_roi
   This model takes two colored images as input, and outputs an array that contains the distance in each roi.
@@ -136,16 +121,16 @@ https://user-images.githubusercontent.com/98136555/211257925-e8ce60a8-f142-45c7-
  </tr>
  <tr>
     <td>
- 
 
-https://user-images.githubusercontent.com/98136555/211261419-98cf2b9a-38f9-42e9-b12a-7497110ddf40.mp4
+
+https://user-images.githubusercontent.com/98136555/211262755-43a8d499-1b23-40f4-a373-ea8c67d1b607.mp4
 
 
  </td>
     <td>
 
 
-https://user-images.githubusercontent.com/98136555/211261400-1a986d7f-c15b-4b69-9719-938c3d4381f8.mp4
+https://user-images.githubusercontent.com/98136555/211262738-a77bb3e2-d42a-404e-9bba-cd417e688f82.mp4
 
 
   </td>
