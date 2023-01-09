@@ -73,8 +73,8 @@ https://user-images.githubusercontent.com/98136555/185213284-8d2cfa97-f4ec-4a5c-
   
   <table border="0">
  <tr>
-    <td><b style="font-size:30px">2 lights</b></td>
-    <td><b style="font-size:30px">three lights</b></td>
+    <td><b style="font-size:30px">Two lights</b></td>
+    <td><b style="font-size:30px">Three lights</b></td>
  </tr>
  <tr>
     <td>
@@ -112,8 +112,8 @@ In this approach we aim to calculate the Optical Flow (i.e the motion between co
   
     <table border="0">
  <tr>
-    <td><b style="font-size:30px">2 lights</b></td>
-    <td><b style="font-size:30px">three lights</b></td>
+    <td><b style="font-size:30px">Model ran in an environment it wasn't trained on</b></td>
+    <td><b style="font-size:30px">Model ran in a T-shaped corridor</b></td>
  </tr>
  <tr>
     <td>
@@ -131,8 +131,8 @@ https://user-images.githubusercontent.com/98136555/211257925-e8ce60a8-f142-45c7-
   
    <table border="0">
  <tr>
-    <td><b style="font-size:30px">2 lights</b></td>
-    <td><b style="font-size:30px">three lights</b></td>
+    <td><b style="font-size:30px">Model ran in an environment it was trained on</b></td>
+    <td><b style="font-size:30px">Model ran in a T-shaped corridor</b></td>
  </tr>
  <tr>
     <td>
