@@ -60,18 +60,21 @@ TODO
 ### How to Run the Package
 To launch Gazebo you need to run 
 ``` 
-roslaunch vision_based_navigation_ttt <your chosen file from launch folders>.launch ```
+roslaunch vision_based_navigation_ttt <your chosen file from launch folders>.launch 
+```
 To simulate your desired world specify it in the launch file at line: 
+
   ```
   arg name="world_name" value="$(find vision_based_navigation_ttt)/GazeboWorlds/<files with your desired world found in GazeboWorlds folder>.world" 
   ```
-  Then run   in separate terminals
+  
+  Then run  in separate terminals
+  
   ```
   rosrun vision_based_navigation_ttt optical_flow.py
   rosrun vision_based_navigation_ttt tau_computation.py 
   rosrun vision_based_navigation_ttt controller.py 
   ```
-
 
 ### Custom Worlds 
 Multiple custom worlds were created in Gazebo to resemble the environment being tested on in the lab. 
