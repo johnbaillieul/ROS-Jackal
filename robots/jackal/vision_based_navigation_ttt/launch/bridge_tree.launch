@@ -42,7 +42,7 @@
         <!--directly run all three nodes
         <include file="$(find vision_based_navigation_ttt)/launch/optical_flow_nodes.launch">
         </include>-->
-        <node name="change_env" pkg="vision_based_navigation_ttt" type="change_env.py"/> 
+        <node name="change_box_color_in_env" pkg="vision_based_navigation_ttt" type="change_box_color_in_env.py"/> 
 </launch>       
 
 

@@ -186,6 +186,7 @@ class compute_tau():
                 count_el = 0
                 tau_val_el = self.tau_val[204:259]
                 tau_el = 0
+                print('el',tau_val_el)
                 for i in range(len(tau_val_el)):
                     if tau_val_el[i] == np.inf: 
                         count_inf_el += 1
@@ -204,7 +205,8 @@ class compute_tau():
                 count_inf_er = 0
                 count_er = 0
                 tau_val_er = tau_val[0:56]
-                tau_er = 0       
+                tau_er = 0    
+                print('er',tau_val_er)   
                 for i in range(len(tau_val_er)):
                     if tau_val_er[i] == np.inf: 
                         count_inf_er += 1
@@ -224,6 +226,7 @@ class compute_tau():
                 count_l = 0
                 tau_val_l = tau_val[154:205]
                 tau_l = 0
+                print('l',tau_val_l)
                 for i in range(len(tau_val_l)):
                     if tau_val_l[i] == np.inf: 
                         count_inf_l += 1
@@ -243,6 +246,7 @@ class compute_tau():
                 count_r = 0
                 tau_val_r = tau_val[55:103]
                 tau_r = 0
+                print('r',tau_val_r)
                 for i in range(len(tau_val_r)):
                     if tau_val_r[i] == np.inf: 
                         count_inf_r += 1
@@ -262,6 +266,7 @@ class compute_tau():
                 count_c = 0
                 tau_val_c = tau_val[117:144]
                 tau_c = 0
+                print('c',tau_val_c)
                 for i in range(len(tau_val_c)):
                     if tau_val_c[i] == np.inf: 
                         count_inf_c+=1

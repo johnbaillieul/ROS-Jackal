@@ -7,11 +7,13 @@ import xlsxwriter
 from xlsxwriter import Workbook
 import openpyxl
 
-# path_tau = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/tau_values/tau_value"
-# path_tau_no_flag = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/tau_values_no_flag/"
+### this script saves tau_values with -1 value to an inf value
 
-path_tau = os.environ["HOME"] + "/ROS-Jackal/robots/jackal/vision_based_navigation_ttt/tau_values/tau_value"
-path_tau_no_flag = os.environ["HOME"] + "/ROS-Jackal/robots/jackal/vision_based_navigation_ttt/tau_values_no_flag/"
+path_tau = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/tau_values/tau_value"
+path_tau_no_flag = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/tau_values_no_flag/"
+
+# path_tau = os.environ["HOME"] + "/ROS-Jackal/robots/jackal/vision_based_navigation_ttt/tau_values/tau_value"
+# path_tau_no_flag = os.environ["HOME"] + "/ROS-Jackal/robots/jackal/vision_based_navigation_ttt/tau_values_no_flag/"
 
 for i in range(1,5510):
     try:
