@@ -111,8 +111,6 @@ In this approach we aim to calculate the Optical Flow (i.e the motion between co
   <img src="https://user-images.githubusercontent.com/98136555/211239897-3d31f95e-03bc-45ba-96e7-9a65a0e81cef.png" width=25% height=25%/>
   
   #### 2. cnn_colored_output_distance_in_each_roi
-   <img src="https://user-images.githubusercontent.com/98136555/211247036-4fd77f6b-0471-4446-9076-f862b9e38ba2.png" width=25% height=25%/>
-
   This model takes two colored images as input, and outputs an array that contains the distance in each roi.
   
   <img src="https://user-images.githubusercontent.com/98136555/211247640-d3bb4dd1-b210-4fbd-adc4-8059609093ae.png" width=25% height=25%/>
