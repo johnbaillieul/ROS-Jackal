@@ -68,35 +68,42 @@ You can build up custom gazebo worlds by using wall segments. The video below sh
 
 https://user-images.githubusercontent.com/98136555/185213284-8d2cfa97-f4ec-4a5c-a24f-7408b699c902.mp4
  
-### Performance can be affected by lighting 
-
- #### 2 lights
- 
-https://user-images.githubusercontent.com/98136555/185210652-f371b74c-7054-4f63-95b3-365b9713b741.mp4
- 
- #### three lights
-
-https://user-images.githubusercontent.com/98136555/185215284-977937bf-bd99-4416-b706-a4d0d101c430.mp4
- 
-### Machine learning models
-
-  In this approach we aim to calculate the Optical flow, the motion between consecutive frames of sequences caused by relative motion between a camera and an object, by using a machine learning model instead of Lucas Kanade method. The model generated is expected to predict the tau_value in each region of interest given images of the scene. To train such a model, we collected images with the distances of the robot from the obstacles in each region of interest. To get the distances we used a 2D lidar. The code that does that is in the data_collection.py file. 
-To collect data, first you need to launch gazebo with this command 
-      roslaunch vision_based_navigation_ttt L_shaped_corridor.launch front_laser:=1
-  then run 
+### Performance
+  Peformance can be affected by lighting as shown in the videos below.
   
-    rosrun vision_based_navigation_ttt tau_computattion_lidar.py 
-    rosrun vision_based_navigation_ttt controller_not_modified.py 
-    rosrun vision_based_navigation_ttt data_collection.py 
+  <table border="0">
+ <tr>
+    <td><b style="font-size:30px">2 lights</b></td>
+    <td><b style="font-size:30px">three lights</b></td>
+ </tr>
+ <tr>
+    <td>
+ 
+https://user-images.githubusercontent.com/98136555/185210652-f371b74c-7054-4f63-95b3-365b9713b741.mp4</td>
+    <td>
+      
+https://user-images.githubusercontent.com/98136555/185215284-977937bf-bd99-4416-b706-a4d0d101c430.mp4</td>
+ </tr>
+</table>
 
-The images are saved in training_images folder and the distance values are save in the tau_values folder. The distances are then divided by the           velocity to get the true tau_value.
-  
-For now all the data where in a simulated gazebo environments. To change the colors of the boxes in the enviroment whenever you launch a file you can add 
-<node name="change_env" pkg="vision_based_navigation_ttt" type="change_env.py"/> to your launch file.
+ 
+### Machine Learning Models
 
-The folder called trained_model_parameters contains the parameters of the trained different cnn models. Each model containes two classes one to train the model and the other to inference.
+In this approach we aim to calculate the Optical Flow (i.e the motion between consecutive frames of sequences caused by relative motion between a camera and an object) by using a machine learning model instead of Lucas Kanade method. The model generated is expected to predict the tau value in each region of interest given images of the scene. We used a 2D Lidar and a Realsense Camera to collect the training data. 
+
+  #### Data Collection
+ 
+  To collect data, run the commands below to launch gazebo with a 2D Laser:
+  ```
+  roslaunch vision_based_navigation_ttt <name-of-launch-file>.launch front_laser:=1
+  rosrun vision_based_navigation_ttt tau_computattion_lidar.py 
+  rosrun vision_based_navigation_ttt controller.py 
+  rosrun vision_based_navigation_ttt data_collection.py 
+  ```
+
+  By default, the images will be saved in the ```training_images``` folder and the distances are saved in the ```tau_values``` folder.
   
-#### Model 2 
+  #### Model 2 
   
   This model only takes one image as input and outputs an array with the tau values in each Region of Interest. 
   
