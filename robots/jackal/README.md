@@ -108,36 +108,32 @@ In this approach we aim to calculate the Optical Flow (i.e the motion between co
   #### 1. cnn_auto_ml
   This model uses "AutoKeras" which is an AutoML System. It takes two successive colored images as input, and outputs the distance in each region of interest. The distance is then converted to ```tau_value``` by dividing it by the robot's velocity.
   
-    <table border="0">
+ ##### Demo:
+ <table border="0">
  <tr>
-    <td><b style="font-size:30px">Model ran in an environment it wasn't trained on</b></td>
+    <td><b style="font-size:30px">Model ran in an environment it was not trained on</b></td>
     <td><b style="font-size:30px">Model ran in a T-shaped corridor</b></td>
  </tr>
  <tr>
     <td>
 
-
 https://user-images.githubusercontent.com/98136555/211264448-130d28b4-0fb9-4551-9ef9-4cc48a1fa0b1.mp4
-
 
  </td>
     <td>
 
-
-
 https://user-images.githubusercontent.com/98136555/211263011-e2469251-4f1f-49e2-b989-e46dfc45e910.mp4
-
-
-
-
   </td>
  </tr>
 </table> 
+  
+  ##### Model Architecture:
   <img src="https://user-images.githubusercontent.com/98136555/211239897-3d31f95e-03bc-45ba-96e7-9a65a0e81cef.png" width=25% height=25%/>
   
   
   #### 2. cnn_colored_output_distance_in_each_roi
   This model takes two colored images as input, and outputs an array that contains the distance in each roi.
+   ##### Demo:
   
    <table border="0">
  <tr>
@@ -147,38 +143,39 @@ https://user-images.githubusercontent.com/98136555/211263011-e2469251-4f1f-49e2-
  <tr>
     <td>
 
-
 https://user-images.githubusercontent.com/98136555/211262755-43a8d499-1b23-40f4-a373-ea8c67d1b607.mp4
-
 
  </td>
     <td>
 
-
 https://user-images.githubusercontent.com/98136555/211262738-a77bb3e2-d42a-404e-9bba-cd417e688f82.mp4
-
 
   </td>
  </tr>
 </table>
   
+   ##### Model Architecture:
   <img src="https://user-images.githubusercontent.com/98136555/211247640-d3bb4dd1-b210-4fbd-adc4-8059609093ae.png" width=25% height=25%/>
 
   #### 3. cnn_grayscale_output_tau_value_in_each_roi
   This model takes two grayscale images and the velocity as input, and outputs an array that contains the ```tau_values``` in each roi.
+  
+   ##### Model Architecture:
     <img src="https://user-images.githubusercontent.com/98136555/211253489-fc6b081e-af00-4c99-a85f-3cd9153b509c.png" width=25% height=25%/>
 
 
   #### 4. cnn_output_tau_value_in_each_roi_and_validity
   
   The model takes two successive images along with the velocity as input, and outputs two arrays one contains the tau values in each region of interest , and the other contains a flag that shows if the predicited value is valid or not.
- 
+  
+  ##### Model Architecture:
   <img src="https://user-images.githubusercontent.com/98136555/203196927-e1a5df6a-b659-4cb5-899a-96971d8fb24e.png" width=25% height=25%/>
 
   #### 5. cnn_input_roi_image
   
   Unlike the previous models, this model takes two successive images of the region of interest as input, and outputs the tau value in that region. This model is computationally expensive since it has to run 5 times to get the tau value for the 5 regions of interest.
   
+   ##### Model Architecture:
   <img src="https://user-images.githubusercontent.com/98136555/203196713-d184d217-4d4c-4703-9a3e-b70578cf4f85.png" width=25% height=25%/>
     
   
