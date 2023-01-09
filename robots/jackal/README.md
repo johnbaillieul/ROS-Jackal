@@ -115,10 +115,9 @@ In this approach we aim to calculate the Optical Flow (i.e the motion between co
 
   This model takes two colored images as input, and outputs an array that contains the distance in each roi.
   
-  <img src="https://user-images.githubusercontent.com/98136555/211240570-c563bc1f-578b-4d64-b384-55cd6c37ba5a.png" width=25% height=25%/>
+  <img src="https://user-images.githubusercontent.com/98136555/211247640-d3bb4dd1-b210-4fbd-adc4-8059609093ae.png" width=25% height=25%/>
 
   #### 3. cnn_grayscale_output_tau_value_in_each_roi
-  
   This model takes two grayscale images and the velocity as input, and outputs an array that contains the ```tau_values``` in each roi.
   
   
