@@ -14,7 +14,7 @@
     sudo apt-get install ros-$ROS_DISTRO-realsense2-camera ros-$ROS_DISTRO-realsense2-description ros-$ROS_DISTRO-gazebo-plugins 
     ```
 
-    Step 2: Add to your ~/.bashrc the following
+    Step 2: Add the following to your ~/.bashrc 
     ```
     export JACKAL_URDF_EXTRAS=$HOME/PATH_TO_VISION_BASED_NAVIGATION_TTT_FOLDER/vision_based_navigation_ttt/urdf/BU_Jackal.urdf.xacro/realsense.urdf.xacro
     ```
