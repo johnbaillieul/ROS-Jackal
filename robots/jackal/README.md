@@ -20,7 +20,9 @@
     ```
   
 2. Download Clearpath package using the following command 
- ```sudo apt-get install ros-$ROS_Distro-jackal-simulator ros-$ROS_Distro-jackal-desktop ros-$ROS_Distro-jackal-navigation```
+     ```
+   sudo apt-get install ros-$ROS_Distro-jackal-simulator ros-$ROS_Distro-jackal-desktop ros-$ROS_Distro-jackal-navigation
+     ```
 
 ## Setup:
   1. Create a catkin workspace
