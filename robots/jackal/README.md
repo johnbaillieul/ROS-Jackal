@@ -19,7 +19,8 @@
     export JACKAL_URDF_EXTRAS=$HOME/PATH_TO_VISION_BASED_NAVIGATION_TTT_FOLDER/vision_based_navigation_ttt/urdf/BU_Jackal.urdf.xacro/realsense.urdf.xacro
     ```
   
-2. Download Clearpath package: To simulate Jackal UGV that can be installed by running: sudo apt-get install ros-melosic-jackal-simulator ros-melodic-jackal-desktop ros-melodic-jackal-navigation
+2. Download Clearpath package using the following command 
+ ```sudo apt-get install ros-$ROS_Distro-jackal-simulator ros-$ROS_Distro-jackal-desktop ros-$ROS_Distro-jackal-navigation```
 
 ## Setup:
   1. Create a catkin workspace
