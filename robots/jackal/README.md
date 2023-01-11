@@ -8,6 +8,7 @@
     or 
 
     Equip Jackal with an Intel RealSense D435 camera
+    
     Step 1:  install the required packages using the following command
     ``` 
     sudo apt-get install ros-$ROS_DISTRO-realsense2-camera ros-$ROS_DISTRO-realsense2-description ros-$ROS_DISTRO-gazebo-plugins 
