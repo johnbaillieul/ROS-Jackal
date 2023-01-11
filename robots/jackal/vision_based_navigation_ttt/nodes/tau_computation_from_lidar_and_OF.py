@@ -8,15 +8,10 @@ import numpy as np
 from cv_bridge import CvBridgeError, CvBridge
 import cv2
 from sensor_msgs.msg import LaserScan
-import matplotlib.pyplot as plt
 import os
 import pandas as pd
 import xlsxwriter
 import matplotlib.pyplot as plt
-import seaborn as sns
-
-############################################################################################
-# Initialization of the variables for setting the limits of the ROIs
 
 # Extreme left and extreme right
 x_init_el = 0
@@ -97,9 +92,6 @@ def set_limit(img_width, img_height):
 	y_init_c = int(2.5 * img_height / 12)
 	x_end_c = int(6.5 * img_width / 12)
 	y_end_c = int(7.5 * img_height / 12)
-	###########################################
-
-##############################################################################################
 
 # Filtering procedure for the TTT values
 def tau_filtering_mad(vector):
@@ -127,8 +119,6 @@ def tau_filtering(vector):
     # plt.show()
     return vector
 
-#############################################################################################
-
 # Computation of the average TTT
 def tau_final_value(self, vector, cnt):
 
@@ -138,8 +128,6 @@ def tau_final_value(self, vector, cnt):
         mean = -1
 
     return mean
-
-###########################################################################################
 
 # Visual representation of the ROIs with the average TTT values
 def draw_image_segmentation(curr_image, final_tau_left_e, final_tau_right_e, final_tau_left, final_tau_right, final_tau_centre,\
@@ -206,11 +194,7 @@ def draw_image_segmentation(curr_image, final_tau_left_e, final_tau_right_e, fin
     cv2.imshow('ROIs Representation', color_image)
     cv2.waitKey(10)
 
-#######################################################################################################################
-
-
 class TauComputationClass:
-
     def __init__(self):
 
         ######## IMPORTANT PARAMETERS: ########

@@ -21,10 +21,6 @@ import time
 #r [285,332]
 #c [347,373]
 
-
-############################################################################################
-# Initialization of the variables for setting the limits of the ROIs
-
 # Definition of the limits for the ROIs
 def set_limit(img_width, img_height):
     
@@ -76,9 +72,6 @@ def set_limit(img_width, img_height):
 	y_init_c = int(2.5 * img_height / 12)
 	x_end_c = int(6.5 * img_width / 12)
 	y_end_c = int(7.5 * img_height / 12)
-	###########################################
-
-##############################################################################################
 
 # Visual representation of the ROIs with the average TTT values
 def draw_image_segmentation(curr_image, tau_el, tau_er, tau_l, tau_r, tau_c):
@@ -119,8 +112,6 @@ def draw_image_segmentation(curr_image, tau_el, tau_er, tau_l, tau_r, tau_c):
     cv2.imshow('ROIs Representation', color_image)
     cv2.waitKey(10)
 
-#######################################################################################################################
-
 class compute_tau():
     def __init__(self):
         # Lidar Subscriber
@@ -129,7 +120,9 @@ class compute_tau():
         self.tau_values = rospy.Publisher("tau_values", TauComputation, queue_size=10)
         # Raw Image Subscriber
         self.image_sub_name = "/realsense/color/image_raw"
-        self.image_sub = rospy.Subscriber(self.image_sub_name, Image, self.callback_img)
+        self.image_sub = rospy.Subscriber(self.image_sub_name, Image, callback=self.callback_img,queue_size=1,buff_size=2**18) #the buff_size=2**18 avoids delays due to the queue buffer being too small for images
+        # self.pub = rospy.Publisher('image_repeated', Image, queue_size=1) 
+        
         self.ranges = None
         self.increments = None
         self.linear_x_vel = 1

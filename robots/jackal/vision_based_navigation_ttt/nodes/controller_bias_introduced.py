@@ -7,7 +7,6 @@ import time
 import sys
 from subprocess import call
 
-
 # Function to check if there is an obstacle in the center part of the image
 def find_obstacle(self, mean, t):
 	if self.center and (mean <= t):
@@ -323,15 +322,28 @@ class Controller:
 									control = -self.kp_e * (self.mean_tau_er - self.constant_right)
 									print('\033[1m' + "Obstacle! Go right" + '\033[0m')
 									print("Control: " + str(control))
-							else:														 # The obstacle is a wall
-																						  # belonging to a turn
-								self.kp = 1
-								self.kp_e = 1.3
-								control = self.kp_e * control_e_left + self.kp * control_m_left ##################
-								print('\033[1m'+"Turn ahead"+'\033[0m')
-								print("Diff Extreme: " + str(self.tau_diff_extreme))
-								print("Diff Medium: " + str(self.tau_diff))
-								print("Control: " + str(control))
+							else:	
+								############# modification starts #############												
+																									## The obstacle is a wall
+								if self.mean_tau_er > self.mean_tau_el:							# belonging to a turn
+									self.kp = 1
+									self.kp_e = 1.3
+									control = self.kp_e * control_e_right + self.kp * control_m_right ##################
+									print('\033[1m'+"Turn ahead / Turn left"+'\033[0m')
+									print("Diff Extreme: " + str(self.tau_diff_extreme))
+									print("Diff Medium: " + str(self.tau_diff))
+									print("Control: " + str(control))
+								else:
+									self.kp = 1
+									self.kp_e = 1.3
+									control = self.kp_e * control_e_left + self.kp * control_m_left ##################
+									print('\033[1m'+"Turn ahead / Turn left"+'\033[0m')
+									print("Diff Extreme: " + str(self.tau_diff_extreme))
+									print("Diff Medium: " + str(self.tau_diff))
+									print("Control: " + str(control))
+
+								############# modification ends #############	
+
 						else:
 							if self.obstacle and (abs(self.tau_diff) < 0.5):
 								self.kp_e = 1.2
@@ -347,24 +359,43 @@ class Controller:
 									print('\033[1m'+"Obstacle! Go right (medium)"+'\033[0m')
 									print("Control: " + str(control))
 							else:
-								self.kp = 1.5
-								print('\033[1m'+"Turn ahead"+'\033[0m')
-								print("Diff Medium with no extreme: " + str(self.tau_diff))
-								control = self.kp_e * control_e_left + self.kp * control_m_left ################
-								print("Control: " + str(control))
+
+								############# modification starts #############												
+																									
+								if self.mean_tau_r > self.mean_tau_l:							
+									self.kp = 1.5
+									print('\033[1m'+"Turn ahead/right"+'\033[0m')
+									print("Diff Medium with no extreme: " + str(self.tau_diff))
+									control = self.kp_e * control_e_right + self.kp * control_m_right ################
+									print("Control: " + str(control))
+								else:
+									self.kp = 1.5
+									print('\033[1m'+"Turn ahead/ left"+'\033[0m')
+									print("Diff Medium with no extreme: " + str(self.tau_diff))
+									control = self.kp_e * control_e_left + self.kp * control_m_left ################
+									print("Control: " + str(control))
+
+								############# modification ends #############			
 					else:																	   # no obstacles
 						if np.size(self.prev_controls) == 2:
 							control_diff = self.prev_controls[1] - self.prev_controls[0]
 							u_diff = threshold((self.kd * control_diff), self.max_control_diff)
 						else:
 							u_diff = 0
-						u_prop = self.kp_e * control_e_left + self.kp * control_m_left ###############
+						print('er,el,r,l',self.mean_tau_er,self.mean_tau_el,self.mean_tau_r,self.mean_tau_l)
+
+						# if self.mean_tau_er > self.mean_tau_el or self.mean_tau_r > self.mean_tau_l:
+						u_prop = self.kp_e * control_e_right + self.kp * control_m_right 
+						print('\033[1m'+"right"+'\033[0m')
+						# else:
+						# 	u_prop = self.kp_e * control_e_left + self.kp * control_m_left ###############
+						# 	print('\033[1m'+"left"+'\033[0m')
+							
 						if u_diff * u_prop <= 0:
 							control = u_prop + u_diff
 							print('\033[1m'+"Tau Balancing"+'\033[0m')
 							print("control tau balancing: " + str(control))
 						else:
-
 							control = u_prop
 							print('\033[1m'+"Tau Balancing"+'\033[0m')
 							print("control tau balancing: " + str(control))

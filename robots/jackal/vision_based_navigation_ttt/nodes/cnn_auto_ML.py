@@ -69,6 +69,7 @@ def set_limit(img_width, img_height):
 	x_end_c = int(6.5 * img_width / 12)
 	y_end_c = int(7.5 * img_height / 12)
 
+
 # Visual representation of the ROIs with the average TTT values
 def draw_image_segmentation(curr_image, taup_el, taup_er, taup_l, taup_r, taup_c,tau_el, tau_er, tau_l, tau_r, tau_c):
     color_image = curr_image #cv2.cvtColor(curr_image, cv2.COLOR_GRAY2BGR)
@@ -141,13 +142,13 @@ class Train_Model():
             for idx in range(len(images_in_folder)-1) :
                 try:
                     # Load the colored images
-                    img_1 = cv2.imread(path_images + images_in_folder[idx])
+                    img_1 = cv2.imread(path_images + images_in_folder[idx],0)
                     img_1 = cv2.resize(img_1,(img_size,img_size))
 
-                    img_2 = cv2.imread(path_images + images_in_folder[idx+1])
+                    img_2 = cv2.imread(path_images + images_in_folder[idx+1],0)
                     img_2 = cv2.resize(img_2,(img_size,img_size))
 
-                    img = np.concatenate([img_1, img_2], 2)
+                    img = np.stack([img_1, img_2], 2)
                     
                     # Add image to the dataset
                     X.append(img)
@@ -239,7 +240,73 @@ class Calculate_Tau():
         self.width = data.width
         self.height = data.height
 
-    def get_tau_values(self):
+    def get_tau_values_given_velocity(self):
+        img_size = 250
+        if self.curr_image is not None:
+            if self.prev_image is not None:
+                print("here")
+                curr_image = self.curr_image
+
+                img_1 = cv2.resize(self.prev_image,(img_size,img_size))
+                image_as_array_1 = np.array(img_1)
+                image_as_array_1 = image_as_array_1.reshape(img_size,img_size,1)
+
+                img_2 = cv2.resize(self.curr_image,(img_size,img_size))
+                image_as_array_2 = np.array(img_2)
+                image_as_array_2 = image_as_array_2.reshape(img_size,img_size,1)
+                # print('2',image_as_array_2.shape)
+                # print(self.total_imgs)
+                img = np.stack([img_1, img_2], 2)
+                img = tf.expand_dims(img, 0)
+                # img = img.reshape(1,250,250,1)
+                img = np.asarray(img)
+                print('img',img.shape)
+                # print(img.shape)
+                vel = 1
+                vel = np.asarray([vel])
+                print('v',vel.shape)
+                # with open('model_pkl_1' , 'rb') as f: lr = pickle.load(f)
+                # print(lr)
+                tau_pred = self.model.predict({"input_1": img, "input_2": vel})
+                set_limit(self.width, self.height)
+
+                # Publish Tau values data to rostopic
+                # Creation of TauValues.msg
+                msg = TauComputation()
+                msg.header.stamp.secs =  self.secs
+                msg.header.stamp.nsecs =  self.nsecs
+                msg.height = self.height
+                msg.width = self.width
+
+                msg.tau_el = tau_pred[0][0]
+                msg.tau_er = tau_pred[0][4]
+                msg.tau_l = tau_pred[0][1]
+                msg.tau_r = tau_pred[0][3]
+                msg.tau_c = tau_pred[0][2]
+                self.tau_values.publish(msg)
+                self.prev_image = self.curr_image
+                
+                # tau_el, tau_l, tau_c, tau_r, tau_er = self.get_tau_values_from_lidar()
+                # Draw the ROIs with their TTT values
+                # msg.tau_el = self.tau_el
+                # msg.tau_er = self.tau_er
+                # msg.tau_l = self.tau_l
+                # msg.tau_r = self.tau_r
+                # msg.tau_c = self.tau_c
+                # self.tau_values.publish(msg)
+                
+                draw_image_segmentation(curr_image, tau_pred[0][0], tau_pred[0][4], tau_pred[0][1], tau_pred[0][3], tau_pred[0][2], self.tau_el, self.tau_er, self.tau_l, self.tau_r, self.tau_c)
+                
+                self.er_error_array.append(self.tau_er - tau_pred[0][4])
+                self.el_error_array.append(self.tau_el - tau_pred[0][0])
+                self.r_error_array.append(self.tau_r - tau_pred[0][3])
+                self.l_error_array.append(self.tau_l - tau_pred[0][1])
+                self.c_error_array.append(self.tau_c - tau_pred[0][2])
+            
+            else:  
+                self.prev_image = self.curr_image
+
+    def get_tau_values_without_velocity(self):
         if self.curr_image is not None:
             if self.prev_image is not None:
                 print("here")
@@ -415,7 +482,7 @@ if __name__ == '__main__':
     # tr.train_()
     while not rospy.is_shutdown():
         # inf.extract_model()
-        tau.get_tau_values()
+        tau.get_tau_values_without_v()
         r.sleep()
     
 

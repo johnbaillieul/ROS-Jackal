@@ -135,7 +135,9 @@ def draw_image_segmentation(curr_image, taup_el, taup_er, taup_l, taup_r, taup_c
     cv2.imshow('ROIs Representation', color_image)
     cv2.waitKey(10)
 
-class Train():
+#######################################################################################################################
+
+class train():
     def __init__(self):
         pass
     def train_model(self):
@@ -306,7 +308,7 @@ class Train():
         print('mean_absolute_error', mae_1, 'mean_squared_error', mae_2)
       
 
-class Calc_Tau():
+class calc_tau():
     def __init__(self):
         # Tau Publisher
         self.tau_values = rospy.Publisher("lidar_tau_values", TauComputation, queue_size=10)
@@ -548,12 +550,12 @@ class Calc_Tau():
 
 if __name__ == '__main__':
     rospy.init_node('cnn_', anonymous=True)
-    tau = Calc_Tau()
+    tau = calc_tau()
     r = rospy.Rate(10)
     # tr = train()
     # tr.train_()
     while not rospy.is_shutdown():
-        # tr = Train()
+        # tr = train()
         # tr.train_()
         # inf = inference()
         # inf.extract_model()
