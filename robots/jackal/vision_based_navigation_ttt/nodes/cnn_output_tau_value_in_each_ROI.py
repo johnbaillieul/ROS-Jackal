@@ -129,7 +129,8 @@ class Train():
         y = []
         velocity = []
 
-        path = os.environ["HOME"]+"/catkin_ws/src/"
+        # path = os.environ["HOME"]+"/catkin_ws/src/"
+        path = os.environ["HOME"]+"/ROS-Jackal/robots/jackal/"
         path_tau =  path + "vision_based_navigation_ttt/tau_values_no_flag/tau_value"   
         path_folder = path + "vision_based_navigation_ttt/training_images/"
 

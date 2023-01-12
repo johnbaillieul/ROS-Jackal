@@ -3,18 +3,17 @@ import cv2
 import numpy as np
 from os import listdir
 # from sklearn.metrics import confusion_matrix
-import rospy
+# import rospy
 import tensorflow as tf
 from tensorflow import keras
 import openpyxl
-import matplotlib.pyplot as plt
 import os
 from tkinter import W
 # from sensor_msgs.msg import LaserScan
 import numpy as np
-from cv_bridge import CvBridgeError, CvBridge
-from vision_based_navigation_ttt.msg import TauComputation
-from sensor_msgs.msg import Image, LaserScan
+# from cv_bridge import CvBridgeError, CvBridge
+# from vision_based_navigation_ttt.msg import TauComputation
+# from sensor_msgs.msg import Image, LaserScan
 from xlsxwriter import Workbook
 import autokeras as ak
 
@@ -129,8 +128,8 @@ class Train_Model():
 
         X = []
         y = []
-
-        path = os.environ["HOME"]+"/catkin_ws/src/"
+        # path = os.environ["HOME"]+"/catkin_ws/src/"
+        path = os.environ["HOME"]+"/ROS-Jackal/robots/jackal/"
         path_tau = path + "vision_based_navigation_ttt/tau_values/tau_value"   
         path_folder = path + "vision_based_navigation_ttt/training_images/"
 
@@ -140,15 +139,16 @@ class Train_Model():
             images_in_folder = [f for f in listdir(path_images) if f.endswith(".png")]
             img_size = 250
             for idx in range(len(images_in_folder)-1) :
+                print('1')
                 try:
                     # Load the colored images
-                    img_1 = cv2.imread(path_images + images_in_folder[idx],0)
+                    img_1 = cv2.imread(path_images + images_in_folder[idx])
                     img_1 = cv2.resize(img_1,(img_size,img_size))
 
-                    img_2 = cv2.imread(path_images + images_in_folder[idx+1],0)
+                    img_2 = cv2.imread(path_images + images_in_folder[idx+1])
                     img_2 = cv2.resize(img_2,(img_size,img_size))
 
-                    img = np.stack([img_1, img_2], 2)
+                    img = np.concatenate([img_1, img_2], 2)
                     
                     # Add image to the dataset
                     X.append(img)
@@ -164,7 +164,9 @@ class Train_Model():
                     print(inst)
          
         X = np.asarray(X)
+        print('x_shape', np.shape(X))
         y = np.asarray(y)
+        print('y_shape', np.shape(y))
 
         ind = np.arange(len(X))
         np.random.shuffle(ind)
@@ -196,7 +198,7 @@ class Train_Model():
 
         # Evaluate the best model with testing data. 
         print(reg.evaluate(X_test, y_test)) 
-        model_name = "best_performing_model"
+        model_name = "auto_ml_updated_data"
         
         # Get the best performing model.
         model = reg.export_model()
@@ -475,14 +477,14 @@ class Calculate_Tau():
 
 if __name__ == '__main__':
     # # tau_computation_from_cnn
-    rospy.init_node('cnn_from_lidar', anonymous=True)
-    tau = Calculate_Tau()
-    r = rospy.Rate(10)
-    # tr = train()
-    # tr.train_()
-    while not rospy.is_shutdown():
-        # inf.extract_model()
-        tau.get_tau_values_without_v()
-        r.sleep()
+    # rospy.init_node('cnn_from_lidar', anonymous=True)
+    # tau = Calculate_Tau()
+    # r = rospy.Rate(10)
+    tr = Train_Model()
+    tr.train_model()
+    # while not rospy.is_shutdown():
+    #     # inf.extract_model()
+    #     tau.get_tau_values_without_v()
+    #     r.sleep()
     
 
