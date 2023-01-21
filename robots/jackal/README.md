@@ -85,16 +85,51 @@ To simulate your desired world specify it in the launch file at line:
   arg name="world_name" value="$(find vision_based_navigation_ttt)/GazeboWorlds/<files with your desired world found in GazeboWorlds folder>.world" 
   ```
   
-  Then run  in separate terminals
+  There are different ways to calculate the tau values:
+  
+  To get tau values from optical flow run: 
   
   ```
   rosrun vision_based_navigation_ttt optical_flow.py
   rosrun vision_based_navigation_ttt tau_computation.py 
+  ```
+  
+  To get tau values from velodyne(3D lidar) run:
+    
+  ```
+  rosrun vision_based_navigation_ttt tau_computation_velodyne.py 
+  ```
+  To get tau values from lidar(2D lidar) run:
+  
+  ```
+  rosrun vision_based_navigation_ttt tau_computation_lidar.py 
+  ```
+  
+  To get tau values from CNN model run:
+  
+  ```
+  rosrun vision_based_navigation_ttt tau_computation_cnn.py
+  ```
+  This window will show two values the top one is the cnn prediction and thebottom one is from the lidar. You can choose the parameters that you want that are available in the trained_model_parameters folder just change the model name in line tf.keras.models.load_model. Not that there are models that take velocities as input and others dont so make sure to choose the function that calculates tau values according tothe model you chose.
+  
+  
+  There are also different controllers to choose from
+  
+  To use the controller with sense and act phases, run 
+  
+  ```
   rosrun vision_based_navigation_ttt controller.py 
+  ```
+  
+  To use the controller with only an act phase, run 
+  
+  ```
+  rosrun vision_based_navigation_ttt controller_act_only.py 
   ```
 
 ### Custom Worlds 
 Multiple custom worlds were created in Gazebo to resemble the environment being tested on in the lab. 
+
 TODO add pictures of dif worlds
   
 You can build up custom gazebo worlds by using wall segments. The video below shows how this can be done.
