@@ -7,8 +7,10 @@ import time
 import sys
 from subprocess import call
 
+
 # Function to check if there is an obstacle in the center part of the image
 def find_obstacle(self, mean, t):
+
 	if self.center and (mean <= t):
 		self.obstacle = True
 	else:
@@ -25,18 +27,9 @@ def threshold(value, limit):
 # Function to compute the value of the control action
 def perceive(self):
 	if self.right and self.left:
-		km = 5 # gain
-		self.tau_diff_left = km*self.mean_tau_l - self.mean_tau_r
-		self.tau_diff_right = self.mean_tau_l - km*self.mean_tau_r
 		self.tau_diff = self.mean_tau_l - self.mean_tau_r
-		
 	if self.extreme_left and self.extreme_right:
-		kp = 5 # gain_extreme
-		
 		self.tau_diff_extreme = self.mean_tau_el - self.mean_tau_er
-		self.tau_diff_extreme_left = kp*self.mean_tau_el - self.mean_tau_er
-		self.tau_diff_extreme_right = self.mean_tau_el - kp*self.mean_tau_er
-
 	if self.right and self.extreme_right:
 		self.diff_right = self.right - self.extreme_right
 	if self.left and self. extreme_left:
@@ -44,6 +37,7 @@ def perceive(self):
 
 
 class Controller:
+
 	def __init__(self):
 
 		######## IMPORTANT PARAMETERS: ########
@@ -124,12 +118,6 @@ class Controller:
 		self.actual_wall_distance_e = 0
 		self.tau_diff = 0
 		self.tau_diff_extreme = 0
-	
-		self.tau_diff_left = 0
-		self.tau_diff_extreme_left = 0
-		self.tau_diff_right = 0
-		self.tau_diff_extreme_right = 0
-		
 		self.diff_left = 0
 		self.diff_right = 0
 		self.prev_diff_r = 0
@@ -290,172 +278,98 @@ class Controller:
 				control_m = 0
 				control = 0
 				self.tau_diff_max = True
-				# kf = 1.1 # extreme gains
-				# km = 1 # non-e gains
+
 				# If both extreme ROIs has an average TTT values ---> use tau_balancing
 				if self.extreme_left and self.extreme_right:
-					control_e_left = self.tau_diff_extreme_left
-					control_e_right = self.tau_diff_extreme_right
+					control_e = self.tau_diff_extreme
 					self.tau_diff_max = False
 				# If both lateral ROIs has an average TTT values ---> use tau_balancing
 				if self.left and self.right:
-					control_m_left = self.tau_diff_left
-					control_m_right = self.tau_diff_right
+					control_m = self.tau_diff
 					self.tau_diff_max = False
 
-				# If tau balancing must be used
-				if not self.tau_diff_max:
-					if self.obstacle:
-						find_obstacle(self, self.mean_tau_center, self.time_to_obstacle)	# The obstacle is at 2 second?
-						if self.extreme_left and self.extreme_right:
-							if self.obstacle and (abs(self.tau_diff_extreme) < 0.5):	  # The obstacle is an object
-																						  # in the middle of the path
-								self.kp_e = 1.4
-								if self.double_act_action:
-									self.double_act_action = False
-									self.act_duration = self.act_duration * 3
-								if self.mean_tau_el > self.mean_tau_er:
-									control = self.kp_e * (self.mean_tau_el - self.constant_left)
-									print('\033[1m'+ "Obstacle! Go left" + '\033[0m')
-									print("Control: " + str(control))
-								else:
-									control = -self.kp_e * (self.mean_tau_er - self.constant_right)
-									print('\033[1m' + "Obstacle! Go right" + '\033[0m')
-									print("Control: " + str(control))
-							else:	
-								############# modification starts #############												
-																									## The obstacle is a wall
-								if self.mean_tau_er > self.mean_tau_el:							# belonging to a turn
-									self.kp = 1
-									self.kp_e = 1.3
-									control = self.kp_e * control_e_right + self.kp * control_m_right ##################
-									print('\033[1m'+"Turn ahead / Turn left"+'\033[0m')
-									print("Diff Extreme: " + str(self.tau_diff_extreme))
-									print("Diff Medium: " + str(self.tau_diff))
-									print("Control: " + str(control))
-								else:
-									self.kp = 1
-									self.kp_e = 1.3
-									control = self.kp_e * control_e_left + self.kp * control_m_left ##################
-									print('\033[1m'+"Turn ahead / Turn left"+'\033[0m')
-									print("Diff Extreme: " + str(self.tau_diff_extreme))
-									print("Diff Medium: " + str(self.tau_diff))
-									print("Control: " + str(control))
+				if self.extreme_right or self.extreme_left:   # Only extreme right ROI has a TTT value ---> Single Wall strategy
+					if self.mean_tau_er > self.mean_tau_el:
+						self.kp = 1
+						print('\033[1m'+"Single wall strategy on extreme right"+'\033[0m')
+						if self.first_tdm_r:
+							self.first_tdm_r = False
+							self.first_tdm_l = True
+							self.actual_wall_distance = self.dist_from_wall_r + self.safe_dist
+							self.actual_wall_distance_e = self.dist_from_wall_er + self.safe_dist
+							self.actual_wall_distance = 1
+							self.actual_wall_distance_e = 1
+						control = -self.kp * (self.mean_tau_er - self.actual_wall_distance_e)
+						print("actual distance: " + str(self.actual_wall_distance_e))
+						print("control: " + str(control))
+					else:
+						self.kp = 1
+						if self.first_tdm_l:
+							self.first_tdm_l = False
+							self.first_tdm_r = True
+							self.actual_wall_distance = self.dist_from_wall_l + self.safe_dist
+							self.actual_wall_distance_e = self.dist_from_wall_el + self.safe_dist
+							self.actual_wall_distance = 1
+							self.actual_wall_distance_e = 1
+						print('\033[1m'+"Single wall strategy on extreme left"+'\033[0m')
+						control = self.kp * (self.mean_tau_el - self.actual_wall_distance_e)
+						print("actual distance: " + str(self.actual_wall_distance_e))
+						print("control: " + str(control))
 
-								############# modification ends #############	
-
-						else:
-							if self.obstacle and (abs(self.tau_diff) < 0.5):
-								self.kp_e = 1.2
-								if self.double_act_action:
-									self.double_act_action = False
-									self.act_duration = self.act_duration * 3
-								if self.mean_tau_l > self.mean_tau_r:
-									control = self.kp_e * (self.mean_tau_l - self.constant_left)
-									print('\033[1m'+"Obstacle! Go left (medium)"+'\033[0m')
-									print("Control: " + str(control))
-								else:
-									control = -self.kp_e * (self.mean_tau_r - self.constant_right)
-									print('\033[1m'+"Obstacle! Go right (medium)"+'\033[0m')
-									print("Control: " + str(control))
-							else:
-
-								############# modification starts #############												
-																									
-								if self.mean_tau_r > self.mean_tau_l:							
-									self.kp = 1.5
-									print('\033[1m'+"Turn ahead/right"+'\033[0m')
-									print("Diff Medium with no extreme: " + str(self.tau_diff))
-									control = self.kp_e * control_e_right + self.kp * control_m_right ################
-									print("Control: " + str(control))
-								else:
-									self.kp = 1.5
-									print('\033[1m'+"Turn ahead/ left"+'\033[0m')
-									print("Diff Medium with no extreme: " + str(self.tau_diff))
-									control = self.kp_e * control_e_left + self.kp * control_m_left ################
-									print("Control: " + str(control))
-
-								############# modification ends #############			
-					else:																	   # no obstacles
-						if np.size(self.prev_controls) == 2:
-							control_diff = self.prev_controls[1] - self.prev_controls[0]
-							u_diff = threshold((self.kd * control_diff), self.max_control_diff)
-						else:
-							u_diff = 0
-						# print('er,el,r,l',self.mean_tau_er,self.mean_tau_el,self.mean_tau_r,self.mean_tau_l)
-
-						# if self.mean_tau_er > self.mean_tau_el or self.mean_tau_r > self.mean_tau_l:
-						u_prop = self.kp_e * control_e_right + self.kp * control_m_right 
-						print('\033[1m'+"right"+'\033[0m')
-						# else:
-						# 	u_prop = self.kp_e * control_e_left + self.kp * control_m_left ###############
-						# 	print('\033[1m'+"left"+'\033[0m')
-							
-						if u_diff * u_prop <= 0:
-							control = u_prop + u_diff
-							print('\033[1m'+"Tau Balancing"+'\033[0m')
-							print("control tau balancing: " + str(control))
-						else:
-							control = u_prop
-							print('\033[1m'+"Tau Balancing"+'\033[0m')
-							print("control tau balancing: " + str(control))
-
-					self.control = control
-					self.first_tdm_r = True
-					self.first_tdm_l = True
-
-				elif self.extreme_right:   # Only extreme right ROI has a TTT value ---> Single Wall strategy
-					self.kp = 1
-					print('\033[1m'+"Single wall strategy on extreme right"+'\033[0m')
-					if self.first_tdm_r:
-						self.first_tdm_r = False
-						self.first_tdm_l = True
-						self.actual_wall_distance = self.dist_from_wall_r + self.safe_dist
-						self.actual_wall_distance_e = self.dist_from_wall_er + self.safe_dist
-						self.actual_wall_distance = 1
-						self.actual_wall_distance_e = 1
-					control = -self.kp * (self.mean_tau_er - self.actual_wall_distance_e)
-					print("actual distance: " + str(self.actual_wall_distance_e))
-					print("control: " + str(control))
-				elif self.right:			# Only right ROI has a TTT value ---> Single Wall strategy
-					self.kp = 1
-					print('\033[1m'+"Single wall strategy on right"+'\033[0m')
-					if self.first_tdm_r:
-						self.first_tdm_r = False
-						self.first_tdm_l = True
-						self.actual_wall_distance = self.dist_from_wall_r + self.safe_dist
-						self.actual_wall_distance_e = self.dist_from_wall_er + self.safe_dist
-						self.actual_wall_distance = 1
-						self.actual_wall_distance_e = 1
-					control = -self.kp * (self.mean_tau_r - self.actual_wall_distance)
-					print("actual distance: " + str(self.actual_wall_distance))
-					print("control: " + str(control))
-				elif self.extreme_left:		 # Only extreme left ROI has a TTT value ---> Single Wall strategy
-					self.kp = 1
-					if self.first_tdm_l:
-						self.first_tdm_l = False
-						self.first_tdm_r = True
-						self.actual_wall_distance = self.dist_from_wall_l + self.safe_dist
-						self.actual_wall_distance_e = self.dist_from_wall_el + self.safe_dist
-						self.actual_wall_distance = 1
-						self.actual_wall_distance_e = 1
-					print('\033[1m'+"Single wall strategy on extreme left"+'\033[0m')
-					control = self.kp * (self.mean_tau_el - self.actual_wall_distance_e)
-					print("actual distance: " + str(self.actual_wall_distance_e))
-					print("control: " + str(control))
-				elif self.left:				 # Only left ROI has a TTT value ---> Single Wall strategy
-					self.kp = 1
-					print('\033[1m'+"Single wall strategy on left"+'\033[0m')
-					if self.first_tdm_l:
-						self.first_tdm_l = False
-						self.first_tdm_r = True
-						self.actual_wall_distance = self.dist_from_wall_l + self.safe_dist
-						self.actual_wall_distance_e = self.dist_from_wall_el + self.safe_dist
-						self.actual_wall_distance = 1
-						self.actual_wall_distance_e = 1
-					control = self.kp * (self.mean_tau_l - self.actual_wall_distance)
-					print("actual distance: " + str(self.actual_wall_distance))
-					print("control: " + str(control))
+				elif self.right or self.left:			# Only right ROI has a TTT value ---> Single Wall strategy
+					if self.mean_tau_r > self.mean_tau_l:
+						self.kp = 1
+						print('\033[1m'+"Single wall strategy on right"+'\033[0m')
+						if self.first_tdm_r:
+							self.first_tdm_r = False
+							self.first_tdm_l = True
+							self.actual_wall_distance = self.dist_from_wall_r + self.safe_dist
+							self.actual_wall_distance_e = self.dist_from_wall_er + self.safe_dist
+							self.actual_wall_distance = 1
+							self.actual_wall_distance_e = 1
+						control = -self.kp * (self.mean_tau_r - self.actual_wall_distance)
+						print("actual distance: " + str(self.actual_wall_distance))
+						print("control: " + str(control))
+					else:
+						self.kp = 1
+						print('\033[1m'+"Single wall strategy on left"+'\033[0m')
+						if self.first_tdm_l:
+							self.first_tdm_l = False
+							self.first_tdm_r = True
+							self.actual_wall_distance = self.dist_from_wall_l + self.safe_dist
+							self.actual_wall_distance_e = self.dist_from_wall_el + self.safe_dist
+							self.actual_wall_distance = 1
+							self.actual_wall_distance_e = 1
+						control = self.kp * (self.mean_tau_l - self.actual_wall_distance)
+						print("actual distance: " + str(self.actual_wall_distance))
+						print("control: " + str(control))
+					
+				# elif self.extreme_left:		 # Only extreme left ROI has a TTT value ---> Single Wall strategy
+				# 	self.kp = 1
+				# 	if self.first_tdm_l:
+				# 		self.first_tdm_l = False
+				# 		self.first_tdm_r = True
+				# 		self.actual_wall_distance = self.dist_from_wall_l + self.safe_dist
+				# 		self.actual_wall_distance_e = self.dist_from_wall_el + self.safe_dist
+				# 		self.actual_wall_distance = 1
+				# 		self.actual_wall_distance_e = 1
+				# 	print('\033[1m'+"Single wall strategy on extreme left"+'\033[0m')
+				# 	control = self.kp * (self.mean_tau_el - self.actual_wall_distance_e)
+				# 	print("actual distance: " + str(self.actual_wall_distance_e))
+				# 	print("control: " + str(control))
+				# elif self.left:				 # Only left ROI has a TTT value ---> Single Wall strategy
+				# 	self.kp = 1
+					# print('\033[1m'+"Single wall strategy on left"+'\033[0m')
+					# if self.first_tdm_l:
+					# 	self.first_tdm_l = False
+					# 	self.first_tdm_r = True
+					# 	self.actual_wall_distance = self.dist_from_wall_l + self.safe_dist
+					# 	self.actual_wall_distance_e = self.dist_from_wall_el + self.safe_dist
+					# 	self.actual_wall_distance = 1
+					# 	self.actual_wall_distance_e = 1
+					# control = self.kp * (self.mean_tau_l - self.actual_wall_distance)
+					# print("actual distance: " + str(self.actual_wall_distance))
+					# print("control: " + str(control))
 
 				# Verify the value of the control action and limit it if needed
 				control = threshold(control, self.max_u)

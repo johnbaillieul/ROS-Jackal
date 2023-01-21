@@ -90,6 +90,6 @@ def change_envri():
     blue_img_6.save(path_2_2 + 'blue_circle_with_border.png')
 
 if __name__ == '__main__':
-    rospy.init_node('change_env', anonymous=True)
+    rospy.init_node('change_box_color_in_env', anonymous=True)
     change_envri()
     

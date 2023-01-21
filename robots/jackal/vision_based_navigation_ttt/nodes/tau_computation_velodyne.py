@@ -4,13 +4,10 @@ from sensor_msgs.msg import Image, PointCloud2,PointField,LaserScan
 from std_msgs.msg import Header
 from sensor_msgs import point_cloud2
 import numpy as np
-import rospy
 from vision_based_navigation_ttt.msg import TauComputation
 import cv2
-from sensor_msgs.msg import Image
 import os
 import pandas as pd
-import time
 from itertools import chain
 from numpy import arctan2, sqrt
 import numexpr as ne
@@ -154,8 +151,7 @@ class Velodyne:
     def convertlist(self,longlist):
         tmp = list(chain.from_iterable(longlist))
         return np.array(tmp).reshape((len(longlist), len(longlist[0])))
-    
-    # Callback for the image topic
+
     def callback_img(self, data):
         try:
             self.curr_image = self.bridge.imgmsg_to_cv2(data, "mono8")
@@ -189,7 +185,7 @@ class Velodyne:
         return azimuth #, elevation, r
     
     def cloud_callback(self, cloud):
-        start_time = time.time()
+        # start_time = time.time()
         curr_image = self.curr_image  
         # rate = rospy.Rate(1) #hz
         cloud_points = list(point_cloud2.read_points_list(cloud, field_names=("x", "y", "z"))) #, field_names=("x", "y", "z")
@@ -197,7 +193,7 @@ class Velodyne:
         points_arr = self.convertlist(cloud_points) #np.asarray(cloud_points)
         # print('cloud', points_arr)
         indices = np.logical_and(points_arr[:,0] > 0, points_arr[:,2]> -0.28)
-        print('maxiix', np.max(points_arr[:,2]))
+        # print('maxiix', np.max(points_arr[:,2]))
         points_arr = points_arr[indices]
         indices = np.where(points_arr[:,2]<0.1)
         points_arr = points_arr[indices]
@@ -211,67 +207,71 @@ class Velodyne:
         # print('size',np.size(points_arr_ ))
         ROI_el_ind = np.logical_and(points[:,3] > (max/3.5) , points[:,3] < (2*max/3))
         ROI_el = points[ROI_el_ind]
-        ROI_el_med = np.median(ROI_el[:,0])#*np.cos(ROI_el[:,3]))
-        print("el", ROI_el_med)
+        if np.shape(ROI_el[:,0]) < 30:
+            ROI_el_med = -1
+        else:
+            ROI_el_med = np.median(ROI_el[:,0])
+        # print("el", np.shape(ROI_el[:,0]))
 
         ROI_l_ind = np.logical_and(points[:,3] > (max/10) , points[:,3] < (max/3.5))
         ROI_l = points[ROI_l_ind]
-        ROI_l_med = np.median(ROI_l[:,0])#*np.cos(ROI_l[:,3]))
-        print("l", ROI_l_med)
+        if np.shape(ROI_l[:,0]) < 30:
+            ROI_l_med = -1
+        else:
+            ROI_l_med = np.median(ROI_l[:,0])
 
         ROI_c_ind = np.logical_and(points[:,3] > (min/14) , points[:,3] < (max/14))
         ROI_c = points[ROI_c_ind]
-        # print("roic",ROI_c )
-        ROI_c_med = np.median(ROI_c[:,0])#*np.cos(ROI_c[:,3]))
-        print("c", ROI_c_med)
+        if np.shape(ROI_c[:,0]) < 30:
+            ROI_c_med = -1
+        else:
+            ROI_c_med = np.median(ROI_c[:,0])
 
         ROI_r_ind = np.logical_and(points[:,3] > (min/3.5) , points[:,3] < (min/10))
         ROI_r = points[ROI_r_ind]
-        ROI_r_med = np.median(ROI_r[:,0])#*np.cos(ROI_r[:,3]))
-        print("r", ROI_r_med)
+        if np.shape(ROI_r[:,0]) < 30:
+            ROI_r_med = -1
+        else:
+            ROI_r_med = np.median(ROI_r[:,0])
 
         ROI_er_ind = np.logical_and(points[:,3] > (2*min/3) , points[:,3]< (min/3.5))
         ROI_er = points[ROI_er_ind]
-        # ROI_er_ = ROI_er[:,0]#*np.cos(ROI_er[:,3])
-        # print("before",ROI_er_)
-        # print("theta",np.cos(ROI_er[:,3]* (180/np.pi)))
-        # print("jsjsjs",ROI_er[:,0]*np.cos(ROI_er[:,3]* (180/np.pi)))
-        ROI_er_med = np.median(ROI_er[:,0])
-        
-        print("er", ROI_er_med)
+        if np.shape(ROI_er[:,0]) < 30:
+            ROI_er_med = -1
+        else:
+            ROI_er_med = np.median(ROI_er[:,0])
+            
         # print('Duration: {}'.format(time.time() - start_time))
         # print('ring',points_arr_rings[:,0:3])
         # self.publish_cloud(cloud, points_arr_azimuth[:,:3])
 ############################################################
         # publish point cloud message
-        fields = [PointField('x', 0, PointField.FLOAT32, 1),
-            PointField('y', 4, PointField.FLOAT32, 1),
-            PointField('z', 8, PointField.FLOAT32, 1)
-            ]
+        # fields = [PointField('x', 0, PointField.FLOAT32, 1),
+        #     PointField('y', 4, PointField.FLOAT32, 1),
+        #     PointField('z', 8, PointField.FLOAT32, 1)
+        #     ]
 
-        header = Header()
-        header.frame_id = cloud.header.frame_id
-        header.stamp = cloud.header.stamp
+        # header = Header()
+        # header.frame_id = cloud.header.frame_id
+        # header.stamp = cloud.header.stamp
 
         # pc2_cloud = point_cloud2.create_cloud(header, fields, cloud)
         # self.vel_cloud_pub.publish(pc2_cloud)
 
-        pc2_el = point_cloud2.create_cloud(header, fields, ROI_el[:,:3])
-        self.vel_el_pub.publish(pc2_el)
+        # pc2_el = point_cloud2.create_cloud(header, fields, ROI_el[:,:3])
+        # self.vel_el_pub.publish(pc2_el)
 
-        pc2_er = point_cloud2.create_cloud(header, fields, ROI_er[:,:3])
-        self.vel_er_pub.publish(pc2_er)
+        # pc2_er = point_cloud2.create_cloud(header, fields, ROI_er[:,:3])
+        # self.vel_er_pub.publish(pc2_er)
 
-        pc2_l = point_cloud2.create_cloud(header, fields, ROI_l[:,:3])
-        self.vel_l_pub.publish(pc2_l)
+        # pc2_l = point_cloud2.create_cloud(header, fields, ROI_l[:,:3])
+        # self.vel_l_pub.publish(pc2_l)
 
-        pc2_r = point_cloud2.create_cloud(header, fields, ROI_r[:,:3])
-        self.vel_r_pub.publish(pc2_r)
+        # pc2_r = point_cloud2.create_cloud(header, fields, ROI_r[:,:3])
+        # self.vel_r_pub.publish(pc2_r)
 
-        pc2_c = point_cloud2.create_cloud(header, fields, ROI_c[:,:3])
-        self.vel_c_pub.publish(pc2_c)
-
-#############################################################
+        # pc2_c = point_cloud2.create_cloud(header, fields, ROI_c[:,:3])
+        # self.vel_c_pub.publish(pc2_c)
 
         # Publish Tau values data to rostopic
         # Creation of TauValues.msg
@@ -291,8 +291,7 @@ class Velodyne:
         self.get_tau_values()
 
         draw_image_segmentation(curr_image,ROI_el_med,ROI_er_med,ROI_l_med,ROI_r_med,ROI_c_med, self.tau_el, self.tau_er, self.tau_l, self.tau_r, self.tau_c)
-        print('Duration: {}'.format(time.time() - start_time))
-    # rate.sleep()
+
     def get_tau_values(self):
         start = time.time()
         set_limit(self.width, self.height)
@@ -434,7 +433,7 @@ class Velodyne:
 
 if __name__ == '__main__':
     rospy.init_node("tau_v", anonymous=False)
-    vel = Velodyne()   
+    vel = Velodyne()
     rospy.spin()   
     
       

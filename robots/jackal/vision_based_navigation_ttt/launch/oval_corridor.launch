@@ -39,7 +39,7 @@
                 <arg name="yaw" value="3.14" />
                 <arg name="config" value="$(arg config)" />
         </include> 
-        <node name="change_env" pkg="vision_based_navigation_ttt" type="change_env.py"/> 
+        <node name="change_env" pkg="vision_based_navigation_ttt" type="change_box_color_in_env.py"/> 
         <!--directly run all three nodes
         <include file="$(find vision_based_navigation_ttt)/launch/optical_flow_nodes.launch">
         </include>-->
