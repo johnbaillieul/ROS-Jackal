@@ -2,6 +2,12 @@
 
 ## Startup
 
+To power up the Jackal and drive it press the power button on Jackal’s HMI panel. It will take about 30s for the internal PC to finish booting. Then press the PS button on the Sony Bluetooth controller to sync the controller to Jackal. Once the small blue LED on the controller goes solid, it means that its paired.
+
+For slow speed mode, hold the L1 trigger button, and push the left thumbstick forward to drive the Jackal. For full speed mode, hold the R1 trigger.
+
+Reference to the Jackal manual: https://www.generationrobots.com/media/Jackal_Clearpath_Robotics_Userguide.pdf
+
 ## Prerequisites
 1. Setup Realsense_camera: Follow instructions in https://wiki.bu.edu/robotics/index.php?title=Jackal and https://www.clearpathrobotics.com/assets/guides/kinetic/jackal/additional_sim_worlds.html
 
