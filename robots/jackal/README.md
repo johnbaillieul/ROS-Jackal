@@ -84,6 +84,9 @@ Note that when using apriltags, having lighting in your world that is too bright
 TODO
 
 ## Package_3: Vision_based_navigation_ttt
+This package provides a means for a mobile robot equipped with a monocular camera to navigate in unknown environments using a visual quantity called time-to-transit (tau). The package includes code that utilizes computer vision techniques, specifically the Lucas-Kanade method, to estimate time-to-transit by calculating sparse optical flow. Additionally, the package offers an alternative method for computing tau values by employing a Deep Neural Network (DNN)-based technique to predict tau values directly from a couple of successive frames, and it also utilizes lidar to calculate tau values.
+
+Moreover, the package includes a deep learning model that predicts the shape of the path ahead, which further enhances the robot's capability to navigate in an unknown environment.
 
 ### How to Run the Package
 To launch Gazebo you need to run 
