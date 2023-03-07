@@ -29,6 +29,11 @@ Reference to the Jackal manual: https://www.generationrobots.com/media/Jackal_Cl
      ```
    sudo apt-get install ros-$ROS_Distro-jackal-simulator ros-$ROS_Distro-jackal-desktop ros-$ROS_Distro-jackal-navigation
      ```
+3. Download Tensorflow if you are planning on using the CNN to get tau values
+    ```
+    pip install tensorflow
+    
+    ```
 
 ## Setup:
   1. Create a catkin workspace
