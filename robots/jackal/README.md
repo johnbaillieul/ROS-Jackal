@@ -103,7 +103,7 @@ To simulate your desired world specify it in the launch file at line:
   arg name="world_name" value="$(find vision_based_navigation_ttt)/GazeboWorlds/<files with your desired world found in GazeboWorlds folder>.world" 
   ```
   
-  There are different ways to calculate the tau values:
+  #### Ways to calculate the tau values:
   
   To get tau values from optical flow run: 
   
@@ -131,7 +131,7 @@ To simulate your desired world specify it in the launch file at line:
   This window will show two values the top one is the cnn prediction and thebottom one is from the lidar. You can choose the parameters that you want that are available in the trained_model_parameters folder just change the model name in line tf.keras.models.load_model. Not that there are models that take velocities as input and others dont so make sure to choose the function that calculates tau values according tothe model you chose.
   
   
-  There are also different controllers to choose from
+  #### Contollers available:
   
   To use the controller with sense and act phases, run 
   
@@ -142,7 +142,7 @@ To simulate your desired world specify it in the launch file at line:
   To use the controller with only an act phase, run 
   
   ```
-  rosrun vision_based_navigation_ttt controller_act_only.py 
+  rosrun vision_based_navigation_ttt controller_act_bias.py 
   ```
 
 ### Custom Worlds 
@@ -171,10 +171,11 @@ Multiple custom worlds were created in Gazebo to resemble the environment being 
  </tr>
 </table>
 
-
 You can build up custom gazebo worlds by using wall segments. The video below shows how this can be done.
 
 <img src="https://user-images.githubusercontent.com/98136555/185213284-8d2cfa97-f4ec-4a5c-a24f-7408b699c902.mp4" width=50% height=50%/>
+
+
 ### Performance
   Peformance can be affected by lighting as shown in the videos below.
   
@@ -238,6 +239,7 @@ https://user-images.githubusercontent.com/98136555/211263011-e2469251-4f1f-49e2-
 </table> 
   
   ##### Model Architecture:
+  
   <img src="https://user-images.githubusercontent.com/98136555/211239897-3d31f95e-03bc-45ba-96e7-9a65a0e81cef.png" width=25% height=25%/>
   
   
@@ -265,20 +267,22 @@ https://user-images.githubusercontent.com/98136555/211262738-a77bb3e2-d42a-404e-
 </table>
   
    ##### Model Architecture:
+   
   <img src="https://user-images.githubusercontent.com/98136555/211247640-d3bb4dd1-b210-4fbd-adc4-8059609093ae.png" width=25% height=25%/>
 
   #### 3. cnn_grayscale_output_tau_value_in_each_roi
   This model takes two grayscale images and the velocity as input, and outputs an array that contains the ```tau_values``` in each roi.
   
    ##### Model Architecture:
+   
     <img src="https://user-images.githubusercontent.com/98136555/211253489-fc6b081e-af00-4c99-a85f-3cd9153b509c.png" width=25% height=25%/>
-
 
   #### 4. cnn_output_tau_value_in_each_roi_and_validity
   
   The model takes two successive images along with the velocity as input, and outputs two arrays one contains the tau values in each region of interest , and the other contains a flag that shows if the predicited value is valid or not.
   
   ##### Model Architecture:
+  
   <img src="https://user-images.githubusercontent.com/98136555/203196927-e1a5df6a-b659-4cb5-899a-96971d8fb24e.png" width=25% height=25%/>
 
   #### 5. cnn_input_roi_image
@@ -286,6 +290,7 @@ https://user-images.githubusercontent.com/98136555/211262738-a77bb3e2-d42a-404e-
   Unlike the previous models, this model takes two successive images of the region of interest as input, and outputs the tau value in that region. This model is computationally expensive since it has to run 5 times to get the tau value for the 5 regions of interest.
   
    ##### Model Architecture:
+   
   <img src="https://user-images.githubusercontent.com/98136555/203196713-d184d217-4d4c-4703-9a3e-b70578cf4f85.png" width=25% height=25%/>
   
   ##### Collected data and trained models:
