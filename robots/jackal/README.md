@@ -217,8 +217,8 @@ The aim is to introduce a Convolutional Neural Network (DNN) that automatically 
   #### Available Model Architectures to Train :
   
   ##### 1. cnn_auto_ml
-      This model uses "AutoKeras" which is an AutoML System. It takes two successive colored images as input, and outputs the distance in each region of interest. The distance is then converted to ```tau_value``` by dividing it by the robot's velocity.
-  
+  This model uses "AutoKeras" which is an AutoML System. It takes two successive colored images as input, and outputs the distance in each region of interest. The distance is then converted to ```tau_value``` by dividing it by the robot's velocity.
+
  ###### Demo:
  <table border="0">
  <tr>
@@ -244,7 +244,7 @@ https://user-images.githubusercontent.com/98136555/211263011-e2469251-4f1f-49e2-
   
   
   ##### 2. cnn_colored_output_distance_in_each_roi
-  This model takes two colored images as input, and outputs an array that contains the distance in each roi.
+This model takes two colored images as input, and outputs an array that contains the distance in each roi.
    ###### Demo:
 
    <table border="0">
@@ -275,7 +275,7 @@ https://user-images.githubusercontent.com/98136555/211262738-a77bb3e2-d42a-404e-
   
    ###### Model Architecture:
    
-    <img src="https://user-images.githubusercontent.com/98136555/211253489-fc6b081e-af00-4c99-a85f-3cd9153b509c.png" width=25% height=25%/>
+   <img src="https://user-images.githubusercontent.com/98136555/211253489-fc6b081e-af00-4c99-a85f-3cd9153b509c.png" width=25% height=25%/>
 
   ##### 4. cnn_output_tau_value_in_each_roi_and_validity
   
@@ -291,7 +291,7 @@ https://user-images.githubusercontent.com/98136555/211262738-a77bb3e2-d42a-404e-
   
    ###### Model Architecture:
    
-  <img src="https://user-images.githubusercontent.com/98136555/203196713-d184d217-4d4c-4703-9a3e-b70578cf4f85.png" width=25% height=25%/>
+ <img src="https://user-images.githubusercontent.com/98136555/203196713-d184d217-4d4c-4703-9a3e-b70578cf4f85.png" width=25% height=25%/>
   
   #### Collected data and trained models:
   Due to the large size of the datasets and the trained models they are saved on a shared drive.
