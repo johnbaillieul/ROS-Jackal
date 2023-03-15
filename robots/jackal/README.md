@@ -105,45 +105,45 @@ To simulate your desired world specify it in the launch file at line:
   
   #### Ways to calculate the tau values:
   
-  To get tau values from optical flow run: 
-  
-  ```
-  rosrun vision_based_navigation_ttt optical_flow.py
-  rosrun vision_based_navigation_ttt tau_computation.py 
-  ```
-  
-  To get tau values from velodyne(3D lidar) run:
-    
-  ```
-  rosrun vision_based_navigation_ttt tau_computation_velodyne.py 
-  ```
-  To get tau values from lidar(2D lidar) run:
-  
-  ```
-  rosrun vision_based_navigation_ttt tau_computation_lidar.py 
-  ```
-  
-  To get tau values from CNN model run:
-  
-  ```
-  rosrun vision_based_navigation_ttt tau_computation_cnn.py
-  ```
-  This window will show two values the top one is the cnn prediction and thebottom one is from the lidar. You can choose the parameters that you want that are available in the trained_model_parameters folder just change the model name in line tf.keras.models.load_model. Not that there are models that take velocities as input and others dont so make sure to choose the function that calculates tau values according tothe model you chose.
-  
-  
+      To get tau values from optical flow run: 
+
+      ```
+      rosrun vision_based_navigation_ttt optical_flow.py
+      rosrun vision_based_navigation_ttt tau_computation.py 
+      ```
+
+      To get tau values from velodyne(3D lidar) run:
+
+      ```
+      rosrun vision_based_navigation_ttt tau_computation_velodyne.py 
+      ```
+      To get tau values from lidar(2D lidar) run:
+
+      ```
+      rosrun vision_based_navigation_ttt tau_computation_lidar.py 
+      ```
+
+      To get tau values from CNN model run:
+
+      ```
+      rosrun vision_based_navigation_ttt tau_computation_cnn.py
+      ```
+      This window will show two values the top one is the cnn prediction and thebottom one is from the lidar. You can choose the parameters that you want that are available in the trained_model_parameters folder just change the model name in line tf.keras.models.load_model. Not that there are models that take velocities as input and others dont so make sure to choose the function that calculates tau values according tothe model you chose.
+
+
   #### Contollers available:
   
-  To use the controller with sense and act phases, run 
-  
-  ```
-  rosrun vision_based_navigation_ttt controller.py 
-  ```
-  
-  To use the controller with only an act phase, run 
-  
-  ```
-  rosrun vision_based_navigation_ttt controller_act_bias.py 
-  ```
+      To use the controller with sense and act phases, run 
+
+      ```
+      rosrun vision_based_navigation_ttt controller.py 
+      ```
+
+      To use the controller with only an act phase, run 
+
+      ```
+      rosrun vision_based_navigation_ttt controller_act_bias.py 
+      ```
 
 ### Custom Worlds 
 Multiple custom worlds were created in Gazebo to resemble the environment being tested on in the lab. 
@@ -216,10 +216,10 @@ The aim is to introduce a Convolutional Neural Network (DNN) that automatically 
   
   #### Available Model Architectures to Train :
   
-  #### 1. cnn_auto_ml
-  This model uses "AutoKeras" which is an AutoML System. It takes two successive colored images as input, and outputs the distance in each region of interest. The distance is then converted to ```tau_value``` by dividing it by the robot's velocity.
+  ##### 1. cnn_auto_ml
+      This model uses "AutoKeras" which is an AutoML System. It takes two successive colored images as input, and outputs the distance in each region of interest. The distance is then converted to ```tau_value``` by dividing it by the robot's velocity.
   
- ##### Demo:
+ ###### Demo:
  <table border="0">
  <tr>
     <td><b style="font-size:30px">Model ran in an environment it was not trained on</b></td>
@@ -238,15 +238,15 @@ https://user-images.githubusercontent.com/98136555/211263011-e2469251-4f1f-49e2-
  </tr>
 </table> 
   
-  ##### Model Architecture:
+  ###### Model Architecture:
   
   <img src="https://user-images.githubusercontent.com/98136555/211239897-3d31f95e-03bc-45ba-96e7-9a65a0e81cef.png" width=25% height=25%/>
   
   
-  #### 2. cnn_colored_output_distance_in_each_roi
+  ##### 2. cnn_colored_output_distance_in_each_roi
   This model takes two colored images as input, and outputs an array that contains the distance in each roi.
-   ##### Demo:
-  
+   ###### Demo:
+
    <table border="0">
  <tr>
     <td><b style="font-size:30px">Model ran in an environment it was trained on</b></td>
@@ -265,35 +265,35 @@ https://user-images.githubusercontent.com/98136555/211262738-a77bb3e2-d42a-404e-
   </td>
  </tr>
 </table>
-  
-   ##### Model Architecture:
+
+   ###### Model Architecture:
    
   <img src="https://user-images.githubusercontent.com/98136555/211247640-d3bb4dd1-b210-4fbd-adc4-8059609093ae.png" width=25% height=25%/>
 
-  #### 3. cnn_grayscale_output_tau_value_in_each_roi
+  ##### 3. cnn_grayscale_output_tau_value_in_each_roi
   This model takes two grayscale images and the velocity as input, and outputs an array that contains the ```tau_values``` in each roi.
   
-   ##### Model Architecture:
+   ###### Model Architecture:
    
     <img src="https://user-images.githubusercontent.com/98136555/211253489-fc6b081e-af00-4c99-a85f-3cd9153b509c.png" width=25% height=25%/>
 
-  #### 4. cnn_output_tau_value_in_each_roi_and_validity
+  ##### 4. cnn_output_tau_value_in_each_roi_and_validity
   
   The model takes two successive images along with the velocity as input, and outputs two arrays one contains the tau values in each region of interest , and the other contains a flag that shows if the predicited value is valid or not.
   
-  ##### Model Architecture:
+  ###### Model Architecture:
   
   <img src="https://user-images.githubusercontent.com/98136555/203196927-e1a5df6a-b659-4cb5-899a-96971d8fb24e.png" width=25% height=25%/>
 
-  #### 5. cnn_input_roi_image
+  ##### 5. cnn_input_roi_image
   
   Unlike the previous models, this model takes two successive images of the region of interest as input, and outputs the tau value in that region. This model is computationally expensive since it has to run 5 times to get the tau value for the 5 regions of interest.
   
-   ##### Model Architecture:
+   ###### Model Architecture:
    
   <img src="https://user-images.githubusercontent.com/98136555/203196713-d184d217-4d4c-4703-9a3e-b70578cf4f85.png" width=25% height=25%/>
   
-  ##### Collected data and trained models:
+  #### Collected data and trained models:
   Due to the large size of the datasets and the trained models they are saved on a shared drive.
   
   ### CNN-Based Turn Detection:
