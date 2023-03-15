@@ -88,6 +88,10 @@ This package provides a means for a mobile robot equipped with a monocular camer
 
 Moreover, the package includes a deep learning model that predicts the shape of the path ahead, which further enhances the robot's capability to navigate in an unknown environment.
 
+The diagram of the ROS framework is shown in the figure
+
+<img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/diagram.png"/>
+
 ### How to Run the Package
 To launch Gazebo you need to run 
 ``` 
@@ -143,13 +147,34 @@ To simulate your desired world specify it in the launch file at line:
 
 ### Custom Worlds 
 Multiple custom worlds were created in Gazebo to resemble the environment being tested on in the lab. 
+ 
+<table border="0">
+ <tr>
+    <td><b style="font-size:30px">T_shaped corridor</b></td>
+    <td><b style="font-size:30px">L_shaped corridor</b></td>
+    <td><b style="font-size:30px">U_shaped corridor</b></td>
+    <td><b style="font-size:30px">House Garden</b></td>
+ </tr>
+ <tr>
+    <td>
+<img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/T_shaped.png"/> 
+     </td>
+     <td>
+<img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/L_shaped.png"/>
+      </td>
+     <td>
+<img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/U_shaped.png"/>
+      </td>
+      <td>
+<img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/House_garden.png"/>
+      </td>
+ </tr>
+</table>
 
-TODO add pictures of dif worlds
-  
+
 You can build up custom gazebo worlds by using wall segments. The video below shows how this can be done.
 
-https://user-images.githubusercontent.com/98136555/185213284-8d2cfa97-f4ec-4a5c-a24f-7408b699c902.mp4
- 
+<img src="https://user-images.githubusercontent.com/98136555/185213284-8d2cfa97-f4ec-4a5c-a24f-7408b699c902.mp4" width=50% height=50%/>
 ### Performance
   Peformance can be affected by lighting as shown in the videos below.
   
@@ -260,6 +285,8 @@ https://user-images.githubusercontent.com/98136555/211262738-a77bb3e2-d42a-404e-
    ##### Model Architecture:
   <img src="https://user-images.githubusercontent.com/98136555/203196713-d184d217-4d4c-4703-9a3e-b70578cf4f85.png" width=25% height=25%/>
     
+  ##### Lab Results:
+  <img src="https://user-images.githubusercontent.com/98136555/203196927-e1a5df6a-b659-4cb5-899a-96971d8fb24e.png" width=25% height=25%/>
   
 ## Package_4: Control_Mix 
   
