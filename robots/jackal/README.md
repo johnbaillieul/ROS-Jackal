@@ -194,13 +194,16 @@ https://user-images.githubusercontent.com/98136555/185215284-977937bf-bd99-4416-
 </table>
 
  
-### Machine Learning Models
+### CNN-Based τ Predicition
 
-In this approach we aim to calculate the Optical Flow (i.e the motion between consecutive frames of sequences caused by relative motion between a camera and an object) by using a machine learning model instead of Lucas Kanade method. The model generated is expected to predict the tau value in each region of interest given images of the scene. We used a 2D Lidar and a Realsense Camera to collect the training data. 
+The aim is to introduce a Convolutional Neural Network (DNN) that automatically estimates values of tau in the 5 regions of interests from a couple of images, without explicitly computing optical flow. It is reasonable to think that this network learns a form of optical flow in an unsupervised manner through its hidden layers.
 
   #### Data Collection
  
-  To collect data, run the commands below to launch gazebo with a 2D Laser:
+  To train the CNN, two consecutive images and the corresponding tau values in the respective regions of the images are required. The data_collection.py file is utilized for saving the images and tau values. The tau values are obtained from depth measurements using a lidar, as this provides the most reliable method for obtaining time-to-transit values. The node requires /image_raw and /tau_values topics to receive the required data.
+  
+  
+  To collect data in simulation using a 2D lidar, run the commands below:
   ```
   roslaunch vision_based_navigation_ttt <name-of-launch-file>.launch front_laser:=1
   rosrun vision_based_navigation_ttt tau_computattion_lidar.py 
@@ -208,9 +211,9 @@ In this approach we aim to calculate the Optical Flow (i.e the motion between co
   rosrun vision_based_navigation_ttt data_collection.py 
   ```
 
-  By default, the images will be saved in the ```training_images``` folder and the distances are saved in the ```tau_values``` folder.
+  By default, the images will be saved in the ```training_images``` folder and the distances are saved in the ```tau_values``` folder. 
   
-  #### Available Model Architectures:
+  #### Available Model Architectures to Train :
   
   #### 1. cnn_auto_ml
   This model uses "AutoKeras" which is an AutoML System. It takes two successive colored images as input, and outputs the distance in each region of interest. The distance is then converted to ```tau_value``` by dividing it by the robot's velocity.
@@ -284,8 +287,20 @@ https://user-images.githubusercontent.com/98136555/211262738-a77bb3e2-d42a-404e-
   
    ##### Model Architecture:
   <img src="https://user-images.githubusercontent.com/98136555/203196713-d184d217-4d4c-4703-9a3e-b70578cf4f85.png" width=25% height=25%/>
-    
-  ##### Lab Results:
+  
+  ##### Collected data and trained models:
+  Due to the large size of the datasets and the trained models they are saved on a shared drive.
+  
+  ### CNN-Based Turn Detection:
+  For this we trained several well-known architectures and assessed their performance, and the ResNet50v2 architecture demonstrated the highest performance.
+  
+  The file reponsible for this is publish_shape_corridor.py, that subscribers to the image topic and produces a vector of three binary elements, indicating the presence of a left, right, or straight path respectively. 
+  
+  The dataset required to train this model can be collected using the automatic_label_sim.py file. It's worth noting that this function is currently only compatible with a limited number of predefined environments. If you need to add another environment, you will have to map the x, y, and theta coordinates of the robot to determine what turns are visible from that position. Another way to collect the dataset is to label the images manually using the GUI available in the manual_label_turns.py file.
+  
+  ### Lab Results:
+  For predicting tau values, the model employed is based on the resnetv2-101 architecture, which was trained on data gathered from the real robot. On the other hand, to predict the shape of the corridor, specifically the upcoming turns visible in the image, a model based on the resnetv2-50 architecture is used. This model was trained using simulated and real data. The models used were selected based on their superior performance.
+  
   <img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/IROS23_lab_exp.mp4"/>
   
 ## Package_4: Control_Mix 
