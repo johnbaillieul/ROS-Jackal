@@ -286,7 +286,7 @@ https://user-images.githubusercontent.com/98136555/211262738-a77bb3e2-d42a-404e-
   <img src="https://user-images.githubusercontent.com/98136555/203196713-d184d217-4d4c-4703-9a3e-b70578cf4f85.png" width=25% height=25%/>
     
   ##### Lab Results:
-  <img src="https://user-images.githubusercontent.com/98136555/203196927-e1a5df6a-b659-4cb5-899a-96971d8fb24e.png" width=25% height=25%/>
+  <img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/IROS23_lab_exp.mp4"/>
   
 ## Package_4: Control_Mix 
   
