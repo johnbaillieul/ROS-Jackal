@@ -1,116 +1,224 @@
-# Visual Navigation Using Sparse Optical Flow and Time-to-Transit
+## Vision_based_navigation_ttt
+This package provides a means for a mobile robot equipped with a monocular camera to navigate in unknown environments using a visual quantity called time-to-transit (tau). The package includes code that utilizes computer vision techniques, specifically the Lucas-Kanade method, to estimate time-to-transit by calculating sparse optical flow. Additionally, the package offers an alternative method for computing tau values by employing a Deep Neural Network (DNN)-based technique to predict tau values directly from a couple of successive frames, and it also utilizes lidar to calculate tau values.
 
-This repository contains code that allows navigation in unknown environments using only a monocular camera. The  work  takes  inspiration  from a  classic  paper  by  Lee  and  Reddish  (Nature,  1981, https://doi.org/10.1038/293293a0) in which they outline a behavioral strategy pursued by diving sea birds based on a visual cue called time-to-contact. The algorithm we introduce here is based on the estimation of a closely related quantity called time-to-transit (TTT).
+Moreover, the package includes a deep learning model that predicts the shape of the path ahead, which further enhances the robot's capability to navigate in an unknown environment.
 
-The main code is represented by three nodes: the `/OpticalFlow node` is  responsible  for  the  Optical Flow (OF) estimation.  It  acquires  a  sequence  of  images  from the  camera  mounted  on  the  robot  and  it  extracts the  relevant  features  to  finally  compute  the  OF vectors. The `/TauComputation node` analyzes the array of keypoints with their velocities packed in the OF message, it computes tau values and it creates input signals for the controller. The `/Controller` selects the right control action to be used depending on the distribution of TTT values and it implements the Sense-Act cycle. For full details see our ICRA2022 paper, available on [arXiv](https://arxiv.org/abs/2111.09669).
+The diagram of the ROS framework is shown in the figure
 
-![Architecture Overview](assets/ICRArch2022.gif)
+<img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/diagram.png"/>
 
-## License and attribution
-
-If you use the code in this repository, please cite [our paper](https://arxiv.org/abs/2111.09669). The code is available under the [BSD-2-Clause License](./LICENSE).
-
-```bibtex
-@inproceedings{bbzbaillieul2021,
-      title={Visual Navigation Using Sparse Optical Flow and Time-to-Transit},
-      author={Boretti, Chiara and Bich, Philippe and Zhang, Yanyu and Baillieul, John},
-      booktitle={IEEE International Conference on Robotics and Automation},
-      year={2022}
-}
+### How to Run the Package
+To launch Gazebo you need to run 
+``` 
+roslaunch vision_based_navigation_ttt <your chosen file from launch folders>.launch 
 ```
-## Prerequisites
+To simulate your desired world specify it in the launch file at line: 
 
-- Ubuntu 18.04.
-- Clearpath package to simulate Jackal UGV, use the following instruction: `sudo apt-get install ros-<distro>-jackal-simulator ros-<distro>-jackal-desktop ros-<distro>-jackal-navigation`.
-- Python 2.7
+  ```
+  arg name="world_name" value="$(find vision_based_navigation_ttt)/GazeboWorlds/<files with your desired world found in GazeboWorlds folder>.world" 
+  ```
+  
+  #### Ways to calculate the tau values:
+  
+      To get tau values from optical flow run: 
 
-## Setup and use
+      ```
+      rosrun vision_based_navigation_ttt optical_flow.py
+      rosrun vision_based_navigation_ttt tau_computation.py 
+      ```
 
-Our navigation strategy can be used with any mobile robot equipped with a monocular camera.
+      To get tau values from velodyne(3D lidar) run:
 
-First of all, run `optical_flow.py` to obtain the optical flow vectors for a certain number of features in the image (which is divided in three regions, and for every region the most robust features are tracked). The node generates `OpticaFlow.msg` containing position, velocity (px/s) of the features and the time delta (s) between the frames considered (to make real-time computation feasible on different platforms, a choosable but fixed number of frames can be skipped). Run the .py file with an the additional integer parameter 1 (e.g. `rosrun <package> optical_flow.py 1`) if you want to enable a real-time visual representation of the node's output.
+      ```
+      rosrun vision_based_navigation_ttt tau_computation_velodyne.py 
+      ```
+      To get tau values from lidar(2D lidar) run:
 
-![OF Node Output](assets/OFNode.gif)
+      ```
+      rosrun vision_based_navigation_ttt tau_computation_lidar.py 
+      ```
 
-Then, it's time to run `tau_computation.py` to obtain the average time-to-transit values for every Region-Of-Interest (ROI). The dimension and the position of those regions can be selected and they can be adapated to the environment in which the robot moves. The number of ROIs in the code presented here is fixed but in principle it can be modified. In this case the controller must be notified of the change and different control laws must be used (stability for Tau Balancing control law with values coming from *n* different ROIs is guaranteed and simple to demonstrate, see [our paper](https://arxiv.org/abs/2111.09669)). The node outputs `TauComputation.msg` used by the controller to select the proper control action. If the number of features in a ROI is not sufficiently high to guarantee a robust TTT estimation, a -1.0 is assigned to the specific region.
+      To get tau values from CNN model run:
 
-![Tau Computation Node Output](assets/tttnode.gif)
+      ```
+      rosrun vision_based_navigation_ttt tau_computation_cnn.py
+      ```
+      This window will show two values the top one is the cnn prediction and thebottom one is from the lidar. You can choose the parameters that you want that are available in the trained_model_parameters folder just change the model name in line tf.keras.models.load_model. Not that there are models that take velocities as input and others dont so make sure to choose the function that calculates tau values according tothe model you chose.
 
-Finally, run `controller.py` which will make your robot move at a constant forward speed (by default: 1m/s). The proper steering command will be sent to the robot to align it to the center of the environment and to avoid obstacles. The controller implements the Sense-Act cycle and it is able to choose the right control law depending on the distribution of the time-to-transit values in the image. Tau Balancing based on 2 and 4 ROIs is implemented together with the Single Wall strategy which is a new control action that enables navigation in environments with few and localized features.
 
-![Tests](assets/tests.gif)
+  #### Contollers available:
+  
+      To use the controller with sense and act phases, run 
 
-Essential parameters for these three nodes are shown below. Other parameters exist and their default values are good for a large amount of environments, but better performances can be achieved by fine-tuning them to adapt the algorithm to the particular environment in which the robot has to move.
+      ```
+      rosrun vision_based_navigation_ttt controller.py 
+      ```
 
-### Parameters for `optical_flow.py`
+      To use the controller with only an act phase, run 
 
-| Parameter            | Description                                                                                                   |    Example Value  |
-| -------------------- | ------------------------------------------------------------------------------------------------------------- | :---------------: |
-| ~image_sub_name      | name of the Image topic to subscribe.                                                                         | "front/image_raw" |
-| ~num_ext_features    | max number of features to be detected in the two outer parts of the image.                                    |        250        |
-| ~num_cen_features    | max number of features to be detected in the central part of the image.                                       |        150        |
-| ~min_feat_threshold  | minimum % of tracked features that must still be in the image to avoid the reusage of the detector. Parameter must stay in range (0.0-1.0].      |        0.7        |
+      ```
+      rosrun vision_based_navigation_ttt controller_act_bias.py 
+      ```
 
-### Parameters for `tau_computation.py`
-
-| Parameter            | Description                                                                                                   |        Example Value      |
-| -------------------- | ------------------------------------------------------------------------------------------------------------- | :-----------------------: |
-| ~image_sub_name      | name of Image topic to subscribe to allow visual representation of results of the node. The same used in `optical_flow.py` | "front/image_raw": |
-| ~min_TTT_number      | minimum number of features needed to compute the average TTT for each ROI                                     |             10            |
-| ~x_init_*ROI*        | x coordinate of the top left corner of ROI                                                                    |              0            |
-| ~y_init_*ROI*        | y coordinate of the top left corner of ROI                                                                    |              0            |
-| ~x_end_*ROI*         | x coordinate of the bottom right corner of ROI                                                                | int(3\*img_width/12)      |
-| ~y_end_*ROI*         | y coordinate of the bottom right corner of ROI                                                                | int(7.5\*img_width/12)    |
-
-where *ROI*={*el*: far left ROI, *er*: far right ROI, *l*: left ROI, *r*: right ROI, *c*: central ROI}
-
-### Parameters for `controller.py`
-
-| Parameter            | Description                                                                                                   |        Example Value      |
-| -------------------- | ------------------------------------------------------------------------------------------------------------- | :-----------------------: |
-| ~robot_publisher     | name of topic on which the control action generated by the node has to be published.                          | "jackal_velocity_controller/cmd_vel" 
-| ~percentage          | percentage of discarded time-to-transit values for each ROI                                                   |             0.25           
-| ~max_u               | saturation value for the control input. It depends on the specifics of the selected robot.                    |              1            |
-
-Note that it is also possible to tune the duration of the *Sense* and *Act* cycles.
-
-## Virtual environments
-To simulate the behavior of the algorithm in artificial and realistic environments, many scenarios are created in Gazebo. In this repository you will find the code to recreate them in the **GazeboWorlds** folder.  
-
-![Gazebo Environment](assets/Environments.jpg)
-
-We also developed patterns to be put on the walls with fixed feature density (Bernoulli distributions of features). The pattern can be created using the `Bernoulli_Textures.py` python scripts in which the density of the features can be set manually. Then the new pattern must be added to the Gazebo materials, the *bernoullixM.png* (where x is the percentage indicating the feature density chosen) generated by the python script has to be saved in `/usr/share/gazebo<y>/media/materials/textures` (where y is the Gazebo version). To use the new material in Gazebo, a *bernoullixM.material* file must be created and saved in `/usr/share/gazebo<y>/media/materials/scripts`. An example of *bernoullixM.material* is:
-```
-material BernoulliMix/<X>
- {
-    technique
-    {
-       pass
-        {
-          texture_unit
-          {
-            texture bernoullixM.png
-          }
-       }  
-    }
- }
- ```
- ![Features density](assets/FeaturesDensity.png)
+### Custom Worlds 
+Multiple custom worlds were created in Gazebo to resemble the environment being tested on in the lab. 
  
-### Launch the Simulation
- 1. Launch the file **jackal_world.launch**. It is possible to simulate the desired world by substituting the default world with the desired one in the launch file at this line: 
-*arg name="world_name" value="$(find vision_based_navigation_ttt)/GazeboWorlds/<desired .world file>"/*. 
-The jackal robot model has a lot of different sensors but for our purposes the only needed is the monocular camera. The robot model, with the monocular camera mounted on it, can be obtained in the simulation environment by using the following command: `roslaunch vision_based_navigation_ttt jackal_world.launch config:=front_flea3`.
- 2. Run the **optical_flow.py**, **tau_computation.py** and the **controller.py** nodes by using the following command: `rosrun vision_based_navigation_ttt <name of the node>`.
- 3. To reset the simulation to its starting state run the following command: `rosservice call /gazebo/reset_simulation "{}"`
+<table border="0">
+ <tr>
+    <td><b style="font-size:30px">T_shaped corridor</b></td>
+    <td><b style="font-size:30px">L_shaped corridor</b></td>
+    <td><b style="font-size:30px">U_shaped corridor</b></td>
+    <td><b style="font-size:30px">House Garden</b></td>
+ </tr>
+ <tr>
+    <td>
+<img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/T_shaped.png"/> 
+     </td>
+     <td>
+<img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/L_shaped.png"/>
+      </td>
+     <td>
+<img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/U_shaped.png"/>
+      </td>
+      <td>
+<img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/House_garden.png"/>
+      </td>
+ </tr>
+</table>
+
+You can build up custom gazebo worlds by using wall segments. The video below shows how this can be done.
+
+<img src="https://user-images.githubusercontent.com/98136555/185213284-8d2cfa97-f4ec-4a5c-a24f-7408b699c902.mp4" width=50% height=50%/>
+
+
+### Performance
+  Peformance can be affected by lighting as shown in the videos below.
+  
+  <table border="0">
+ <tr>
+    <td><b style="font-size:30px">Two lights</b></td>
+    <td><b style="font-size:30px">Three lights</b></td>
+ </tr>
+ <tr>
+    <td>
+ 
+https://user-images.githubusercontent.com/98136555/185210652-f371b74c-7054-4f63-95b3-365b9713b741.mp4</td>
+    <td>
       
-### Notes to use with ROS Noetic and Ubuntu 20.04:
+https://user-images.githubusercontent.com/98136555/185215284-977937bf-bd99-4416-b706-a4d0d101c430.mp4</td>
+ </tr>
+</table>
 
-Because ROS Noetic mainly features Python 3, which is a major shift from Python 2 in ROS Melodic and Ubuntu 18.04, there may be a problem related to Python 3 not tolerating mixing of tabs and spaces in Python source code.  Errors of the following form may occur:
+ 
+### CNN-Based τ Predicition
 
-`-->TabError: inconsistent use of tabs and spaces in indentation`
-      
-The following problem above should now be resolved. However, some editors still have some language interpretation issues with the tabs and spaces but your mileage may vary. Confirmed works on fresh 20.04 installations.
+The aim is to introduce a Convolutional Neural Network (DNN) that automatically estimates values of tau in the 5 regions of interests from a couple of images, without explicitly computing optical flow. It is reasonable to think that this network learns a form of optical flow in an unsupervised manner through its hidden layers.
 
-NOTE: Need to change /opt/ros/noetic/share/jackal_description/urdf/accessories.urdf.xacro JACKAL_FLEA3_TILT to smaller angle
-with sudo permissions if installed jackal_description through apt repo
+  #### Data Collection
+ 
+  To train the CNN, two consecutive images and the corresponding tau values in the respective regions of the images are required. The data_collection.py file is utilized for saving the images and tau values. The tau values are obtained from depth measurements using a lidar, as this provides the most reliable method for obtaining time-to-transit values. The node requires /image_raw and /tau_values topics to receive the required data.
+  
+  
+  To collect data in simulation using a 2D lidar, run the commands below:
+  ```
+  roslaunch vision_based_navigation_ttt <name-of-launch-file>.launch front_laser:=1
+  rosrun vision_based_navigation_ttt tau_computattion_lidar.py 
+  rosrun vision_based_navigation_ttt controller.py 
+  rosrun vision_based_navigation_ttt data_collection.py 
+  ```
+
+  By default, the images will be saved in the ```training_images``` folder and the distances are saved in the ```tau_values``` folder. 
+  
+  #### Available Model Architectures to Train :
+  
+  ##### 1. cnn_auto_ml
+  This model uses "AutoKeras" which is an AutoML System. It takes two successive colored images as input, and outputs the distance in each region of interest. The distance is then converted to ```tau_value``` by dividing it by the robot's velocity.
+
+ ###### Demo:
+ <table border="0">
+ <tr>
+    <td><b style="font-size:30px">Model ran in an environment it was not trained on</b></td>
+    <td><b style="font-size:30px">Model ran in a T-shaped corridor</b></td>
+ </tr>
+ <tr>
+    <td>
+
+https://user-images.githubusercontent.com/98136555/211264448-130d28b4-0fb9-4551-9ef9-4cc48a1fa0b1.mp4
+
+ </td>
+    <td>
+
+https://user-images.githubusercontent.com/98136555/211263011-e2469251-4f1f-49e2-b989-e46dfc45e910.mp4
+  </td>
+ </tr>
+</table> 
+  
+  ###### Model Architecture:
+  
+  <img src="https://user-images.githubusercontent.com/98136555/211239897-3d31f95e-03bc-45ba-96e7-9a65a0e81cef.png" width=25% height=25%/>
+  
+  
+  ##### 2. cnn_colored_output_distance_in_each_roi
+This model takes two colored images as input, and outputs an array that contains the distance in each roi.
+   ###### Demo:
+
+   <table border="0">
+ <tr>
+    <td><b style="font-size:30px">Model ran in an environment it was trained on</b></td>
+    <td><b style="font-size:30px">Model ran in a T-shaped corridor</b></td>
+ </tr>
+ <tr>
+    <td>
+
+https://user-images.githubusercontent.com/98136555/211262755-43a8d499-1b23-40f4-a373-ea8c67d1b607.mp4
+
+ </td>
+    <td>
+
+https://user-images.githubusercontent.com/98136555/211262738-a77bb3e2-d42a-404e-9bba-cd417e688f82.mp4
+
+  </td>
+ </tr>
+</table>
+
+   ###### Model Architecture:
+   
+  <img src="https://user-images.githubusercontent.com/98136555/211247640-d3bb4dd1-b210-4fbd-adc4-8059609093ae.png" width=25% height=25%/>
+
+  ##### 3. cnn_grayscale_output_tau_value_in_each_roi
+  This model takes two grayscale images and the velocity as input, and outputs an array that contains the ```tau_values``` in each roi.
+  
+   ###### Model Architecture:
+   
+   <img src="https://user-images.githubusercontent.com/98136555/211253489-fc6b081e-af00-4c99-a85f-3cd9153b509c.png" width=25% height=25%/>
+
+  ##### 4. cnn_output_tau_value_in_each_roi_and_validity
+  
+  The model takes two successive images along with the velocity as input, and outputs two arrays one contains the tau values in each region of interest , and the other contains a flag that shows if the predicited value is valid or not.
+  
+  ###### Model Architecture:
+  
+  <img src="https://user-images.githubusercontent.com/98136555/203196927-e1a5df6a-b659-4cb5-899a-96971d8fb24e.png" width=25% height=25%/>
+
+  ##### 5. cnn_input_roi_image
+  
+  Unlike the previous models, this model takes two successive images of the region of interest as input, and outputs the tau value in that region. This model is computationally expensive since it has to run 5 times to get the tau value for the 5 regions of interest.
+  
+   ###### Model Architecture:
+   
+ <img src="https://user-images.githubusercontent.com/98136555/203196713-d184d217-4d4c-4703-9a3e-b70578cf4f85.png" width=25% height=25%/>
+  
+  #### Collected data and trained models:
+  Due to the large size of the datasets and the trained models they are saved on a shared drive.
+  
+  ### CNN-Based Turn Detection:
+  For this we trained several well-known architectures and assessed their performance, and the ResNet50v2 architecture demonstrated the highest performance.
+  
+  The file reponsible for this is publish_shape_corridor.py, that subscribers to the image topic and produces a vector of three binary elements, indicating the presence of a left, right, or straight path respectively. 
+  
+  The dataset required to train this model can be collected using the automatic_label_sim.py file. It's worth noting that this function is currently only compatible with a limited number of predefined environments. If you need to add another environment, you will have to map the x, y, and theta coordinates of the robot to determine what turns are visible from that position. Another way to collect the dataset is to label the images manually using the GUI available in the manual_label_turns.py file.
+  
+  ### Lab Results:
+  For predicting tau values, the model employed is based on the resnetv2-101 architecture, which was trained on data gathered from the real robot. On the other hand, to predict the shape of the corridor, specifically the upcoming turns visible in the image, a model based on the resnetv2-50 architecture is used. This model was trained using simulated and real data. The models used were selected based on their superior performance.
+  
+  <img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/IROS23_lab_exp.mp4"/>
