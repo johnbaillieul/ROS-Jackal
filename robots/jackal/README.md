@@ -47,24 +47,7 @@ This is what my bashrc file looks like for your reference
 
 ![Screenshot from 2022-10-21 11-42-51](https://user-images.githubusercontent.com/98136555/203122995-43e2dc0f-d416-4e50-a8de-1335949a1bbe.png)
 
-
   
 <!-- ## Package_4: Control_Mix 
   
 In this package e combined the optical flow and fiducial markers algorithms together so that the robot can switch to optical-flow-based navigation as a backup option whenever fiducial landmarks are not visible.-->
-  
-TODO
-
-
-
-
-
-
-
-
-
-
-
-
-
-
