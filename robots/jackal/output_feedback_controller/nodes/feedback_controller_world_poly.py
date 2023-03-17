@@ -46,22 +46,23 @@ class Feedback_2D_Input:
                             9:3,
                             10:4,
                             11:5,
-                            }
- 
+                            }  # used to identify in which set the robot is in 
+        self.used_apriltags = [0,1,2,3,4,5,6,7,8,9,10,11] # add the apriltag ids that you used
+        self.position_landmark_inworld_matrix = {}
 
-        self.position_landmark_inworld_matrix = {0:np.array([[1,0,0,1.8907],[0,0,-1,5.27535],[0,1,0,0.5],[0,0,0,1]]),
-                                                 1:np.array([[0,0,-1,7.3294],[-1,0,0,2.79793],[0,1,0,0.5],[0,0,0,1]]),
-                                                 2:np.array([[0,0,-1,6.69073],[-1,0,0,-3.370437],[0,1,0,0.5],[0,0,0,1]]),
-                                                 3:np.array([[-1,0,0,-3.1056],[0,0,1,-8.2912],[0,1,0,0.5],[0,0,0,1]]),
-                                                 4:np.array([[0,0,1,-7.6986],[1,0,0,-2.903],[0,1,0,0.5],[0,0,0,1]]),
-                                                 5:np.array([[1,0,0,-4.86078],[0,0,-1,4.4972443],[0,1,0,0.5],[0,0,0,1]]),
-                                                 6:np.array([[-1,0,0,1.398419],[0,0,1,2.0676999],[0,1,0,0.5],[0,0,0,1]]),
-                                                 7:np.array([[0,0,1,3.3571999],[0,1,0,0.91013699],[0,1,0,0.5],[0,0,0,1]]),
-                                                 8:np.array([[0,0,1,2.6263],[1,0,0,-2.40406966],[0,1,0,0.5],[0,0,0,1]]),
-                                                 9:np.array([[1,0,0,-1.81357],[0,0,-1,-4.57658],[0,1,0,0.5],[0,0,0,1]]),
-                                                 10:np.array([[0,0,-1, -3.99669],[-1,0,0,-2.11309],[0,1,0,0.5],[0,0,0,1]]),
-                                                 11:np.array([[0,0,-1,-2.8471093],[-1,0,0,0.9576727],[0,1,0,0.5],[0,0,0,1]]),
-                                                }
+        # gets the location of the apriltags in gazebo using model state service
+    def get_rot_matrix_aptags(self):
+        rospy.wait_for_service('/gazebo/get_model_state')
+        get_model_srv = rospy.ServiceProxy('/gazebo/get_model_state',GetModelState)
+        model = GetModelStateRequest()
+        for id in self.used_apriltags:
+            model.model_name = 'apriltag'+str(id)
+            result = get_model_srv(model)
+            # print('id',id,result.pose.position)
+
+            self.position_landmark_inworld_matrix[id] = tu.msg_to_se3(result.pose)
+        # print('posiiton', self.position_landmark_inworld_matrix)
+
  
     def apriltag_callback(self,msg):
         if msg.detections:
@@ -79,10 +80,6 @@ class Feedback_2D_Input:
             # print('transform',tu.msg_to_se3(transform))
            
             self.selected_apriltag = np.dot(tu.msg_to_se3(transform),tu.msg_to_se3(at.pose.pose.pose))
-
-            # print('id',selected_aptag_id)
-            # print('pose',tu.msg_to_se3(at.pose.pose.pose))
-            # print('apriltag',self.selected_apriltag)
             self.selected_aptag_id = selected_aptag_id 
             # print('ap_id',self.selected_aptag_id)
         else:
@@ -229,7 +226,8 @@ if __name__ == "__main__":
     # K_added = read_matrix(K_added_path)
 
     jackal = Feedback_2D_Input(K_gains)
-   
+    jackal.get_rot_matrix_aptags()
+    
     r = rospy.Rate(10)
     while not rospy.is_shutdown(): 
         jackal.compute_input_parse()

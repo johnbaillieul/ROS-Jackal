@@ -465,8 +465,6 @@ class Create(object):
                     angular_vel = 1 * angular_coef * np.cross(orientation,u/np.linalg.norm(u))[2]
                 linear_vel = linear_vel/np.linalg.norm(u)
                 
-                
-
             
             if not SIMULATION:
                 vel_msg.linear.x = linear_vel

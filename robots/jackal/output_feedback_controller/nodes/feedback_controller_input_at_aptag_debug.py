@@ -14,7 +14,7 @@ import pandas as pd
 from gazebo_msgs.srv import GetModelState, GetModelStateRequest
 
 class Feedback_2D_Input:
-    def __init__(self,K_gains,K_added): 
+    def __init__(self,K_gains):#,K_added): 
         self.pub = rospy.Publisher('/u_input', TwistStamped, queue_size=1)
         self.linear_vel =  rospy.Subscriber("/linear_vel", Float64, self.linear_vel_callback)
         self.sub_img_detec =  rospy.Subscriber("/tag_detections", AprilTagDetectionArray, self.apriltag_callback)
@@ -23,7 +23,7 @@ class Feedback_2D_Input:
         self.listener = tf2_ros.TransformListener(self.tfBuffer)
         self.apriltags_list = list()
         self.K_gains = np.array(K_gains)
-        self.K_added = np.array(K_added)
+        # self.K_added = np.array(K_added)
         self.k_index = 0
         self.selected_apriltag = None
         self.selected_aptag_id = None
@@ -139,7 +139,7 @@ class Feedback_2D_Input:
             u_2 = np.dot(K_gains,lj_li).sum(axis=1)
             u = u_1 + u_2
             # u = np.concatenate((u.flatten(),[0]))
-            print('u_ola',u)
+            print('u_',u)
         # publish control
             msg = TwistStamped()
             msg.header.stamp = rospy.Time.now()
@@ -162,18 +162,17 @@ if __name__ == "__main__":
     K_gains_path= shared_path + "K_gains.csv"
     K_gains = read_matrix(K_gains_path)
 
-    K_added_path= shared_path + "K_added.csv"
-    K_added = read_matrix(K_added_path)
+    # K_added_path= shared_path + "K_added.csv"
+    # K_added = read_matrix(K_added_path)
 
-    jackal = Feedback_2D_Input(K_gains,K_added)
+    jackal = Feedback_2D_Input(K_gains)#,K_added)
     jackal.get_rot_matrix_aptags()
    
     r = rospy.Rate(10)
     while not rospy.is_shutdown():
-        
         jackal.compute_u()
         jackal.marc_u()
-    r.sleep()   
+        r.sleep()   
 
 
 

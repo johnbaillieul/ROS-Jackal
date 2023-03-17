@@ -15,7 +15,7 @@ from gazebo_msgs.srv import GetModelState, GetModelStateRequest
 import copy
 
 class Feedback_2D_Input:
-    def __init__(self,K_gains,K_added): 
+    def __init__(self,K_gains):#,K_added): 
         self.pub = rospy.Publisher('/u_input', TwistStamped, queue_size=1)
         self.linear_vel =  rospy.Subscriber("/linear_vel", Float64, self.linear_vel_callback)
         self.sub_img_detec =  rospy.Subscriber("/tag_detections", AprilTagDetectionArray, self.apriltag_callback)
@@ -24,13 +24,14 @@ class Feedback_2D_Input:
         self.listener = tf2_ros.TransformListener(self.tfBuffer)
         self.apriltags_list = list()
         self.K_gains = np.array(K_gains)
-        self.K_added = np.array(K_added)
+        # self.K_added = np.array(K_added)
         self.k_index = 0
         self.used_apriltags = [0,1,2,3,4,5,6,7,8,9,10,11] # add the apriltag ids that you used
         self.position_landmark_inworld_matrix = {}
         self.seen_aptags_id = []
         self.seen_aptags_tf = []
 
+    # gets the location of the apriltags in gazebo using model state service
     def get_rot_matrix_aptags(self):
         rospy.wait_for_service('/gazebo/get_model_state')
         get_model_srv = rospy.ServiceProxy('/gazebo/get_model_state',GetModelState)
@@ -41,6 +42,7 @@ class Feedback_2D_Input:
             # print('id',id,result.pose.position)
 
             self.position_landmark_inworld_matrix[id] = tu.msg_to_se3(result.pose)
+        # print('posiiton', self.position_landmark_inworld_matrix)
         
     def apriltag_callback(self,msg):
         if msg.detections:
@@ -169,13 +171,13 @@ if __name__ == "__main__":
     
     shared_path = os.environ["HOME"]+"/catkin_ws/src/output_feedback_controller/csv/"
     
-    K_gains_path= shared_path + "K_gains_new.csv"
+    K_gains_path= shared_path + "K_gains_poly.csv"
     K_gains = read_matrix(K_gains_path)
 
-    K_added_path= shared_path + "K_added_new.csv"
-    K_added = read_matrix(K_added_path)
+    # K_added_path= shared_path + "K_added_new.csv"
+    # K_added = read_matrix(K_added_path)
 
-    jackal = Feedback_2D_Input(K_gains,K_added)
+    jackal = Feedback_2D_Input(K_gains)#,K_added)
     jackal.get_rot_matrix_aptags()
    
     r = rospy.Rate(10)
