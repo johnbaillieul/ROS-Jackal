@@ -10,7 +10,7 @@ The diagram of the ROS framework is shown in the figure
 ## How to Run the Package
 To launch Gazebo you need to run 
 ``` 
-roslaunch vision_based_navigation_ttt <your chosen file from launch folders>.launch 
+roslaunch vision_based_navigation_ttt_ml <your chosen file from launch folders>.launch 
 ```
 To simulate your desired world specify it in the launch file at line: 
 
@@ -23,25 +23,25 @@ To simulate your desired world specify it in the launch file at line:
       To get tau values from optical flow run: 
 
       ```
-      rosrun vision_based_navigation_ttt optical_flow.py
-      rosrun vision_based_navigation_ttt tau_computation.py 
+      rosrun vision_based_navigation_ttt_ml optical_flow.py
+      rosrun vision_based_navigation_ttt_ml tau_computation.py 
       ```
 
       To get tau values from velodyne(3D lidar) run:
 
       ```
-      rosrun vision_based_navigation_ttt tau_computation_velodyne.py 
+      rosrun vision_based_navigation_ttt_ml tau_computation_velodyne.py 
       ```
       To get tau values from lidar(2D lidar) run:
 
       ```
-      rosrun vision_based_navigation_ttt tau_computation_lidar.py 
+      rosrun vision_based_navigation_ttt_ml tau_computation_lidar.py 
       ```
 
       To get tau values from CNN model run:
 
       ```
-      rosrun vision_based_navigation_ttt tau_computation_cnn.py
+      rosrun vision_based_navigation_ttt_ml tau_computation_cnn.py
       ```
       This window will show two values the top one is the cnn prediction and thebottom one is from the lidar. You can choose the parameters that you want that are available in the trained_model_parameters folder just change the model name in line tf.keras.models.load_model. Not that there are models that take velocities as input and others dont so make sure to choose the function that calculates tau values according tothe model you chose.
 
@@ -51,13 +51,13 @@ To simulate your desired world specify it in the launch file at line:
       To use the controller with sense and act phases, run 
 
       ```
-      rosrun vision_based_navigation_ttt controller.py 
+      rosrun vision_based_navigation_ttt_ml controller.py 
       ```
 
       To use the controller with only an act phase, run 
 
       ```
-      rosrun vision_based_navigation_ttt controller_act_bias.py 
+      rosrun vision_based_navigation_ttt_ml controller_act_bias.py 
       ```
 
 ## Custom Worlds 
@@ -121,10 +121,10 @@ The aim is to introduce a Convolutional Neural Network (DNN) that automatically 
   
   To collect data in simulation using a 2D lidar, run the commands below:
   ```
-  roslaunch vision_based_navigation_ttt <name-of-launch-file>.launch front_laser:=1
-  rosrun vision_based_navigation_ttt tau_computattion_lidar.py 
-  rosrun vision_based_navigation_ttt controller.py 
-  rosrun vision_based_navigation_ttt data_collection.py 
+  roslaunch vision_based_navigation_ttt_ml <name-of-launch-file>.launch front_laser:=1
+  rosrun vision_based_navigation_ttt_ml tau_computattion_lidar.py 
+  rosrun vision_based_navigation_ttt_ml controller.py 
+  rosrun vision_based_navigation_ttt_ml data_collection.py 
   ```
 
   By default, the images will be saved in the ```training_images``` folder and the distances are saved in the ```tau_values``` folder. 
