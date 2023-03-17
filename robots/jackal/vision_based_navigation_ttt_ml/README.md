@@ -46,7 +46,7 @@ To simulate your desired world specify it in the launch file at line:
       This window will show two values the top one is the cnn prediction and thebottom one is from the lidar. You can choose the parameters that you want that are available in the trained_model_parameters folder just change the model name in line tf.keras.models.load_model. Not that there are models that take velocities as input and others dont so make sure to choose the function that calculates tau values according tothe model you chose.
 
 
-  ### Contollers available:
+  ### Available controllers :
   
       To use the controller with sense and act phases, run 
 
