@@ -5,7 +5,7 @@ import csv
 import os
 import json
 from cv_bridge import CvBridgeError, CvBridge
-from vision_based_navigation_ttt.msg import TauComputation
+from vision_based_navigation_ttt_ml.msg import TauComputation
 from sensor_msgs.msg import Image
 from PIL import Image as im
 import xlsxwriter
@@ -21,7 +21,7 @@ class Save_Data():
         self.count_2 += 1
         self.update_variables()
         self.curr_image = None
-        self.path_folder = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/"
+        self.path_folder = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt_ml/"
         self.path_tau = self.path_folder + "shape_label_tau/"
         vel = '1' # velocity 
         self.folder_name = 'shape_label_train/training_images_' + str(self.count_2) + '_v_' + vel + '/'
@@ -121,7 +121,7 @@ class Save_Data():
 
     def get_variables(self):
         # print("get_variables")
-        path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/"
+        path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt_ml/"
         file = open(path + "variables.json")
         data = json.load(file)
         file.close()
@@ -130,7 +130,7 @@ class Save_Data():
         
     def update_variables(self):
         # print("update_variables")
-        path = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/"
+        path = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt_ml/"
         file = open(path + "variables.json", "w")
         updated_data = {"count": self.count, "count_2": self.count_2}
         json.dump(updated_data, file)

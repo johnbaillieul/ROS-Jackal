@@ -3,7 +3,7 @@ from tkinter import W
 import rospy
 import numpy as np
 from cv_bridge import CvBridgeError, CvBridge
-from vision_based_navigation_ttt.msg import TauComputation
+from vision_based_navigation_ttt_ml.msg import TauComputation
 import cv2
 from sensor_msgs.msg import Image, LaserScan 
 import json
@@ -31,12 +31,12 @@ class collect_data():
         self.count_2 += 1
         self.update_variables()
         self.curr_image = None
-        self.path_folder = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/test_results_img/"
+        self.path_folder = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt_ml/test_results_img/"
         vel = '1' # velocity 
         self.folder_name = 'training_images_' + str(self.count_2) + '_v_' + vel + '/'
         # create_folder
         # Start by opening the spreadsheet and selecting the main sheet
-        self.path_tau = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/test_results_tau/"
+        self.path_tau = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt_ml/test_results_tau/"
         self.path_images = self.path_folder + self.folder_name
         os.mkdir(self.path_folder + self.folder_name)
         self.tau_val = None   
@@ -81,7 +81,7 @@ class collect_data():
         
     def save_array(self):
         print('save_array')
-        path_folder = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/test_results_tau/"
+        path_folder = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt_ml/test_results_tau/"
         csv_file_name = 'time_combo.csv'#straight_cor
         with open(path_folder + csv_file_name, mode='w') as file:
             writer = csv.writer(file)
@@ -164,7 +164,7 @@ class collect_data():
 
     def get_variables(self):
         # print("get_variables")
-        path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/"
+        path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt_ml/"
         file = open(path + "variables.json")
         data = json.load(file)
         file.close()
@@ -173,7 +173,7 @@ class collect_data():
         
     def update_variables(self):
         # print("update_variables")
-        path = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/"
+        path = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt_ml/"
         file = open(path + "variables.json", "w")
         updated_data = {"count": self.count, "count_2": self.count_2}
         json.dump(updated_data, file)

@@ -1,5 +1,5 @@
 <launch>
-    <param name="office_geom" command="$(find xacro)/xacro --inorder '$(find vision_based_navigation_ttt)/urdf/office_geometry.urdf.xacro'" />
+    <param name="office_geom" command="$(find xacro)/xacro --inorder '$(find vision_based_navigation_ttt_ml)/urdf/office_geometry.urdf.xacro'" />
 
     <arg name="world_x" default="0.0"/>
     <arg name="world_y" default="0.0"/>
@@ -9,7 +9,7 @@
     <arg name="use_sim_time" default="true" />
     <arg name="gui" default="true" />
     <arg name="headless" default="false" />
-    <arg name="world_name" default="$(find vision_based_navigation_ttt)/GazeboWorlds/actually_empty_world.world" />
+    <arg name="world_name" default="$(find vision_based_navigation_ttt_ml)/GazeboWorlds/actually_empty_world.world" />
 
     <arg name="front_laser" default="false" />
     <arg name="default_config" value="front_laser" if="$(arg front_laser)" />

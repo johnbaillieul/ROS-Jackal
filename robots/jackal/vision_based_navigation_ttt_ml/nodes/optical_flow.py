@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import rospy
 from sensor_msgs.msg import Image
-from vision_based_navigation_ttt.msg import OpticalFlow
+from vision_based_navigation_ttt_ml.msg import OpticalFlow
 from cv_bridge import CvBridgeError, CvBridge
 import cv2
 import sys

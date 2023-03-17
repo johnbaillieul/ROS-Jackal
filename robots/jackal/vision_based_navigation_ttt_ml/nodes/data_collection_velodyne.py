@@ -34,7 +34,7 @@ class collect_data():
         self.update_variables()
         self.curr_image = None
         self.curr_image_bool = False
-        self.path_folder = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/"
+        self.path_folder = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt_ml/"
         vel = '0.5' # velocity 
         self.folder_name = 'training_images_real_data/training_images_' + str(self.count_2) + '_v_' + vel + '/'
         # create_folder
@@ -182,7 +182,7 @@ class collect_data():
 
     def get_variables(self):
         print("get_variables")
-        path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/"
+        path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt_ml/"
         file = open(path + "variables.json")
         data = json.load(file)
         file.close()
@@ -191,7 +191,7 @@ class collect_data():
         
     def update_variables(self):
         print("update_variables")
-        path = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/"
+        path = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt_ml/"
         file = open(path + "variables.json", "w")
         updated_data = {"count": self.count, "count_2": self.count_2}
         json.dump(updated_data, file)

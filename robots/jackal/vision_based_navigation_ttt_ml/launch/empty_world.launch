@@ -5,7 +5,7 @@
         <arg name="debug" default="false" />
         <arg name="gui" default="true" />
         <arg name="pause" default="false" />
-        <arg name="world" default="$(find vision_based_navigation_ttt)/GazeboWorlds/empty_world.world" />
+        <arg name="world" default="$(find vision_based_navigation_ttt_ml)/GazeboWorlds/empty_world.world" />
         <arg name="extra_gazebo_args" default="--verbose"/>
 
         <!-- include gazebo_ros launcher -->
@@ -22,7 +22,7 @@
         See jackal_description for details. -->
 
          <!-- Spawn Jackal-->
-        <include file="$(find vision_based_navigation_ttt)/launch/spawn_jackal.launch">
+        <include file="$(find vision_based_navigation_ttt_ml)/launch/spawn_jackal.launch">
                 <arg name="x" value="10" />
                 <arg name="y" value="-1.5" />
                 <arg name="z" value="1.0" />
@@ -32,7 +32,7 @@
         <param name="filter_mad" type="bool" value="true" /> <!--set value to true to use median absolute deviation for filtering and 
         false to use mean filtering-->
         <!--directly run all three nodes
-        <include file="$(find vision_based_navigation_ttt)/launch/optical_flow_nodes.launch">
+        <include file="$(find vision_based_navigation_ttt_ml)/launch/optical_flow_nodes.launch">
         </include>-->
 </launch>       
 

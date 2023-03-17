@@ -5,7 +5,7 @@
         <arg name="debug" default="false" />
         <arg name="gui" default="true" />
         <arg name="pause" default="false" />
-        <arg name="world" default="$(find vision_based_navigation_ttt)/GazeboWorlds/T_shaped_corridor.world" />
+        <arg name="world" default="$(find vision_based_navigation_ttt_ml)/GazeboWorlds/T_shaped_corridor.world" />
         <arg name="extra_gazebo_args" default="--verbose"/>
           
         <!-- Short-term hack to support the original front_laser:=true argument for spawning
@@ -33,7 +33,7 @@
         See jackal_description for details. -->
         
          <!-- Spawn Jackal-->
-        <include file="$(find vision_based_navigation_ttt)/launch/spawn_jackal.launch">
+        <include file="$(find vision_based_navigation_ttt_ml)/launch/spawn_jackal.launch">
                 <arg name="x" value="5" />
                 <arg name="y" value="-1.7" />
                 <arg name="z" value="1.0" />
@@ -41,9 +41,9 @@
                 <arg name="config" value="$(arg config)" />
         </include> 
         
-        <node name="change_env" pkg="vision_based_navigation_ttt" type="change_box_color_in_env.py"/> 
+        <node name="change_env" pkg="vision_based_navigation_ttt_ml" type="change_box_color_in_env.py"/> 
         <!--directly run all three nodes
-        <include file="$(find vision_based_navigation_ttt)/launch/optical_flow_nodes.launch">
+        <include file="$(find vision_based_navigation_ttt_ml)/launch/optical_flow_nodes.launch">
         </include>-->
 </launch>       
 

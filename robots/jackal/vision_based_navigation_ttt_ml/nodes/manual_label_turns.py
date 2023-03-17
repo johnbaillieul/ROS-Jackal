@@ -71,7 +71,7 @@ class ImageViewer(QWidget):
 
         # load the dictionary
         self.csv_file_name = 'labels_file_tr.csv'
-        self.path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/"
+        self.path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt_ml/"
         self.dict_labels = read_from_csv(self.path + self.csv_file_name)
         self.count = 0
 
@@ -193,7 +193,7 @@ class ImageViewer(QWidget):
 
 def save_dict_to_csv(dictionary, dict_name):
     name = dict_name
-    path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/"
+    path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt_ml/"
     # Open the file in writing mode (no blank lines)
     with open(path + name, 'w', newline='') as f:
         # Create a CSV writer object

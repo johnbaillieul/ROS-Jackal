@@ -11,7 +11,7 @@ from tkinter import W
 from sensor_msgs.msg import LaserScan
 import numpy as np
 from cv_bridge import CvBridgeError, CvBridge
-from vision_based_navigation_ttt.msg import TauComputation
+from vision_based_navigation_ttt_ml.msg import TauComputation
 from sensor_msgs.msg import Image, LaserScan
 from xlsxwriter import Workbook
 import autokeras as ak
@@ -168,7 +168,7 @@ class Calculate_Tau():
         self.bridge = CvBridge()
         self.curr_image = None
         self.prev_image = None
-        path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/trained_model_parameters/"
+        path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt_ml/trained_model_parameters/"
         
         self.model = tf.keras.models.load_model(path + "renest101v2_model_64_updated.h5", compile=False, custom_objects=ak.CUSTOM_OBJECTS)
         self.model.compile(optimizer = 'adam', loss = 'mae', metrics = ['MeanSquaredError', 'mean_absolute_error']) #Paste it here
@@ -493,7 +493,7 @@ class Calculate_Tau():
         
         count = 1
         
-        path_folder = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/data_for_plotting/cnn_lidar_L_boxes_corridor/" #house_garden
+        path_folder = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt_ml/data_for_plotting/cnn_lidar_L_boxes_corridor/" #house_garden
         # folder_name = filter + str(count) + '/'
         # os.mkdir(path_folder + folder_name) 
 

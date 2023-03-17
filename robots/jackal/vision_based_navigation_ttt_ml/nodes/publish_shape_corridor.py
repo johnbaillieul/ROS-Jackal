@@ -14,7 +14,7 @@ class Predict_Shape():
         image_sub = rospy.Subscriber(image_sub_name, Image, self.callback_img)
         self.bridge = CvBridge()
         
-        path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/trained_model_parameters/"
+        path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt_ml/trained_model_parameters/"
         self.model = tf.keras.models.load_model(path + "determine_shape_model_res50.h5", compile=False) #, custom_objects=ak.CUSTOM_OBJECTS
         self.model.compile(optimizer = 'adam', loss = 'mae', metrics = ['MeanSquaredError', 'mean_absolute_error']) #Paste it here
         self.curr_image = None

@@ -7,7 +7,7 @@ from cv_bridge import CvBridge,  CvBridgeError
 import numpy as np
 from tkinter import W
 import rospy
-from vision_based_navigation_ttt.msg import TauComputation
+from vision_based_navigation_ttt_ml.msg import TauComputation
 import cv2
 from sensor_msgs.msg import Image
 import os

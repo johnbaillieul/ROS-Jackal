@@ -5,7 +5,7 @@ import sensor_msgs.msg
 from sensor_msgs.msg import LaserScan
 import numpy as np
 from cv_bridge import CvBridgeError, CvBridge
-from vision_based_navigation_ttt.msg import TauComputation
+from vision_based_navigation_ttt_ml.msg import TauComputation
 from cv_bridge import CvBridgeError, CvBridge
 import cv2
 from sensor_msgs.msg import Image

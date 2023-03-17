@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import rospy
 from geometry_msgs.msg import Twist
-from vision_based_navigation_ttt.msg import OpticalFlow
-from vision_based_navigation_ttt.msg import TauComputation
+from vision_based_navigation_ttt_ml.msg import OpticalFlow
+from vision_based_navigation_ttt_ml.msg import TauComputation
 from sensor_msgs.msg import Image
 import numpy as np
 from cv_bridge import CvBridgeError, CvBridge

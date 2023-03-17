@@ -7,7 +7,7 @@ import rospy
 import tensorflow as tf
 from tensorflow import keras
 from tkinter import W
-from vision_based_navigation_ttt.msg import TauComputation
+from vision_based_navigation_ttt_ml.msg import TauComputation
 # from cv_bridge import CvBridgeError, CvBridge
 from sensor_msgs.msg import Image
 import ros_numpy

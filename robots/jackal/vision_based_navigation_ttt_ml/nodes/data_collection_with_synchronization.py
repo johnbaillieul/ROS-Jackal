@@ -4,7 +4,7 @@ import rospy
 from sensor_msgs.msg import LaserScan
 import numpy as np
 from cv_bridge import CvBridgeError, CvBridge
-from vision_based_navigation_ttt.msg import TauComputation
+from vision_based_navigation_ttt_ml.msg import TauComputation
 import cv2
 from sensor_msgs.msg import Image 
 import json
@@ -34,12 +34,12 @@ class collect_data():
         self.update_variables()
 
         self.curr_image = None
-        self.path_folder = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/training_images_trial/"
+        self.path_folder = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt_ml/training_images_trial/"
         vel = '0.5' # velocity 
         self.folder_name = 'training_images_' + str(self.count_2) + '_v_' + vel + '/'
         # create_folder
         # Start by opening the spreadsheet and selecting the main sheet
-        self.path_tau = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/tau_values_trial/"
+        self.path_tau = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt_ml/tau_values_trial/"
         self.path_images = self.path_folder + self.folder_name
         os.mkdir(self.path_folder + self.folder_name)
         self.tau_val = None   
@@ -103,7 +103,7 @@ class collect_data():
 
     def get_variables(self):
         # print("get_variables")
-        path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/"
+        path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt_ml/"
         file = open(path + "variables.json")
         data = json.load(file)
         file.close()
@@ -112,7 +112,7 @@ class collect_data():
         
     def update_variables(self):
         # print("update_variables")
-        path = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/"
+        path = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt_ml/"
         file = open(path + "variables.json", "w")
         updated_data = {"count": self.count, "count_2": self.count_2}
         json.dump(updated_data, file)

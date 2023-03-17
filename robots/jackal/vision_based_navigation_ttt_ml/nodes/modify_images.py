@@ -14,7 +14,7 @@ import csv
 
 def get_variables():
     # print("get_variables")
-    path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/"
+    path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt_ml/"
     file = open(path + "variables.json")
     data = json.load(file)
     file.close()
@@ -24,7 +24,7 @@ def get_variables():
     
 def update_variables(count, count_2):
     # print("update_variables")
-    path = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt/"
+    path = os.environ["HOME"] + "/catkin_ws/src/vision_based_navigation_ttt_ml/"
     file = open(path + "variables.json", "w")
     updated_data = {"count": count, "count_2": count_2}
     json.dump(updated_data, file)
@@ -40,7 +40,7 @@ def save_image(count : int, shared_path, curr_image):
 def flip_images(dict):
     count, count_2 = get_variables()
 
-    path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/"
+    path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt_ml/"
     path_tau_1 = path + "shape_label_tau/tau_value" 
     path_tau_2 = path + "tau_values/tau_value"    # modify
     path_folder = path + "temp/" #modify
@@ -133,7 +133,7 @@ def flip_images(dict):
         
 def save_dict_to_csv(dictionary, dict_name):
     name = dict_name
-    path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/"
+    path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt_ml/"
     print('save_Dicti')
     # Open the file in writing mode (no blank lines)
     with open(path + name, 'w', newline='') as f:
@@ -153,8 +153,8 @@ def read_from_csv(csv_filename):
 
 def change_brightness():
     count_new = get_variables()
-    path_tau = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/tau_values/tau_value"   
-    path_folder = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/training_images/"
+    path_tau = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt_ml/tau_values/tau_value"   
+    path_folder = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt_ml/training_images/"
 
     folders = [file for file in os.listdir(path_folder) if os.path.isdir(os.path.join(path_folder, file))]
     print('folders',folders)
@@ -162,7 +162,7 @@ def change_brightness():
         print('folder',folder)
         # create_folder
         os.mkdir(path_folder + folder + "_brightness" )   
-        path_images = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/training_images/" + folder + '/'
+        path_images = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt_ml/training_images/" + folder + '/'
         images_in_folder = [f for f in listdir(path_images) if f.endswith(".png")]
 
         for idx in range(len(images_in_folder)) : 
@@ -215,7 +215,7 @@ def change_brightness():
     update_variables(count_new) 
 
 def tau():
-    path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/"
+    path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt_ml/"
     path_tau = path + "tau_tr/" 
 
     files = [file for file in sorted(os.listdir(path_tau))]
@@ -237,9 +237,9 @@ def read_from_csv(csv_filename):
         return dict_from_csv
 
 def dict():
-    path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt/"
+    path = os.environ["HOME"]+"/catkin_ws/src/vision_based_navigation_ttt_ml/"
 
-    # path = os.environ["HOME"]+"/ROS-Jackal/robots/jackal/vision_based_navigation_ttt/" 
+    # path = os.environ["HOME"]+"/ROS-Jackal/robots/jackal/vision_based_navigation_ttt_ml/" 
     path_folder = path + "training_images/"
     csv_file_name = 'labels_file_tr.csv'
     if os.stat(path + csv_file_name).st_size == 0:
