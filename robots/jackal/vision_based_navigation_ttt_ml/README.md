@@ -5,7 +5,7 @@ Moreover, the package includes a deep learning model that predicts the shape of 
 
 The diagram of the ROS framework is shown in the figure
 
-<img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/diagram.png"/>
+<img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt_ml/assets/diagram.png"/>
 
 ## How to Run the Package
 To launch Gazebo you need to run 
@@ -15,7 +15,7 @@ roslaunch vision_based_navigation_ttt <your chosen file from launch folders>.lau
 To simulate your desired world specify it in the launch file at line: 
 
   ```
-  arg name="world_name" value="$(find vision_based_navigation_ttt)/GazeboWorlds/<files with your desired world found in GazeboWorlds folder>.world" 
+  arg name="world_name" value="$(find vision_based_navigation_ttt_ml)/GazeboWorlds/<files with your desired world found in GazeboWorlds folder>.world" 
   ```
   
   ### Ways to calculate the tau values:
