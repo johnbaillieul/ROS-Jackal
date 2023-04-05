@@ -28,29 +28,17 @@ class Input_Differential:
         self.used_apriltags = [0,1,2,3,4,5,6,7,8,9,10,11] # add the apriltag ids that you used
         self.position_landmark_inworld_matrix = {}
         
-    # def get_rot_matrix_aptags(self):
-    #     rospy.wait_for_service('/gazebo/get_model_state')
-    #     get_model_srv = rospy.ServiceProxy('/gazebo/get_model_state',GetModelState)
-    #     model = GetModelStateRequest()
-    #     for id in self.used_apriltags:
-    #         model.model_name = 'apriltag'+str(id)
-    #         result = get_model_srv(model)
-    #         # print('id',id,result.pose.position)
-    #         self.position_landmark_inworld_matrix[id] = tu.msg_to_se3(result.pose)
-    #     print(self.position_landmark_inworld_matrix)
-
     def get_rot_matrix_aptags(self):
         rospy.wait_for_service('/gazebo/get_model_state')
         get_model_srv = rospy.ServiceProxy('/gazebo/get_model_state',GetModelState)
         model = GetModelStateRequest()
-        model.model_name = 'apriltag1'
-        model.relative_entity_name = 'unit_box'
-        result = get_model_srv(model)
-        result_trans = tu.msg_to_se3(result.pose)
-        result_trans[3,2] = result_trans[3,2] + 0.5
-        print('id',id,result.pose.position)
-        print('getmodel',result_trans)
-        # print(self.position_landmark_inworld_matrix)
+        for id in self.used_apriltags:
+            model.model_name = 'apriltag'+str(id)
+            result = get_model_srv(model)
+            # print('id',id,result.pose.position)
+            self.position_landmark_inworld_matrix[id] = tu.msg_to_se3(result.pose)
+        print(self.position_landmark_inworld_matrix)
+        
         
     def apriltag_callback(self,msg):
         if msg.detections:
