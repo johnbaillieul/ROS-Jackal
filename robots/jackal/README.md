@@ -22,7 +22,7 @@ Reference to the Jackal manual: https://www.generationrobots.com/media/Jackal_Cl
 
     Step 2: Add the following to your ~/.bashrc 
     ```
-    export JACKAL_URDF_EXTRAS=$HOME/PATH_TO_VISION_BASED_NAVIGATION_TTT_FOLDER/vision_based_navigation_ttt/urdf/BU_Jackal.urdf.xacro/realsense.urdf.xacro
+    export JACKAL_URDF_EXTRAS=$HOME/PATH_TO_VISION_BASED_NAVIGATION_TTT_FOLDER/vision_based_navigation_ttt/urdf/realsense.urdf.xacro
     ```
   
 2. Download Clearpath package using the following command 
