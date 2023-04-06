@@ -8,6 +8,9 @@ The diagram of the ROS framework is shown in the figure
 <img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt_ml/assets/diagram.png"/>
 
 ## How to Run the Package
+### Using One launch file with all the nodes
+
+### Running Each Node Separately
 To launch Gazebo you need to run 
 ``` 
 roslaunch vision_based_navigation_ttt_ml <your chosen file from launch folders>.launch 
@@ -18,7 +21,7 @@ To simulate your desired world specify it in the launch file at line:
   arg name="world_name" value="$(find vision_based_navigation_ttt_ml)/GazeboWorlds/<files with your desired world found in GazeboWorlds folder>.world" 
   ```
   
-  ### Ways to calculate the tau values:
+  #### Ways to calculate the tau values:
   
       To get tau values from optical flow run: 
 
@@ -46,7 +49,7 @@ To simulate your desired world specify it in the launch file at line:
       This window will show two values the top one is the cnn prediction and thebottom one is from the lidar. You can choose the parameters that you want that are available in the trained_model_parameters folder just change the model name in line tf.keras.models.load_model. Not that there are models that take velocities as input and others dont so make sure to choose the function that calculates tau values according tothe model you chose.
 
 
-  ### Available controllers :
+  #### Available controllers :
   
       To use the controller with sense and act phases, run 
 
