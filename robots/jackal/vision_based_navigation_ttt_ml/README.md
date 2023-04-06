@@ -10,21 +10,21 @@ The diagram of the ROS framework is shown in the figure
 ## How to Run the Package in Simulation
 ### Launch All nodes at once
   #### Calculate tau values using CNN
-```
-  roslaunch vision_based_navigation_ttt_ml CNN_launch_file.launch
-```
+  ```
+    roslaunch vision_based_navigation_ttt_ml CNN_launch_file.launch
+  ```
   #### Calculate tau values using Lidar
-```
-  roslaunch vision_based_navigation_ttt_ml lidar_launch_file.launch
-```
+  ```
+    roslaunch vision_based_navigation_ttt_ml lidar_launch_file.launch
+  ```
   #### Calculate tau values using Velodyne
-```
-  roslaunch vision_based_navigation_ttt_ml velodyne_launch_file.launch
-```  
+  ```
+    roslaunch vision_based_navigation_ttt_ml velodyne_launch_file.launch
+  ```  
   #### Calculate tau values using Optical Flow(computed using the Lukas Kanade method)
-```
-  roslaunch vision_based_navigation_ttt_ml optical_flow_nodes.launch
-```
+  ```
+    roslaunch vision_based_navigation_ttt_ml optical_flow_nodes.launch
+  ```
 
 ### Running Each Node Separately
 1. You will need to launch Gazebo first by running 
@@ -37,7 +37,8 @@ To simulate your desired world specify it in the launch file at line:
   arg name="world_name" value="$(find vision_based_navigation_ttt_ml)/GazeboWorlds/<files with your desired world found in GazeboWorlds folder>.world" 
   ```
 2. You will also need to calculate the tau values using one of the options available
-  #### Ways to calculate the tau values:
+    
+    Ways to calculate the tau values:
   
       To get tau values from optical flow run: 
 
@@ -64,8 +65,9 @@ To simulate your desired world specify it in the launch file at line:
       ```
       This window will show two values the top one is the cnn prediction and thebottom one is from the lidar. You can choose the parameters that you want that are available in the trained_model_parameters folder just change the model name in line tf.keras.models.load_model. Not that there are models that take velocities as input and others dont so make sure to choose the function that calculates tau values according tothe model you chose.
 
-
-  #### Available controllers :
+3. Finally, you will also need to run a controller in a seperate terminal 
+    
+    Available controllers :
   
       To use the controller with sense and act phases, run 
 
@@ -235,6 +237,7 @@ https://user-images.githubusercontent.com/98136555/211262738-a77bb3e2-d42a-404e-
   
   ### Collected data and trained models:
   The Dataset collected to train the models can be found in https://drive.google.com/drive/folders/14Z0PIDKhXRiH8N9Lk4W1LmMqiyPlzIl8?usp=share_link. The folder also includes a Readme file that explain what each folder includes.
+  
   The parameters for the trained models can be found in https://drive.google.com/drive/folders/1mN2qUArRAUh9lco24jHvgxeGaYj4N5pD?usp=share_link.
   
   ## CNN-Based Turn Detection:
