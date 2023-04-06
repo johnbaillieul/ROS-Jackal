@@ -75,13 +75,13 @@ Multiple custom worlds were created in Gazebo to resemble the environment being 
 <img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/T_shaped.png"/> 
      </td>
      <td>
-<img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/L_shaped.png"/>
+<img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt_ml/assets/L_shaped.png"/>
       </td>
      <td>
-<img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/U_shaped.png"/>
+<img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt_ml/assets/U_shaped.png"/>
       </td>
       <td>
-<img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/House_garden.png"/>
+<img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt_ml/assets/House_garden.png"/>
       </td>
  </tr>
 </table>
