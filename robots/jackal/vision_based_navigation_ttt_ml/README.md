@@ -7,11 +7,27 @@ The diagram of the ROS framework is shown in the figure
 
 <img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt_ml/assets/diagram.png"/>
 
-## How to Run the Package
-### Using One launch file with all the nodes
+## How to Run the Package in Simulation
+### Launch All nodes at once
+  #### Calculate tau values using CNN
+```
+  roslaunch vision_based_navigation_ttt_ml CNN_launch_file.launch
+```
+  #### Calculate tau values using Lidar
+```
+  roslaunch vision_based_navigation_ttt_ml lidar_launch_file.launch
+```
+  #### Calculate tau values using Velodyne
+```
+  roslaunch vision_based_navigation_ttt_ml velodyne_launch_file.launch
+```  
+  #### Calculate tau values using Optical Flow(computed using the Lukas Kanade method)
+```
+  roslaunch vision_based_navigation_ttt_ml optical_flow_nodes.launch
+```
 
 ### Running Each Node Separately
-To launch Gazebo you need to run 
+1. You will need to launch Gazebo first by running 
 ``` 
 roslaunch vision_based_navigation_ttt_ml <your chosen file from launch folders>.launch 
 ```
@@ -20,7 +36,7 @@ To simulate your desired world specify it in the launch file at line:
   ```
   arg name="world_name" value="$(find vision_based_navigation_ttt_ml)/GazeboWorlds/<files with your desired world found in GazeboWorlds folder>.world" 
   ```
-  
+2. You will also need to calculate the tau values using one of the options available
   #### Ways to calculate the tau values:
   
       To get tau values from optical flow run: 
@@ -62,6 +78,12 @@ To simulate your desired world specify it in the launch file at line:
       ```
       rosrun vision_based_navigation_ttt_ml controller_act_bias.py 
       ```
+## How to Run the Package on the Jackal
+You need to run the following launch file 
+```
+  roslaunch vision_based_navigation_ttt_ml CNN_launch_file_on_real_jackal.launch
+```
+Note that you need to have the realsense-ros package installed. It can be found in https://github.com/IntelRealSense/realsense-ros/tree/ros1-legacy.
 
 ## Custom Worlds 
 Multiple custom worlds were created in Gazebo to resemble the environment being tested on in the lab. 
@@ -225,4 +247,4 @@ https://user-images.githubusercontent.com/98136555/211262738-a77bb3e2-d42a-404e-
   ## Lab Results:
   For predicting tau values, the model employed is based on the resnetv2-101 architecture, which was trained on data gathered from the real robot. On the other hand, to predict the shape of the corridor, specifically the upcoming turns visible in the image, a model based on the resnetv2-50 architecture is used. This model was trained using simulated and real data. The models used were selected based on their superior performance.
   
-  <img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt/assets/IROS23_lab_exp.mp4"/>
+  <img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt_ml/assets/IROS23_lab_exp.webm"/>
