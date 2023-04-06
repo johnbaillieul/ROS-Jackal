@@ -9,24 +9,25 @@ The diagram of the ROS framework is shown in the figure
 
 ## How to Run the Package in Simulation
 ### Launch All nodes at once
-  #### Calculate tau values using CNN
+
+   **Steer the robot using CNN**
   ```
     roslaunch vision_based_navigation_ttt_ml CNN_launch_file.launch
   ```
-  #### Calculate tau values using Lidar
+   **Steer the robot using Lidar**
   ```
     roslaunch vision_based_navigation_ttt_ml lidar_launch_file.launch
   ```
-  #### Calculate tau values using Velodyne
+   **Steer the robot using Velodyne**
   ```
     roslaunch vision_based_navigation_ttt_ml velodyne_launch_file.launch
   ```  
-  #### Calculate tau values using Optical Flow(computed using the Lukas Kanade method)
+   **Steer the robot using Optical Flow (Computed using the Lukas Kanade method)**
   ```
     roslaunch vision_based_navigation_ttt_ml optical_flow_nodes.launch
   ```
 
-### Running Each Node Separately
+### Run Each Node Separately
 
 1. You will need to launch Gazebo first by running 
 ``` 
