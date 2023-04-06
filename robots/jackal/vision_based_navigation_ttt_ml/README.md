@@ -27,6 +27,7 @@ The diagram of the ROS framework is shown in the figure
   ```
 
 ### Running Each Node Separately
+
 1. You will need to launch Gazebo first by running 
 ``` 
 roslaunch vision_based_navigation_ttt_ml <your chosen file from launch folders>.launch 
@@ -36,9 +37,10 @@ To simulate your desired world specify it in the launch file at line:
   ```
   arg name="world_name" value="$(find vision_based_navigation_ttt_ml)/GazeboWorlds/<files with your desired world found in GazeboWorlds folder>.world" 
   ```
+
 2. You will also need to calculate the tau values using one of the options available
     
-    Ways to calculate the tau values:
+    **Ways to calculate the tau values:**
   
       To get tau values from optical flow run: 
 
@@ -67,7 +69,7 @@ To simulate your desired world specify it in the launch file at line:
 
 3. Finally, you will also need to run a controller in a seperate terminal 
     
-    Available controllers :
+    **Available controllers :**
   
       To use the controller with sense and act phases, run 
 
