@@ -8,7 +8,7 @@ The diagram of the ROS framework is shown in the figure
 <img src="https://github.com/johnbaillieul/ROS-Jackal/blob/cnn_model/robots/jackal/vision_based_navigation_ttt_ml/assets/diagram.png"/>
 
 ## How to Run the Package in Simulation
-### Launch All nodes at once
+### Launch All nodes at once:
 
    **Steer the robot using CNN**
   ```
@@ -27,9 +27,9 @@ The diagram of the ROS framework is shown in the figure
     roslaunch vision_based_navigation_ttt_ml optical_flow_nodes.launch
   ```
 
-### Run Each Node Separately
+### Run Each Node Separately:
 
-1. You will need to launch Gazebo first by running 
+**1. You will need to launch Gazebo first by running**
 ``` 
 roslaunch vision_based_navigation_ttt_ml <your chosen file from launch folders>.launch 
 ```
@@ -39,9 +39,7 @@ To simulate your desired world specify it in the launch file at line:
   arg name="world_name" value="$(find vision_based_navigation_ttt_ml)/GazeboWorlds/<files with your desired world found in GazeboWorlds folder>.world" 
   ```
 
-2. You will also need to calculate the tau values using one of the options available
-    
-    **Ways to calculate the tau values:**
+**2. You will also need to calculate the tau values using one of the options available**
   
       To get tau values from optical flow run: 
 
@@ -68,9 +66,7 @@ To simulate your desired world specify it in the launch file at line:
       ```
       This window will show two values the top one is the cnn prediction and thebottom one is from the lidar. You can choose the parameters that you want that are available in the trained_model_parameters folder just change the model name in line tf.keras.models.load_model. Not that there are models that take velocities as input and others dont so make sure to choose the function that calculates tau values according tothe model you chose.
 
-3. Finally, you will also need to run a controller in a seperate terminal 
-    
-    **Available controllers :**
+**3. Finally, you will also need to run a controller in a seperate terminal with one of the available controllers :**
   
       To use the controller with sense and act phases, run 
 
