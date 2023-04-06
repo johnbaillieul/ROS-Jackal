@@ -41,44 +41,44 @@ To simulate your desired world specify it in the launch file at line:
 
 **2. You will also need to calculate the tau values using one of the options available**
   
-      To get tau values from optical flow run: 
+To get tau values from optical flow run: 
 
-      ```
-      rosrun vision_based_navigation_ttt_ml optical_flow.py
-      rosrun vision_based_navigation_ttt_ml tau_computation.py 
-      ```
+  ```
+  rosrun vision_based_navigation_ttt_ml optical_flow.py
+  rosrun vision_based_navigation_ttt_ml tau_computation.py 
+  ```
 
-      To get tau values from velodyne(3D lidar) run:
+ To get tau values from velodyne(3D lidar) run:
 
-      ```
-      rosrun vision_based_navigation_ttt_ml tau_computation_velodyne.py 
-      ```
-      To get tau values from lidar(2D lidar) run:
+  ```
+  rosrun vision_based_navigation_ttt_ml tau_computation_velodyne.py 
+  ```
+  To get tau values from lidar(2D lidar) run:
 
-      ```
-      rosrun vision_based_navigation_ttt_ml tau_computation_lidar.py 
-      ```
+  ```
+  rosrun vision_based_navigation_ttt_ml tau_computation_lidar.py 
+  ```
 
-      To get tau values from CNN model run:
+  To get tau values from CNN model run:
 
-      ```
-      rosrun vision_based_navigation_ttt_ml tau_computation_cnn.py
-      ```
-      This window will show two values the top one is the cnn prediction and thebottom one is from the lidar. You can choose the parameters that you want that are available in the trained_model_parameters folder just change the model name in line tf.keras.models.load_model. Not that there are models that take velocities as input and others dont so make sure to choose the function that calculates tau values according tothe model you chose.
+  ```
+  rosrun vision_based_navigation_ttt_ml tau_computation_cnn.py
+  ```
+  This window will show two values the top one is the cnn prediction and thebottom one is from the lidar. You can choose the parameters that you want that are available in the trained_model_parameters folder just change the model name in line tf.keras.models.load_model. Not that there are models that take velocities as input and others dont so make sure to choose the function that calculates tau values according tothe model you chose.
 
 **3. Finally, you will also need to run a controller in a seperate terminal with one of the available controllers :**
   
-      To use the controller with sense and act phases, run 
+  To use the controller with sense and act phases, run 
 
-      ```
-      rosrun vision_based_navigation_ttt_ml controller.py 
-      ```
+  ```
+  rosrun vision_based_navigation_ttt_ml controller.py 
+  ```
 
-      To use the controller with only an act phase, run 
+  To use the controller with only an act phase, run 
 
-      ```
-      rosrun vision_based_navigation_ttt_ml controller_act_bias.py 
-      ```
+  ```
+  rosrun vision_based_navigation_ttt_ml controller_act_bias.py 
+  ```
 ## How to Run the Package on the Jackal
 You need to run the following launch file 
 ```
