@@ -34,6 +34,8 @@ Reference to the Jackal manual: https://www.generationrobots.com/media/Jackal_Cl
     pip install tensorflow
     
     ```
+4. Apriltags Packages
+    Follow instructions in https://github.com/AprilRobotics/apriltag_ros.
 
 ## Setup:
   1. Create a catkin workspace
