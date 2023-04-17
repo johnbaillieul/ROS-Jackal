@@ -136,7 +136,6 @@ class Create(object):
         self.mocap_trajectory = list()
         self.odometry_trajectory = list()  
         
-           
         
         # subscribers and publishers
         self.apriltag_sub = rospy.Subscriber("/tag_detections",AprilTagDetectionArray,self.apriltag_callback)
@@ -298,7 +297,7 @@ class Create(object):
             real_apriltag_orientation = self.orientation
             real_apriltag_distance = np.linalg.inv(self.tf).dot(self.landmark_poses[seen_id].tf) # apriltag->robot
             # Now we need to rotate this distance by the REAL orientation (which is self.tf[:3,:3])
-            real_apriltag_distance = (self.tf[:3,:3].dot(real_apriltag_distance[:3,3]))[:2].reshape((2,-1));
+            real_apriltag_distance = (self.tf[:3,:3].dot(real_apriltag_distance[:3,3]))[:2].reshape((2,-1))
             
             # Compare apriltag measurements with real MoCap measurements:
             print("Distance with AprilTag: {}".format(apriltag_distance.flatten()))

@@ -9,5 +9,5 @@
         <!-- You can use another controller but since we dont need act sense cycle for tau values computed 
         from scans I used the controller that only uses an act cycle-->
         <node name="controller" pkg="vision_based_navigation_ttt_ml" type="controller_act_bias.py"/> 
-
+       
 </launch>  
