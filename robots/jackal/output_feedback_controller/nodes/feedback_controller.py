@@ -12,40 +12,39 @@ import os
 from std_msgs.msg import Float64, Header
 import pandas as pd
 from gazebo_msgs.srv import GetModelState, GetModelStateRequest
+import tf.transformations as tr
 
 class Feedback_2D_Input:
-    def __init__(self,K_gains,K_added): 
+    def __init__(self,K_gains): 
         self.pub_vel = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
-        # self.linear_vel =  rospy.Subscriber("/linear_vel", Float64, self.linear_vel_callback)
         self.sub_img_detec =  rospy.Subscriber("/tag_detections", AprilTagDetectionArray, self.apriltag_callback)
         self.vel = Twist()
         self.tfBuffer = tf2_ros.Buffer()
         self.listener = tf2_ros.TransformListener(self.tfBuffer)
         self.apriltags_list = list()
         self.K_gains = np.array(K_gains)
-        self.K_added = np.array(K_added)
+        # self.K_added = np.array(K_added)
         self.k_index = 0
-        # self.u_input = None
+        self.position_landmark_inworld_matrix = {}
         self.selected_apriltag = None
         self.selected_aptag_id = None
-        # self.used_apriltags = [0,1,2,3,4,5,6,7,8,9,10,11] # add the apriltag ids that you used
+        self.used_apriltags = [0,1,2,3,4,5,6,7,8,9,10,11] # add the apriltag ids that you used
         self.apriltag_dist = None
-        self.position_landmark_inworld_matrix = {1:np.array([[0,0,1,-8.3137],[1,0,0,-5.89405],[0,1,0,0.5],[0,0,0,1]]),
-                                                 2:np.array([[0,0,1,-8.25174],[1,0,0,-1.70236],[0,1,0,0.5],[0,0,0,1]]),
-                                                 3:np.array([[0,1,0,-8.20742],[1,0,0,1.44827],[0,1,0,0.5],[0,0,0,1]]),
-                                                 4:np.array([[1,0,0,-5.59215],[0,0,-1,3.13622],[0,1,0,0.5],[0,0,0,1]]),
-                                                 5:np.array([[1,0,0,-2.523],[0,0,-1,3.28701],[0,1,0,0.5],[0,0,0,1]]),
-                                                 6:np.array([[0,0,-1,1.29401],[-1,0,0,1.90886],[0,1,0,0.5],[0,0,0,1]]),
-                                                 7:np.array([[0,0,-1,1.28591],[-1,0,0,-2.18859],[0,1,0,0.5],[0,0,0,1]]),
-                                                 8:np.array([[0,0,-1,1.24712],[-1,0,0,-6.21105],[0,1,0,0.5],[0,0,0,1]]),
-                                                 9:np.array([[-1,0,0,-2.48163],[0,0,1,-8.77517],[0,1,0,0.5],[0,0,0,1]]), 
-                                                 10:np.array([[-1,0,0,-5.67756],[0,0,1,-8.7319],[0,1,0,0.5],[0,0,0,1]]),
-                                                 11:np.array([[0,0,-1,-4.03817],[-1,0,0,-5.24104],[0,1,0,0.5],[0,0,0,1]]),
-                                                 12:np.array([[0,0,-1,-4.16755],[-1,0,0,-2.12336],[0,1,0,0.5],[0,0,0,1]]),    
-                                                 13:np.array([[0,0,1,-2.11855],[1,0,0,-2.11572],[0,1,0,0.5],[0,0,0,1]]),
-                                                 14:np.array([[0,0,1,-2.06867],[1,0,0,-4.1917],[0,1,0,0.5],[0,0,0,1]]),
-                                                }
- 
+
+    def get_rot_matrix_aptags(self):
+        rospy.wait_for_service('/gazebo/get_model_state')
+        get_model_srv = rospy.ServiceProxy('/gazebo/get_model_state',GetModelState)
+        model = GetModelStateRequest()
+        for id in self.used_apriltags:
+            model.model_name = 'apriltag'+str(id)
+            trans = get_model_srv(model)
+            # print('id',id,result.pose.position)
+            
+            T = tr.translation_matrix([trans.pose.position.x, trans.pose.position.y, trans.pose.position.z])
+            R = tr.quaternion_matrix([trans.pose.orientation.x, trans.pose.orientation.y, trans.pose.orientation.z, trans.pose.orientation.w])
+            self.position_landmark_inworld_matrix[id] = np.dot(T, R)
+        # print('posiiton', self.position_landmark_inworld_matrix)
+
     def apriltag_callback(self,msg):
         if msg.detections:
             # '''If there's an AprilTag in the image it selectes the one closest to the apriltag '''
@@ -57,14 +56,18 @@ class Feedback_2D_Input:
                     selected_aptag_id = at.id[0]
                     selected_apriltag = at.pose.pose
 
-            #change frame from camera to baselink
             source_frame = "front_realsense_gazebo"
-            transform = self.tfBuffer.lookup_transform("base_link", source_frame, rospy.Time(0), rospy.Duration(1.0))
-            print('transform',tu.msg_to_se3(transform))
-            # pose_transformed = tf2_geometry_msgs.do_transform_pose(selected_apriltag, transform)
-            ''' convert the stamped message '''
+            frame = "tag_" + str(selected_aptag_id)
             
-            self.selected_apriltag = np.dot(tu.msg_to_se3(transform),tu.msg_to_se3(at.pose.pose.pose))
+            trans = self.tfBuffer.lookup_transform(source_frame, frame, rospy.Time(0), rospy.Duration(1.0))
+            T = tr.translation_matrix([trans.transform.translation.x, trans.transform.translation.y, trans.transform.translation.z])
+            R = tr.quaternion_matrix([trans.transform.rotation.x, trans.transform.rotation.y, trans.transform.rotation.z, trans.transform.rotation.w])
+            
+            # # Convert the transform to a homogeneous transformation matrix
+            transform_aptag_in_cam = np.dot(T, R)
+            # print("transform_aptag_in_cam", transform_aptag_in_cam)
+            
+            self.selected_apriltag = transform_aptag_in_cam
             self.selected_aptag_id = selected_aptag_id 
         else:
             rospy.logwarn("Can't find an AprilTag in the image!")
@@ -72,20 +75,35 @@ class Feedback_2D_Input:
             self.selected_aptag_id = None
 
     ## compute u using only one apriltag then check how you can include multipe apriltags
-    def compute_u(self): # n = num of aptags seen K=[2n,?] y = [2n,1]
+    def compute_u(self): 
         ### eq u = sum_j [K_j(l_i - x)] + sum_j [K_j(l_j - li)]
         selected_id = self.selected_aptag_id
         selected_aptag = self.selected_apriltag
     
-        # print("selected_id",selected_id)
-        # print("k_index", self.k_index)
         K_gains = self.K_gains[self.k_index*2:self.k_index*2+2,:]
-        # print("from_get_state", from_get_state)
-        ori_ldmark = np.dot(self.position_landmark_inworld_matrix[selected_id][:3,:3], (selected_aptag[:3,:3]).T)
+
+        # aprtag_gazebo in world 
+        transform_aptaggz_in_world =  self.position_landmark_inworld_matrix[selected_id]
+        # print('transform_aptaggazebo_in_world_nothing', transform_aptaggz_in_world)
+
+        # aptag in aptaggazebo
+        transform_aptag_in_aptaggz =  np.block([[0,0,1,0], [1,0,0,0], [0,1,0,0], [0,0,0,1]])
+        # print('transform_aptag_in_aptaggz', transform_aptag_in_aptaggz)
+    
+        # Define the 4x4 homogeneous matrix
+        M = np.dot(np.dot(transform_aptaggz_in_world, transform_aptag_in_aptaggz), np.linalg.inv(selected_aptag)) 
+        # print('M', M)
+
+        orientation = M[:3,0].flatten()
+        print('orientation ggggg',orientation)
+        orientation[2] = 0
+        orientation /= np.linalg.norm(orientation)
         
-        # # Rotate the relative distance:
-        aptag_dist_vector = np.dot(ori_ldmark, selected_aptag[:3,3])[:2].reshape((2,1)); 
+        aptag_dist_vector = np.array([M[0,3], M[1,3]]).reshape(2,1)
+        # print('aptag_dist_vector',aptag_dist_vector)
+        
         self.apriltag_dist = aptag_dist_vector
+
         u_1 = None
         for i in range(int(np.size(K_gains,1)/2)):
             if u_1 is None:
@@ -109,8 +127,8 @@ class Feedback_2D_Input:
     
         u_2 = np.dot(K_gains,lj_li).sum(axis=1)
         u = u_1 + u_2
-        print('u',u)
-        return u
+        # print('u',u)
+        return u, orientation
         
     def to_tf(self,pos,ori):
         return np.block([[np.array(ori),pos.reshape((-1,1))],[0,0,0,1]])
@@ -125,18 +143,18 @@ class Feedback_2D_Input:
             return
 
         threshold = 0.001
-        u_input = self.compute_u()
+        u_input, ori = self.compute_u()
   
         # print('ulen',len(u_input))
-        ori = self.robot_pose(aptag_transf,selected_id)
-        alpha = 0.5 # linear coef
+        # ori = self.robot_pose(aptag_transf,selected_id)
+        alpha = 0.05 # linear coef
         beta = 0.2 # angular coef
-        print('u',u_input)
-        # print( 'ori',ori[:2])
+        print('u @@@@@@@@@@@',u_input)
+        print( 'ori',ori[:2])
         linear_velocity = alpha * np.dot(u_input, ori[:2])
         if abs(linear_velocity) < threshold:
                 self.k_index += 1
-        print('Linear_Vel',linear_velocity)
+        print('Linear_Vel @@@@@@@@@',linear_velocity)
         if linear_velocity < 0: 
             linear_velocity = 0.5
             angular_velocity = beta*np.cross(ori,u_input/np.linalg.norm(u_input))[2]
@@ -148,7 +166,7 @@ class Feedback_2D_Input:
         self.vel.angular.z = angular_velocity 
         self.pub_vel.publish(self.vel) 
         # print('linear',self.vel.linear.x)
-        # print('angular',angular_velocity)
+        print('angular',angular_velocity)
         # print('reached')
             
 ## Get the orientation from different apriltags this only gets from the closest one
@@ -158,7 +176,7 @@ class Feedback_2D_Input:
         # print('s_id',selected_id)
         # print('tf', self.position_landmark_inworld_matrix[selected_id])
         # print('state', ori_ldmark)
-        ori= ori[:3,0].flatten()
+        ori= ori[:3,2].flatten()
         ori[2] = 0
         ori/= np.linalg.norm(ori)
         return ori
@@ -167,21 +185,22 @@ def read_matrix(csv_dir):
     with open(csv_dir,'r') as f:
         return np.genfromtxt(f,delimiter=',')
 
-home_dir = os.environ["HOME"]
+home_dir = "/home"
 
 if __name__ == "__main__":
     rospy.init_node("u_control")
     
-    shared_path = os.environ["HOME"]+"/catkin_ws/src/output_feedback_controller/csv/"
+    shared_path = home_dir + "/catkin_ws/src/output_feedback_controller/csv/"
     
-    K_gains_path= shared_path + "K_gains.csv"
+    K_gains_path= shared_path + "K_gains_poly.csv"
     K_gains = read_matrix(K_gains_path)
 
-    K_added_path= shared_path + "K_added.csv"
-    K_added = read_matrix(K_added_path)
+    # K_added_path= shared_path + "K_added.csv"
+    # K_added = read_matrix(K_added_path)
 
-    jackal = Feedback_2D_Input(K_gains,K_added)
-   
+    jackal = Feedback_2D_Input(K_gains)
+    jackal.get_rot_matrix_aptags()
+
     r = rospy.Rate(10)
     while not rospy.is_shutdown(): 
         jackal.compute_input_parse()
