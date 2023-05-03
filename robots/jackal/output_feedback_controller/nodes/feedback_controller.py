@@ -43,7 +43,7 @@ class Feedback_2D_Input:
             T = tr.translation_matrix([trans.pose.position.x, trans.pose.position.y, trans.pose.position.z])
             R = tr.quaternion_matrix([trans.pose.orientation.x, trans.pose.orientation.y, trans.pose.orientation.z, trans.pose.orientation.w])
             self.position_landmark_inworld_matrix[id] = np.dot(T, R)
-        # print('posiiton', self.position_landmark_inworld_matrix)
+        # print('position', self.position_landmark_inworld_matrix)
 
     def apriltag_callback(self,msg):
         if msg.detections:
