@@ -53,3 +53,46 @@ This is what my bashrc file looks like for your reference
 <!-- ## Package_4: Control_Mix 
   
 In this package e combined the optical flow and fiducial markers algorithms together so that the robot can switch to optical-flow-based navigation as a backup option whenever fiducial landmarks are not visible.-->
+
+## Docker 
+
+This Repository can be found in this docker https://hub.docker.com/repository/docker/olagh/jackal_packages_bu/general. Make sure you pull the latest version of it.
+
+run ``` docker pull olagh/jackal_packages_bu:v4 ```
+you will need to create a docker-compose.yaml file and paste the following in it:
+
+```
+version: '3'
+
+services:
+    jackal_bu_packages:
+        privileged: true
+        image: "olagh/jackal_packages_bu:v4"
+        network_mode: host
+        environment:
+            - ROS_MASTER_URI=$ROS_MASTER_URI
+            - ROS_IP=$ROS_IP
+            - ROS_DOMAIN_ID=$ROS_DOMAIN_ID
+            - DISPLAY=$DISPLAY
+        volumes:
+            - /tmp/.X11-unix/:/tmp/.X11-unix/
+        tty: true
+```
+and set all of these variables:
+
+- ROS_MASTER_URI
+- ROS_IP
+- ROS_DOMAIN_ID
+
+In the ~/.bashrc file like this:
+
+```
+export ROS_IP=<you ip-address>
+export ROS_MASTER_URI=http://$ROS_IP:11311
+export ROS_DOMAIN_ID=<can be any number>
+```
+
+Then cd to the location of this docker-compose.yaml and run ``` docker compose up ```
+
+in another terminal run ```xhost +``` to be able to view graphics on you screeen then run  ``` docker exec -it jackal-simulation-bu_packages-jackal_bu_packages-1 bash ```
+
