@@ -7,7 +7,7 @@
 ## Prerequisites
 Realsense_camera see instruction from https://wiki.bu.edu/robotics/index.php?title=Jackal or https://www.clearpathrobotics.com/assets/guides/kinetic/jackal/additional_sim_worlds.html
 
-Clearpath package to simulate Jackal UGV that can be installed by running: sudo apt-get install ros-melosic-jackal-simulator ros-melodic-jackal-desktop ros-melodic-jackal-navigation
+Clearpath package to simulate Jackal UGV that can be installed by running: sudo apt-get install ros-melodic-jackal-simulator ros-melodic-jackal-desktop ros-melodic-jackal-navigation
 
 ## How to Use Repo:
 The repository contains four packages. To run the repo you need to have a catkin worskspace. clone the repo in src file of your catkin workspace
