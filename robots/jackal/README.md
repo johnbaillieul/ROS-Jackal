@@ -1,4 +1,4 @@
-# Setup & Startup Guide for BU's Jackal Robots
+# USE THE CNN_MODEL BRANCH
 ## Setup
 
 
