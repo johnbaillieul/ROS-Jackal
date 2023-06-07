@@ -11,7 +11,7 @@ https://user-images.githubusercontent.com/98136555/187280048-6306f278-5905-4383-
   ```
    export JACKAL_URDF_EXTRAS=$HOME/catkin_ws/src/vision_based_navigation_ttt_ml/urdf/realsense.urdf.xacro
    ```
-&ensp; &ensp; &ensp; Note that the export command has to be run every time before launching a file. To avoid that, you can add that command to your ~/.bashrc file. 
+&ensp; &ensp; &ensp; Note that the export command has to be run every time before launching a file. To avoid that, you can add that command to your ~/.bashrc file. To get to your bashrc file run nano " ~/.bashrc "
 
 2. Run the command below which opens gazebo with the apriltags and the Jackal. The lauch file also launches the continuous detection file used to detect april tags.
 ```
