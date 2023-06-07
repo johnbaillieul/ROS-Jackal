@@ -9,7 +9,7 @@ https://user-images.githubusercontent.com/98136555/187280048-6306f278-5905-4383-
 ### How to Run the Package:
 1. Run the command below. The realsense urdf.xacro file is by default located in the vision_based_navigation project, make sure to update the command below if you change it's location.
   ```
-   export JACKAL_URDF_EXTRAS=$HOME/catkin_ws/src/vision_based_navigation_ttt/urdf/realsense.urdf.xacro
+   export JACKAL_URDF_EXTRAS=$HOME/catkin_ws/src/vision_based_navigation_ttt_ml/urdf/realsense.urdf.xacro
    ```
 &ensp; &ensp; &ensp; Note that the export command has to be run every time before launching a file. To avoid that, you can add that command to your ~/.bashrc file. 
 
