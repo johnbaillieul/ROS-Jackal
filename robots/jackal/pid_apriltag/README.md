@@ -15,9 +15,13 @@ https://user-images.githubusercontent.com/98136555/187280048-6306f278-5905-4383-
 
 2. Run the command below which opens gazebo with the apriltags and the Jackal. The lauch file also launches the continuous detection file used to detect april tags.
 ```
-roslaunch pid_apriltag apriltag_jackal.launch
+roslaunch pid_apriltag apriltags_jackal.launch
 ```
+3. to run the robot
 
+```
+rosrun pid_apriltag detec.py
+```
 ### Apriltag Detection
 To check if the apriltag detection is running:
 1. Open a new terminal
