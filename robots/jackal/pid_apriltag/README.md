@@ -32,3 +32,13 @@ To check if the apriltag detection is running:
 
 
 Note that when using apriltags, having lighting in your world that is too bright or too dark can cause wrong detections.
+
+### How to Run the Package on the Jackal:
+
+1. Connect the jackal to a monitor and run "ifconfig" to obtain the IP address of the jackal.
+2. SSH to the jackal from your desktop using the following command: "ssh -X clearpath@<ip_address>". You will be prompted to enter the password.
+3. Open four terminals (ensure that you have SSHed to the jackal in each terminal before running the commands):
+  a. In the first terminal, launch the Realsense camera: "roslaunch realsense2_camera rs_rgbd.launch". To verify that it is running, you can either use rqt to view the image or list the     topics and check if the camera is listed by executing the command "rostopic list". Note: This command needs to be run in a separate terminal where you have already SSHed to the jackal.
+  b. In the second terminal, run "roslaunch apriltag_ros continuous_detections_.launch".
+  c. In the third terminal, execute "rosrun tf static_transform_publisher -0.18 0 0.23 0 0 0 front_mount camera_color_optical_frame 10".
+  d. In the fourth terminal, run "rosrun jackal_iros detec.py".
